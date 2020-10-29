@@ -18,8 +18,27 @@ router.get('/all', function(req, res){
   let stmt = 'SELECT * FROM foods';
   connection.query(stmt, function(err, result){
     if(err) throw err;
-    res.send(result);
+    res.json(result);
   })
 })
+
+/*
+ * example post
+ *
+ * where req.body is some json like:
+ *      {
+	        "food_id": 6,
+	        "name": "chicken",
+          "meal": "dinner",
+          "fave": 1
+        }
+ */
+router.post('/add', function(req, res){
+  let stmt = 'INSERT INTO foods SET ?';
+  connection.query(stmt, req.body, function(err, result){
+    if(err) throw err;
+    res.sendStatus(201).send(result.insertId);
+  })
+});
 
 module.exports = router;
