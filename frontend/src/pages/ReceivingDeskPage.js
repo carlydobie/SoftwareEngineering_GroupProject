@@ -1,11 +1,11 @@
 import '../css/App.css';
 import {BrowserRouter } from 'react-router-dom';
-import Navbar from '../components/core/Navbar.js';
+import Navbar from '../components/core/employeeNav.js';
 
 function ReceivingDeskPage() {
   return (
     <div className="App">
-      <Navbar />
+    <Navbar />
       Hello ReceivingDeskPage!
 
     </div>

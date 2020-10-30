@@ -1,10 +1,10 @@
-import '../css/App.css'
-import Navbar from '../components/core/Navbar'
+import '../App.css';
+import Navbar from '../components/core/employeeNav.js';
 
 function AdminPage() {
   return (
     <div className="App">
-      <Navbar />
+    <Navbar />
       Hello AdminPage!
 
     </div>

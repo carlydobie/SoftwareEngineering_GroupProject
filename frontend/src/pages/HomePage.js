@@ -19,7 +19,6 @@ function HomePage() {
           </Grid>
         </div>
       </div>
-
     </div>
   );
 }

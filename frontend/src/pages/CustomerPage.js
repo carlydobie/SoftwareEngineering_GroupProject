@@ -1,13 +1,12 @@
 import '../css/App.css'
 import {BrowserRouter } from 'react-router-dom';
-import Navbar from '../components/core/Navbar.js';
+import Navbar from '../components/core/customerNav.js';
 
 function CustomerPage() {
   return (
     <div className="App">
-      <Navbar />
+    <Navbar/>
       Hello CustomerPage!
-
     </div>
   );
 }
