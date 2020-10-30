@@ -28,19 +28,16 @@ const useStyles = makeStyles((theme) => ({
   
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar color="white" position="static">
           <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
-            <Button color="inherit"><Link to="/">Home</Link></Button>
-            <Button color="inherit"><Link to="/Customer">Customer</Link></Button>
-            <Button color="inherit"><Link to="/Warehouse">Warehouse</Link></Button>
-            <Button color="inherit"><Link to="/ReceivingDesk">Receiving</Link></Button>
-            <Button color="inherit"><Link to="/Admin">Admin</Link></Button>
-
-
-            <Button color="inherit">Login</Button>
+            <Button to="/" component={Link}>
+                <Typography>
+                    Home
+                </Typography>
+            </Button>
           </Toolbar>
         </AppBar>
       </div>

@@ -1,6 +1,5 @@
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import Navbar from './components/core/Navbar.js';
 import CustomerPage from './pages/CustomerPage';
 import AdminPage from './pages/AdminPage';
 import HomePage from './pages/HomePage';
@@ -13,7 +12,6 @@ function App() {
       <Router>
         <div>
           <header>
-            <Navbar />
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route exact path="/Customer" component={CustomerPage} />
@@ -24,7 +22,6 @@ function App() {
           </header>
         </div>
       </Router>
-
     </div>
   );
 }
