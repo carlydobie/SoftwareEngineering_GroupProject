@@ -1,4 +1,4 @@
-import './App.css';
+// import './css/App.css'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Navbar from './components/core/Navbar.js';
 import CustomerPage from './pages/CustomerPage';
@@ -9,11 +9,10 @@ import ReceivingDeskPage from './pages/ReceivingDeskPage';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Router>
         <div>
           <header>
-            <Navbar />
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route exact path="/Customer" component={CustomerPage} />
