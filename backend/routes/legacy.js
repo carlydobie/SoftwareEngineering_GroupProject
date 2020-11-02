@@ -1,4 +1,5 @@
 var express = require('express');
+const connection = require('../connections/connection');
 var router = express.Router();
 var legacy = require('../connections/legacy');
 
@@ -16,6 +17,16 @@ router.get('/', function(req, res, next) {
 router.get('/all', function(req, res){
   let stmt = 'SELECT * FROM parts';
   legacy.query(stmt, function(err, result){
+    if(err) throw err;
+    res.send(result);
+  })
+})
+
+/* get a part by it's part id */
+router.get('/:id', function(req, res){
+  let stmt = 'SELECT * FROM parts WHERE number = ?';
+  let id = req.params.id;
+  legacy.query(stmt, id, function(err, result){
     if(err) throw err;
     res.send(result);
   })
