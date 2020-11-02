@@ -7,3 +7,20 @@
     font-size: calc(10px + 2vmin);
     color: white;
   }
+
+  .home-menu-box {
+    height: 200vh;
+    width: 100wh;
+    align-items: center;
+    justify-content: center;
+    color: black;
+  }
+
+  .home-grid-item {
+    min-height: 20vh;
+    min-width: 60vh;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: black;
+  }
