@@ -1,5 +1,5 @@
 import '../css/App.css';
-import {BrowserRouter } from 'react-router-dom';
+// import { BrowserRouter } from 'react-router-dom';
 import Navbar from '../components/core/employeeNav.js';
 
 function ReceivingDeskPage() {
@@ -7,7 +7,6 @@ function ReceivingDeskPage() {
     <div className="App">
     <Navbar />
       Hello ReceivingDeskPage!
-
     </div>
   );
 }
