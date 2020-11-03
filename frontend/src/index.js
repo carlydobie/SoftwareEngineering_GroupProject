@@ -6,9 +6,6 @@ import { createStore } from 'redux';
 import rootReducer from './redux/reducers/index.js';
 import { Provider } from 'react-redux';
 
-// //compose for adding multiple enhancers to store
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 //create the redux store
 const store = createStore(
   rootReducer

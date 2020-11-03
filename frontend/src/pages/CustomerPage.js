@@ -18,7 +18,7 @@ function CustomerPage() {
     <div className="App">
     <Navbar/>
       Hello CustomerPage!
-
+      {/**will replace this poopy button with actually products that can be selected */}
       <button onClick={addPart()}>add a part to cart</button>
     </div>
   );

@@ -1,6 +1,3 @@
-export const getShipping = (weight) => {
-    return {
-        type: 'GET_CHARGE',
-        weight: weight
-    }
-}
+/*
+ *  Actions to interact with Shipping reducer
+ */
