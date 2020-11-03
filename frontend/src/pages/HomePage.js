@@ -1,7 +1,8 @@
 import '../css/homepage.css'
-import { BrowserRouter } from 'react-router-dom'
+// import { BrowserRouter } from 'react-router-dom'
 import Background from '../graphics/AProj-BG.png'
 import Grid from '@material-ui/core/Grid'
+import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -10,17 +11,16 @@ import { Link } from 'react-router-dom'
 function HomePage() {
 
   return (
-    <div>
-      <div style={{ backgroundImage: `url(${Background})`, backgroundRepeat: 'no-repeat', width: 'auto', height: 'auto', color: `#c3c3c3` }}>
-        <div>
-          <Grid className="home-menu-box" container spacing={3}>
-            <div className="home-grid-item">
-              <Grid item xs={12}>
+      <div>
+      <body>
+          <Container className="home-menu-box"> 
+          <Grid container spacing={2}>
+              <Grid item xs={12} lg={12}>
                 <Paper>
                   <h2>Welcome to hell!</h2>
                 </Paper>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={6} lg={6}>
                 <Paper>
                   <h2>Hello World!</h2>
                   <Button to="/Customer" component={Link}>
@@ -30,7 +30,7 @@ function HomePage() {
                   </Button>
                 </Paper>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={6} lg={6}>
                 <Paper>
                   <h2>Hello World!</h2>
                   <Button to="/Warehouse" component={Link}>
@@ -40,11 +40,10 @@ function HomePage() {
                   </Button>
                 </Paper>
               </Grid>
-            </div>
           </Grid>
+          </Container>
+          </body>
         </div>
-      </div>
-    </div>
   );
 }
 

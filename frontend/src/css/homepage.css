@@ -1,26 +1,30 @@
-.home-main {
-    min-height: 100vh;
+body {
+    margin-top: 200px;
+    /* min-height: 100vh; */
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    /* font-size: calc(10px + 2vmin); */
+    /* color: white; */
+    background-image: url("../graphics/AProj-BG.png")
+    /* backgroundRepeat: 'no-repeat', width: 'auto', height: 'auto', color: `#c3c3c3` } */
   }
 
   .home-menu-box {
-    height: 200vh;
-    width: 100wh;
+    /* height: 200vh; */
+    /* width: 100vh; */
     align-items: center;
     justify-content: center;
     color: black;
   }
 
   .home-grid-item {
-    min-height: 20vh;
-    min-width: 60vh;
+    /* min-height: 20vh; */
+    /* min-width: 60vh; */
     text-align: center;
     align-items: center;
     justify-content: center;
     color: black;
   }
+  
