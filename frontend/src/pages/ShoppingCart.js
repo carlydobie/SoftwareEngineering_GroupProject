@@ -1,9 +1,9 @@
 import '../css/App.css'
-import {BrowserRouter } from 'react-router-dom';
 import Navbar from '../components/core/customerNav.js';
 import { useSelector } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import { DataGrid } from '@material-ui/data-grid';
+import OrderForm from '../components/orderForm';
 /*
  *  Shopping Cart Page for Customer's Selected Products
  */
@@ -19,7 +19,6 @@ function ShoppingCart() {
   //function to calculate shipping charges based on the total
   //weight of products in the cart, returns the S/H charge
   function calcShipping(){
-      console.log(cartWeight);
       let shipping;
       brackets.map(element => {
           if(cartWeight >= element.minWeight && cartWeight < element.maxWeight){
@@ -58,7 +57,8 @@ function ShoppingCart() {
                 <Typography>Cart Total: ${cartTotal}</Typography>
                 <Typography>Shipping & Handling: ${calcShipping()}</Typography>
                 <Typography>Grand Total: ${cartTotal + calcShipping()}</Typography>
-                {/**submit order modal button will go here */}
+                {/**Submit Order Button to pull up Order Form Modal */}
+                <OrderForm shipping={calcShipping()} />
               </div>
           )
       }
@@ -69,7 +69,7 @@ function ShoppingCart() {
     <div className="App">
     <Navbar/>
         <div>
-            <Typography>
+            <Typography variant="h3">
                 Your Cart
             </Typography>
             <div style={{ width: '70%', marginLeft: '15%',}}> 
