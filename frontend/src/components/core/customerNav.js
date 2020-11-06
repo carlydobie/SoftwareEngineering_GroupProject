@@ -6,8 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom';
-import '../../css/navbar.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    title: {
+    link: {
       flexGrow: 1,
     },
   }));
@@ -32,11 +32,16 @@ const useStyles = makeStyles((theme) => ({
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
+            <div className={classes.link}>
             <Button to="/" component={Link}>
                 <Typography>
                     Home
                 </Typography>
             </Button>
+            </div>
+            <IconButton>
+                <ShoppingCartIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </div>
