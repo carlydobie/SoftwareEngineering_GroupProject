@@ -29,7 +29,7 @@ router.post('/add', function(req, res){
     let stmt = 'INSERT INTO customer SET ?';
     connection.query(stmt, req.body, function(err, result){
         if(err) throw err;
-        res.sendStatus(201).send(result.insertId);
+        res.status(201).send(result.insertId.toString());
     })
 })
 
