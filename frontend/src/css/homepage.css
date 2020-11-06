@@ -1,0 +1,21 @@
+  /* Area that contains the grid */
+  .home-menu-box {
+    padding-top: 30vh;
+    margin-right: 30vw;
+    margin-left: 30vw;
+  }
+
+  /* Each item in the grid */
+  .home-grid-item {
+    padding: 30px;
+    text-align: center;
+  }
+  
+  /* Background of page */
+  .home-bg {
+    background: url(../graphics/AProj-BG.png) no-repeat center center fixed;
+    height: 100vh;
+    align-items: center;
+    align-content: center;
+  }
+  
