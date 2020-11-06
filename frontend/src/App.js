@@ -1,5 +1,5 @@
-// import './css/App.css'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import './css/App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import CustomerPage from './pages/CustomerPage';
 import AdminPage from './pages/AdminPage';
 import HomePage from './pages/HomePage';
@@ -11,7 +11,6 @@ function App() {
     <div>
       <Router>
         <div>
-          <header>
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route exact path="/Customer" component={CustomerPage} />
@@ -19,7 +18,6 @@ function App() {
               <Route exact path="/Warehouse" component={WarehousePage} />
               <Route exact path="/ReceivingDesk" component={ReceivingDeskPage} />
             </Switch>
-          </header>
         </div>
       </Router>
     </div>

@@ -1,26 +1,21 @@
-.home-main {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-
+  /* Area that contains the grid */
   .home-menu-box {
-    height: 200vh;
-    width: 100wh;
-    align-items: center;
-    justify-content: center;
-    color: black;
+    padding-top: 30vh;
+    margin-right: 30vw;
+    margin-left: 30vw;
   }
 
+  /* Each item in the grid */
   .home-grid-item {
-    min-height: 20vh;
-    min-width: 60vh;
+    padding: 30px;
     text-align: center;
-    align-items: center;
-    justify-content: center;
-    color: black;
   }
+  
+  /* Background of page */
+  .home-bg {
+    background: url(../graphics/AProj-BG.png) no-repeat center center fixed;
+    height: 100vh;
+    align-items: center;
+    align-content: center;
+  }
+  

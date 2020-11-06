@@ -7,9 +7,9 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import App from '../../App';
-import { Route, Switch, Link } from 'react-router-dom';
-import { Autorenew } from '@material-ui/icons';
+//import App from '../../App';
+import { Link } from 'react-router-dom';
+//import { Autorenew } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
