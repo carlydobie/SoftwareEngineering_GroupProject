@@ -6,26 +6,22 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-
-//import App from '../../App';
 import { Link } from 'react-router-dom';
 //import { Autorenew } from '@material-ui/icons';
-
+import '../../css/navbar.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      margin: '20px'
     },
     menuButton: {
       marginRight: theme.spacing(2),
     },
     link: {
-      //marginLeft: 'auto',
       flexGrow: 1,
     },
     login: {
-      //maginLeft: 'auto',
-      //marginRight: 1,
       flexGrow: 1,
     }
   }));
@@ -34,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     const classes = useStyles();
   
     return (
-      <div>
+      <div className={classes.root}>
         <AppBar color="white" position="static">
           <Toolbar>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
