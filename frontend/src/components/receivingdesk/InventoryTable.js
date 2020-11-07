@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from 'mui-datatables';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   table: {
@@ -19,22 +21,43 @@ const rows = [
   createData(4,'car3', 10),
   createData(5,'car4', 10),
 ];
-
-export default function ProductTable(props) {
-  const classes = useStyles();
-  console.log(props.inventory);
-  const cols = [
-    { title: 'Part Number', field: 'part_number', type: 'numeric', editable: 'never'},
-    { title: 'Description', field: 'description', editable: 'never'},
-    { title: 'Quantity', field: 'qty', type: 'numeric', editable: 'never'},
+  const columns = [
+    { label: 'Part Number', name: 'part_number', type: 'numeric', editable: 'never'},
+    { label: 'Description', name: 'description', editable: 'never'},
+    { label: 'Quantity', name: 'qty', type: 'numeric', editable: 'never'},
   ]
 
+export default function ProductTable(props) {
+  const [entries, setEntries] = useState([]);
   
-  return (
-    <MUIDataTable 
-      title="Current Inventory"
-      columns={cols}
-      data={props.inventory}
-    />
-  );
+  const getData = async () => {
+    await axios.get('http://localhost:8080/inventory/all')
+    .then(function (response) {
+      // handle success
+      setEntries(response.data)
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+  }
+
+    useEffect(() => {
+        getData()
+
+    }, [])
+
+    let data = Array.from(entries);
+    console.log(data);
+
+    return (
+        <div>
+            <MUIDataTable
+                title={"Temp List"}
+                data={data}
+                columns={columns}
+            />
+        </div>
+    );
 }
