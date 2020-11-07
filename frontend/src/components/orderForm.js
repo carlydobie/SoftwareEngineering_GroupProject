@@ -72,6 +72,7 @@ export default function OrderForm (props) {
     })  
 
     const [custNum, setCustNum] = useState(0);
+    const [orderNum, setOrderNum] = useState(0);
     const [orderDate, setOrderDate] = useState(1604752985353);  //timestamp for testing, change this back to null when uncomment auth funct
   
     //open modal
@@ -153,14 +154,6 @@ export default function OrderForm (props) {
       .catch(function (error) {
           console.log(error)
       })
-      
-      //add products ordered to table with order num part num and qty
-
-      //subtract qty for each part in order from inventory table
-
-      //clear the cart
-
-      //return an order placed alert? confirmation page?
     }
 
     //add a new customer to the db
@@ -182,22 +175,63 @@ export default function OrderForm (props) {
     //create the order with order number customer id, date, and status
     function createOrder() {
 
+      console.log("increate")
+
       //get date from timestamp to YYYY-MM-DD for db
       let date = new Date(orderDate);
       let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 
-    //   Axios.post('http://localhost:8080/orders/add', {
-    //       customer_number: custNum,
-    //       total: cartTotal + props.shipping,
-    //       ord_date: formattedDate,
-    //       status: 'authorized'
-    //   })
-    //   .then(function(response) {
-    //       console.log(response)
-    //   })
-    //   .catch(function (error) {
-    //       console.log(error)
-    //   })
+      /* TEST THIS ONCE MERGED WITH JAKES BRANCH */
+      // post new order to order table
+      // Axios.post('http://localhost:8080/orders/add', {
+      //     customer_number: custNum,
+      //     total: cartTotal + props.shipping,
+      //     ord_date: formattedDate,
+      //     status: 'authorized'
+      // })
+      // .then(function(response) {
+      //     console.log(response)
+      //     setOrderNum(response.data)
+      // })
+      // .catch(function (error) {
+      //     console.log(error)
+      // })
+
+      // post parts ordered to db & subtract their qtys from inventory
+      console.log(cart);
+      cart.forEach(part => {
+        console.log(part.id, part.qty)
+
+        /* TEST THESE */
+        //add the part ordered to table
+        // Axios.post('http://localhost:8080/orders/parts', {
+        //   order_number: orderNum,
+        //   part_number: part.id,
+        //   qty: part.qty
+        // })
+        // .then(function(response){
+        //   console.log(response)
+        // })
+        // .catch(function(error){
+        //   console.log(error)
+        // })
+        //subtract qty ordered from inventory
+        // Axios.put('http://localhost:8080/inventory/update' + part.id, {
+        //   qty: part.qty
+        // })
+        // .then(function(response){
+        //   console.log(response)
+        // })
+        // .catch(function(error){
+        //   console.log(error)
+        // })
+
+      })
+
+      //send email
+
+      //clear cart
+
     }
 
     //body of the modal, contains the order form for customer input
