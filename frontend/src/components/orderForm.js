@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import Axios from 'axios';
 import { blue, grey } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
+import { useForm, Controller } from 'react-hook-form';
 
 //color theme
 const theme = createMuiTheme({
@@ -51,6 +52,9 @@ const useStyles = makeStyles(() => ({
 //Order Form Modal Component
 export default function OrderForm (props) {
 
+    //form validation
+    const { handleSubmit, control, errors: fieldErrors } = useForm({ reValidateMode: 'onChange' });
+
     //hooks for modal
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
@@ -62,26 +66,13 @@ export default function OrderForm (props) {
   
     //local state for customer input
     const [customer, setCustomer] = useState({
-        fName: "",
-        lName: "",
+        name: "",
         address: "",
-        city: "",
-        state: "",
-        zip: "",
-        cc: "",
-        exp: "",
         email: ""
     })  
-  
-    //set customer state when there is a change
-    //in the order form text fields
-    const handleChange = e => {
-      const { name, value } = e.target;
-      setCustomer(prevState => ({
-          ...prevState,
-          [name]: value
-      }));
-    };
+
+    const [custNum, setCustNum] = useState(0);
+    const [orderDate, setOrderDate] = useState(1604752985353);  //timestamp for testing, change this back to null when uncomment auth funct
   
     //open modal
     const handleOpen = () => {
@@ -93,92 +84,120 @@ export default function OrderForm (props) {
       setOpen(false);
     };
   
-    //order submit function
-    const handleSubmit = () => {
-        let name = customer.fName + " " + customer.lName;
-    
-        //generate a random 9 digit transaction number
-        let transactionNum = Math.floor(Math.random() * (999999999-100000000) + 100000000)
-        let vendorID = 'VE123-99'
+    //submit order
+    const submitOrder = async data => {
+      console.log(data)
 
-        //make sure that we have enough of all the parts in the inventory to sell??
-        //do this in add to cart function maybe?
-  
-        //submit cc auth
-        //seems like we can't use fake cc nums aside from the example
-        // Axios.post('http://blitz.cs.niu.edu/CreditCard/', {
-        //     vendor: vendorID,             
-	    //     trans: transactionNum,
-	    //     cc: '6011 1234 4321 1234',
-	    //     name: name, 
-	    //     exp: '12/2020', 
-	    //     amount: cartTotal + props.shipping
-        // })
-        // .then(function(response) {
-        //     console.log(response)
-        //     //as long as we get an auth number back, continue to processing order
-        //     if(response.data.authorization){
-        //         console.log("your auth num: " + response.data.authorization)
-        //         processOrder();
-        //     }else{
-        //         alert(response.data.errors[0]);
-        //     }
-        // })
-        // .catch(function (error) {
-        //     console.log(error)
-        //     alert("There was an error processing your request.")
-        // })
-        processOrder();
+      setCustomer(state => ({
+        ...state,
+        name: data.fName + " " + data.lName,
+        address: data.address + ", " + data.city + ", " + data.state + " " + data.zip,
+        email: data.email
+      }))
+
+      console.log(customer)
+
+      //generate a random 9 digit transaction number
+      let transactionNum = Math.floor(Math.random() * (999999999-100000000) + 100000000)
+      let vendorID = 'VE123-99'
+
+      //make sure that we have enough of all the parts in the inventory to sell??
+      //do this in add to cart function maybe?
+
+      //submit cc auth
+      //seems like we can't use fake cc nums aside from the example
+      //i have hard coded the example cc into the request body
+      //but we can replace this with data.cc and data.exp in the future
+      // Axios.post('http://blitz.cs.niu.edu/CreditCard/', {
+      //   vendor: vendorID,             
+      //   trans: transactionNum,
+      //   cc: '6011 1234 4321 1234',
+      //   name: customer.name, 
+      //   exp: '12/2020', 
+      //   amount: cartTotal + props.shipping
+      // })
+      // .then(function(response) {
+      //     console.log(response)
+      //     //as long as we get an auth number back, continue to processing order
+      //     if(response.data.authorization){
+      //         console.log("your auth num: " + response.data.authorization)
+      //         setOrderDate(response.data.timeStamp)
+      //         processOrder();
+      //     }else{
+      //         alert(response.data.errors[0]);
+      //     }
+      // })
+      // .catch(function (error) {
+      //     console.log(error)
+      //     alert("There was an error processing your request.")
+      // })
+      processOrder()
     }
-  
+
     //process the authorized order
     function processOrder() {
+      //see if customer is in db, if not add them
+      Axios.post('http://localhost:8080/customer/name', {
+          name: customer.name
+      })
+      .then(function(response) {
+          console.log(response)
+          if(response.data.length === 0){
+              addCustomer();
+          }else{
+              setCustNum(response.data.customer_number)
+          }
+          //once we've gotten the customer's number, continue creating the order
+          createOrder()
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
+      
+      //add products ordered to table with order num part num and qty
 
-        let name = customer.fName + " " + customer.lName;
-        
-        //see if customer is in db, if not add them
-        Axios.post('http://localhost:8080/customer/name', {
-            name: name
-        })
-        .then(function(response) {
-            console.log(response)
-            if(response.data.length === 0){
-                addCustomer();
-            }
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
-  
-        //create the order with order number customer id, date, and status
-        
-  
-        //add products ordered to table with order num part num and qty
-  
-        //subtract qty for each part in order from inventory table
+      //subtract qty for each part in order from inventory table
 
-        //clear the cart
-  
-        //return an order placed alert? confirmation page?
+      //clear the cart
+
+      //return an order placed alert? confirmation page?
     }
 
     //add a new customer to the db
     function addCustomer() {
-        let name = customer.fName + " " + customer.lName;
-        let address = customer.address + " " + customer.city + ", " + customer.state + " " + customer.zip;
-        Axios.post('http://localhost:8080/customer/add', {
-            name: name,
-            email: customer.email,
-            address: address
-        })
-        .then(function(response) {
-            console.log(response)
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
+      Axios.post('http://localhost:8080/customer/add', {
+          name: customer.name,
+          email: customer.email,
+          address: customer.address
+      })
+      .then(function(response) {
+          console.log(response)
+          setCustNum(response.data)
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
+    }
 
+    //create the order with order number customer id, date, and status
+    function createOrder() {
 
+      //get date from timestamp to YYYY-MM-DD for db
+      let date = new Date(orderDate);
+      let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+
+    //   Axios.post('http://localhost:8080/orders/add', {
+    //       customer_number: custNum,
+    //       total: cartTotal + props.shipping,
+    //       ord_date: formattedDate,
+    //       status: 'authorized'
+    //   })
+    //   .then(function(response) {
+    //       console.log(response)
+    //   })
+    //   .catch(function (error) {
+    //       console.log(error)
+    //   })
     }
 
     //body of the modal, contains the order form for customer input
@@ -192,171 +211,306 @@ export default function OrderForm (props) {
                 <Typography>Grand Total: ${cartTotal + props.shipping}</Typography>
                 <h2>Shipping:</h2>
               </div>
-              <div >
-                  <ThemeProvider theme={theme}>
-                      <form  noValidate>
-                        <Grid container spacing={1}>
-                          <Grid item xs={12} sm={6}>
+              <div>
+                <ThemeProvider theme={theme}>
+                  <form onSubmit={handleSubmit(submitOrder)}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sm={6}>
+                        <Controller 
+                          name="fName"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
                               fullWidth
                               id="fName"
                               label="First Name"
-                              aria-label="First Name"
-                              aria-required="true"
-                              name="fName"
-                              value={customer.fName}
-                              onChange={handleChange}
+                              helperText={fieldErrors.fName ? fieldErrors.fName.message : null}
+                              error={fieldErrors.fName}
                               autoFocus
                             />
-                          </Grid>
-                          <Grid item xs={12} sm={6}>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "name is required"
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Controller 
+                          name="lName"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
                               fullWidth
                               id="lName"
                               label="Last Name"
-                              aria-label="Last Name"
-                              aria-required="true"
-                              name="lName"
-                              value={customer.lName}
-                              onChange={handleChange}
+                              helperText={fieldErrors.lName ? fieldErrors.lName.message : null}
+                              error={fieldErrors.lName}
                             />
-                          </Grid>
-                          <Grid item xs={12}>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "name is required"
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Controller 
+                          name="address"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
                               fullWidth
                               id="address"
                               label="Street Address"
-                              aria-label="Street Address"
-                              aria-required="true"
-                              name="address"
-                              value={customer.address}
-                              onChange={handleChange}
+                              helperText={fieldErrors.address ? fieldErrors.address.message : null}
+                              error={fieldErrors.address}
                             />
-                          </Grid>
-                          <Grid item xs={12} sm={4}>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "street address is required"
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <Controller 
+                          name="city"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
+                              fullWidth
                               id="city"
                               label="City"
-                              aria-label="City"
-                              aria-required="true"
-                              name="city"
-                              value={customer.city}
-                              onChange={handleChange}
+                              helperText={fieldErrors.city ? fieldErrors.city.message : null}
+                              error={fieldErrors.city}
                             />
-                          </Grid>
-                          <Grid item xs={12} sm={4}>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "city is required"
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <Controller 
+                          name="state"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
+                              fullWidth
                               id="state"
                               label="State"
-                              aria-label="State"
-                              aria-required="true"
-                              name="state"
-                              value={customer.state}
-                              onChange={handleChange}
+                              helperText={fieldErrors.state ? fieldErrors.state.message : null}
+                              error={fieldErrors.state}
                             />
-                          </Grid>
-                          <Grid item xs={12} sm={4}>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "state is required"
+                            },
+                            pattern: {
+                              value: /^[A-Z]{1,2}$/,
+                              message: "invalid state code"
+                            },
+                            minLength: {
+                              value: 2,
+                              message: 'invalid state code'
+                            },
+                            maxLength: {
+                              value: 2,
+                              message: 'invalid state code'
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <Controller 
+                          name="zip"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
                               fullWidth
                               id="zip"
                               label="Zip Code"
-                              aria-label="Zip Code"
-                              aria-required="true"
-                              name="zip"
-                              value={customer.zip}
-                              onChange={handleChange}
+                              helperText={fieldErrors.zip ? fieldErrors.zip.message : null}
+                              error={fieldErrors.zip}
                             />
-                          </Grid>
-                          <Grid item xs={12} >
-                              <h2>Billing:</h2>
-                          </Grid>
-                          <Grid item xs={12} sm={8}>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "zip code is required"
+                            },
+                            pattern: {
+                              value: /^[0-9]{1,6}$/,
+                              message: "invalid zip code"
+                            },
+                            minLength: {
+                              value: 5,
+                              message: 'invalid zip code'
+                            },
+                            maxLength: {
+                              value: 5,
+                              message: 'invalid zip code'
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <h2>Billing:</h2>
+                      </Grid>
+                      <Grid item xs={12} sm={8}>
+                        <Controller 
+                          name="cc"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
                               fullWidth
                               id="cc"
                               label="Credit Card"
-                              aria-label="Credit Card"
-                              aria-required="true"
-                              name="cc"
-                              value={customer.cc}
-                              onChange={handleChange}
+                              helperText={fieldErrors.cc ? fieldErrors.cc.message : null}
+                              error={fieldErrors.cc}
                             />
-                          </Grid>
-                          <Grid item xs={12} sm={4}>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "card number is required"
+                            },
+                            pattern: {
+                              value: /([0-9][- ]*){16}/,
+                              message: "invalid cc: XXXX XXXX XXXX XXXX"
+                            },
+                            minLength: {
+                              value: 19,
+                              message: 'invalid cc: XXXX XXXX XXXX XXXX'
+                            },
+                            maxLength: {
+                              value: 19,
+                              message: 'invalid cc: XXXX XXXX XXXX XXXX'
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <Controller 
+                          name="exp"
+                          as={
                             <TextField
                               variant="outlined"
                               margin="dense"
-                              required
                               fullWidth
                               id="exp"
                               label="Expiration"
-                              aria-label="Expiration"
-                              aria-required="true"
-                              name="exp"
-                              value={customer.exp}
-                              onChange={handleChange}
+                              helperText={fieldErrors.exp ? fieldErrors.exp.message : null}
+                              error={fieldErrors.exp}
                             />
-                          </Grid>
-                          <Grid item xs={12}>
-                            <TextField
-                              variant="outlined"
-                              margin="dense"
-                              required
-                              fullWidth
-                              id="email"
-                              label="Email Address"
-                              aria-label="Email Address"
-                              aria-required="true"
-                              name="email"
-                              value={customer.email}
-                              onChange={handleChange}
-                            />
-                          </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <Button  
-                              type="submit" 
-                              fullWidth
-                              variant="contained"
-                              color="primary"
-                              onClick={handleSubmit}
-                            >
-                              Submit
-                            </Button>
-                          </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <Button 
-                              fullWidth
-                              variant="contained"
-                              color="secondary"
-                              onClick={handleClose}
-                            >
-                              Cancel
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </form>
-                  </ThemeProvider>
+                          }
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "expiration date is required"
+                            },
+                            pattern: {
+                              value: /^((0[1-9])|(1[0-2]))\/(\d{4})$/,
+                              message: "invalid expiration"
+                            },
+                            minLength: {
+                              value: 7,
+                              message: 'MM/YYYY'
+                            },
+                            maxLength: {
+                              value: 7,
+                              message: 'MM/YYYY'
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Controller
+                        name="email"
+                        as={
+                          <TextField
+                            id="email"
+                            variant="outlined"
+                            margin="dense"
+                            fullWidth
+                            helperText={fieldErrors.email ? fieldErrors.email.message : null}
+                            label="Email"
+                            error={fieldErrors.email}
+                          />
+                        }
+                        control={control}
+                        defaultValue=""
+                        rules={{
+                          required: {
+                            value: true,
+                            message: 'email is required'
+                          },
+                          pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                            message: 'invalid email address'
+                          }
+                        }}
+                      />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Button  
+                          type="submit" 
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          onClick={handleSubmit}
+                        >
+                          Submit
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Button 
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleClose}
+                        >
+                          Cancel
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </ThemeProvider>
               </div>
           </div>
       );
