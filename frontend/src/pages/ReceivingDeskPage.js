@@ -44,17 +44,14 @@ function ReceivingDeskPage() {
     <h2>Current Inventory</h2>
       <Grid container justify="center">
         <div style={{ width: '800px' }}>
-        <InventoryTable/>
-        {/* <MaterialTable 
-          title="Current Inventory"
-          columns={cols}
-          data={inventory}
-        /> */}
+          <InventoryTable/>
         </div>
       </Grid>
-      <Grid container justify="center">
-      <InventoryForm></InventoryForm>
-      </Grid>
+      <div style={{ margin: '100px'}}>
+        <Grid spacing={5} container justify="center">
+          <InventoryForm/>
+        </Grid>
+      </div>
     </div>
   );
 }
