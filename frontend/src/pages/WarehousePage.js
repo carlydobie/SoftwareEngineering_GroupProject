@@ -7,7 +7,6 @@ function WarehousePage() {
   return (
     <div className="App">
     <Navbar />
-      Hello Warehouse!
       <WarehouseData/>
 
     </div>

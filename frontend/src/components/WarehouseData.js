@@ -14,7 +14,7 @@ export default function WarehouseData() {
     const [entries, setEntries] = useState([]);
 
     const getData = async () => {
-    await axios.get('http://localhost:8080/JARGet')
+    await axios.get('http://localhost:8080/orders/TestGet')
     .then(function (response) {
       // handle success
       setEntries(response.data)
