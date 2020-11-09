@@ -37,6 +37,17 @@ const useStyles = makeStyles((theme) => ({
                     Home
                 </Typography>
             </Button>
+            <Button to="/Customer" component={Link}>
+                <Typography>
+                    Shop
+                </Typography>
+            </Button>
+            <Button to="/ShoppingCart" component={Link}>
+                {/*We can make this a cute cart icon later*/}
+                <Typography>
+                    Cart
+                </Typography>
+            </Button>
           </Toolbar>
         </AppBar>
       </div>
