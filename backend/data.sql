@@ -12,9 +12,7 @@ CREATE TABLE customer(
     customer_number INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
     name VARCHAR(40) NOT NULL, 
     email VARCHAR(40) NOT NULL, 
-    address VARCHAR(80) NOT NULL, 
-    cc VARCHAR(20) NOT NULL, 
-    exp VARCHAR(8) NOT NULL);
+    address VARCHAR(80) NOT NULL);
     
 CREATE TABLE orders(
     order_number INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
@@ -174,11 +172,11 @@ INSERT INTO inventory(part_number, description, qty) VALUES
     (148, "Boeing X-32A JSF", 21),
     (149, "Pont Yacht", 0);
     
-INSERT INTO customer(name, email, address, cc, exp) VALUES
-	("Andrea Hepker", "me@gmail.com", "123 Main St. Town, IL 65432", "4444 2200 5555 1234", "10/3030"),
-    ("Jake Rogers", "jake@jake.com", "321 Center St. Town, IL 65432", "4455 2222 5566 9876", "01/2021"),
-    ("Greg Gomez", "greg@greg.org", "456 Street Ln. Town, IL 65432", "4455 2222 6655 6789", "12/2034"),
-    ("Carly Dobie", "carly@carly.net", "123 Parkway, Town, IL 65432", "4444 5522 6645 1212", "06/2060");
+INSERT INTO customer(name, email, address) VALUES
+	("Andrea Hepker", "me@gmail.com", "123 Main St. Town, IL 65432"),
+    ("Jake Rogers", "jake@jake.com", "321 Center St. Town, IL 65432"),
+    ("Greg Gomez", "greg@greg.org", "456 Street Ln. Town, IL 65432"),
+    ("Carly Dobie", "carly@carly.net", "123 Parkway, Town, IL 65432");
     
 INSERT INTO orders(customer_number, total, ord_date) VALUES
 	(1, 23.04, "2020-10-29"),
