@@ -1,12 +1,13 @@
 import '../css/App.css';
-import {BrowserRouter } from 'react-router-dom';
 import Navbar from '../components/core/employeeNav.js';
+import WarehouseData from '../components/WarehouseData.js';
+import MUIDataTable from "mui-datatables"
 
 function WarehousePage() {
   return (
     <div className="App">
     <Navbar />
-      Hello WarehousePage!
+      <WarehouseData/>
 
     </div>
   );
