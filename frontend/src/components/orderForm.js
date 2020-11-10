@@ -10,6 +10,7 @@ import Axios from 'axios';
 import { blue, grey } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import { useForm, Controller } from 'react-hook-form';
+import emailjs from 'emailjs-com';
 
 //color theme
 const theme = createMuiTheme({
@@ -229,9 +230,24 @@ export default function OrderForm (props) {
       })
 
       //send email
+      sendEmail();
 
       //clear cart
 
+    }
+
+    //send an order confirmation email
+    function sendEmail(){
+      emailjs.send("gmail","template_r3mb65m", {
+        orderNum: orderNum,
+        to_name: customer.name,
+        to_email: customer.email
+      }, "user_g1HvKmngxkCglwn9LDMBB")
+      .then((result) => {
+        console.log(result.text);
+      }, (error) => {
+        console.log(error.text);
+      });
     }
 
     //body of the modal, contains the order form for customer input
