@@ -62,7 +62,7 @@ export default function ProductTable(props) {
   const setData = async (data) => {
     const id = data.part_number //The parts part number to edit
     const qty = data.qty //Updated quantity
-    await axios.post('')
+    await axios.put('http://localhost:8080/inventoryupdate' +id, {qty: qty})
     .then(function (response) {
       // handle success
       console.log(response);
