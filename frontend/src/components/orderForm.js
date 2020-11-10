@@ -11,6 +11,9 @@ import { blue, grey } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import { useForm, Controller } from 'react-hook-form';
 import emailjs from 'emailjs-com';
+import { useDispatch } from 'react-redux';
+import { clearCart } from '../redux/actions/cart';
+
 
 //color theme
 const theme = createMuiTheme({
@@ -62,6 +65,7 @@ export default function OrderForm (props) {
     const [open, setOpen] = React.useState(false);
   
     //pull in state from redux
+    const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.cart);
     const cartTotal = useSelector(state => state.cart.total);
   
@@ -134,6 +138,12 @@ export default function OrderForm (props) {
       //     alert("There was an error processing your request.")
       // })
       processOrder()
+
+      //clear cart
+      dispatch(clearCart());
+
+      //close modal
+      handleClose();
     }
 
     //process the authorized order
@@ -147,7 +157,7 @@ export default function OrderForm (props) {
           if(response.data.length === 0){
               addCustomer();
           }else{
-              setCustNum(response.data.customer_number)
+              setCustNum(response.data[0].customer_number)
           }
           //once we've gotten the customer's number, continue creating the order
           createOrder()
@@ -176,27 +186,24 @@ export default function OrderForm (props) {
     //create the order with order number customer id, date, and status
     function createOrder() {
 
-      console.log("increate")
-
       //get date from timestamp to YYYY-MM-DD for db
       let date = new Date(orderDate);
       let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 
-      /* TEST THIS ONCE MERGED WITH JAKES BRANCH */
       // post new order to order table
-      // Axios.post('http://localhost:8080/orders/add', {
-      //     customer_number: custNum,
-      //     total: cartTotal + props.shipping,
-      //     ord_date: formattedDate,
-      //     status: 'authorized'
-      // })
-      // .then(function(response) {
-      //     console.log(response)
-      //     setOrderNum(response.data)
-      // })
-      // .catch(function (error) {
-      //     console.log(error)
-      // })
+      Axios.post('http://localhost:8080/orders/add', {
+          customer_number: custNum,
+          total: (cartTotal + props.shipping),
+          ord_date: formattedDate,
+          status: 'authorized'
+      })
+      .then(function(response) {
+          console.log(response)
+          setOrderNum(response.data)
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
 
       // post parts ordered to db & subtract their qtys from inventory
       console.log(cart);
@@ -231,23 +238,21 @@ export default function OrderForm (props) {
 
       //send email
       sendEmail();
-
-      //clear cart
-
     }
 
     //send an order confirmation email
     function sendEmail(){
-      emailjs.send("gmail","template_r3mb65m", {
-        orderNum: orderNum,
-        to_name: customer.name,
-        to_email: customer.email
-      }, "user_g1HvKmngxkCglwn9LDMBB")
-      .then((result) => {
-        console.log(result.text);
-      }, (error) => {
-        console.log(error.text);
-      });
+      console.log("email here")
+      // emailjs.send("gmail","template_r3mb65m", {
+      //   orderNum: orderNum,
+      //   to_name: customer.name,
+      //   to_email: customer.email
+      // }, "user_g1HvKmngxkCglwn9LDMBB")
+      // .then((result) => {
+      //   console.log(result.text);
+      // }, (error) => {
+      //   console.log(error.text);
+      // });
     }
 
     //body of the modal, contains the order form for customer input
