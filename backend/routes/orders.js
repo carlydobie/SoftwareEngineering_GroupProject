@@ -14,4 +14,13 @@ router.get('/TestGet', function (req, res) {
   })
 })
 
+//route to add a new order to orders table
+router.post('/add', function(req, res){
+  let stmt = 'INSERT INTO orders SET ?';
+  connection.query(stmt, req.body, function(err, result){
+      if(err) throw err;
+      res.status(201).send(result.insertId.toString());
+  })
+})
+
 module.exports = router;

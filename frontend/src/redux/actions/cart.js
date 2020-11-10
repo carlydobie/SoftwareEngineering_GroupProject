@@ -9,3 +9,9 @@ export const addToCart = (item) => {
         item: item
     }
 }
+
+export const clearCart = () => {
+    return {
+        type: 'CLEAR_CART'
+    }
+}
