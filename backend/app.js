@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var inventoryRouter = require('./routes/inventory');
 var legacyRouter = require('./routes/legacy');
 var indexRouter = require('./routes/');
 var customerRouter = require('./routes/customer');
@@ -21,6 +22,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/legacy', legacyRouter);
+app.use('/inventory', inventoryRouter);
+
+//Made Andrea angry
 app.use('/orders', orderRouter);
 app.use('/customer', customerRouter);
 
