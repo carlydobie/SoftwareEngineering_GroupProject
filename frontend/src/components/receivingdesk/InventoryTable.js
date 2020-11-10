@@ -23,13 +23,14 @@ function createData(part_number, description, qty) {
 
 // MaterialTable
   const column = [
-    { title: 'Part Number', field: 'part_number'},
+    { title: 'Part Number', field: 'part_number', editable: 'never'},
     { title: 'Description', field: 'description'},
     { title: 'Quantity', field: 'qty'}
   ];
 export default function ProductTable(props) {
   const [entries, setEntries] = useState([]);
   
+  //Gets data for the table
   const getData = async () => {
     await axios.get('http://localhost:8080/inventory/all')
     .then(function (response) {
@@ -56,8 +57,20 @@ export default function ProductTable(props) {
          //change a state to true
       },
   };
-  function setData([]) {
-    console.log("dsfads")
+  //Updates data for the table
+  //UPDATE inventory SET qty = ? WHERE id = ?
+  const setData = async (data) => {
+    const id = data.part_number //The parts part number to edit
+    const qty = data.qty //Updated quantity
+    await axios.post('')
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
   }
 
 
@@ -85,10 +98,6 @@ export default function ProductTable(props) {
               data={data}
               columns={column}
               editable={{
-                isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
-                isEditHidden: rowData => rowData.name === 'x',
-                isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
-                isDeleteHidden: rowData => rowData.name === 'y',
                 onBulkUpdate: changes => 
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
@@ -114,7 +123,9 @@ export default function ProductTable(props) {
                             const index = oldData.tableData.id;
                             dataUpdate[index] = newData;
                             setData([...dataUpdate]);
-        
+                            //Has new object
+                            //console.log(dataUpdate[index])
+                            setData(dataUpdate[index])
                             resolve();
                         }, 1000);
                     }),
