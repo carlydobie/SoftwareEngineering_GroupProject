@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from 'mui-datatables';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import MaterialTable from 'material-table'
 
 const useStyles = makeStyles({
   table: {
@@ -13,20 +14,19 @@ const useStyles = makeStyles({
 function createData(part_number, description, qty) {
   return { part_number, description, qty};
 }
+// // MUIDataTable 
+//   const columns = [
+//     { label: 'Part Number', name: 'part_number', type: 'numeric', editable: 'never'},
+//     { label: 'Description', name: 'description', editable: 'never'},
+//     { label: 'Quantity', name: 'qty', type: 'numeric', editable: 'never'},
+//   ]
 
-const rows = [
-  createData(1,'windsheild w/ polymer', 10),
-  createData(2,'car1', 10),
-  createData(3,'car2', 10),
-  createData(4,'car3', 10),
-  createData(5,'car4', 10),
-];
-  const columns = [
-    { label: 'Part Number', name: 'part_number', type: 'numeric', editable: 'never'},
-    { label: 'Description', name: 'description', editable: 'never'},
-    { label: 'Quantity', name: 'qty', type: 'numeric', editable: 'never'},
-  ]
-
+// MaterialTable
+  const column = [
+    { title: 'Part Number', field: 'part_number'},
+    { title: 'Description', field: 'description'},
+    { title: 'Quantity', field: 'qty'}
+  ];
 export default function ProductTable(props) {
   const [entries, setEntries] = useState([]);
   
@@ -48,15 +48,37 @@ export default function ProductTable(props) {
 
     }, [])
 
+
+    const options = {
+      onRowClick: (event, rowData) => {
+         //this.handleClickedActionButton(event, rowData);
+         console.log(rowData)
+         //change a state to true
+      },
+  };
+  
+
+
     let data = Array.from(entries);
     console.log(data);
 
     return (
         <div>
-            <MUIDataTable
-                title={"Temp List"}
+            {/* <MUIDataTable
+                title={"Inventory"}
                 data={data}
                 columns={columns}
+                // options={options}
+                options={{
+                  onRowClick : (rowData) => {
+                    console.log(rowData)
+                  }
+                }}
+            /> */}
+            <MaterialTable
+              title={"Inventory"}
+              data={data}
+              columns={column}
             />
         </div>
     );
