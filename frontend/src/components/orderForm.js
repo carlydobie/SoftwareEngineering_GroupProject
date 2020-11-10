@@ -209,8 +209,6 @@ export default function OrderForm (props) {
       console.log(cart);
       cart.forEach(part => {
         console.log(part.id, part.qty)
-
-        /* TEST THESE */
         //add the part ordered to table
         // Axios.post('http://localhost:8080/orders/parts', {
         //   order_number: orderNum,
@@ -223,7 +221,7 @@ export default function OrderForm (props) {
         // .catch(function(error){
         //   console.log(error)
         // })
-        //subtract qty ordered from inventory
+        // //subtract qty ordered from inventory
         // Axios.put('http://localhost:8080/inventory/update' + part.id, {
         //   qty: part.qty
         // })
@@ -233,7 +231,6 @@ export default function OrderForm (props) {
         // .catch(function(error){
         //   console.log(error)
         // })
-
       })
 
       //send email
