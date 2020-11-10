@@ -1,47 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MUIDataTable from "mui-datatables";
+import MaterialTable from 'material-table';
 
 export default function WarehouseData() {
-    const columns = [
-    { label: "ID", name: "customer_number"},
-    { label: "Customer Name", name: "name"},
-    { label: "E-Mail", name: "email"},
-    { label: "Street Address", name: "address"},
-    { label: "Credit Card #", name: "cc"},
-    { label: "Expiration Date", name: "exp"}
-    ];
-    const [entries, setEntries] = useState([]);
+  // const columns = [
+  // { label: "Order ID", name: "order_number"},
+  // { label: "Status", name: "status"},
+  // { label: "Order Date", name: "ord_date"},
+  // { label: "Customer Name", name: "name"},
+  // { label: "Mailing Address", name: "address"},
+  // { label: "Customer E-Mail", name: "email"}
+  // ];
+  
+  const column = [
+    { title: 'Order ID', field: 'order_number'},
+    { title: 'Status', field: 'status'},
+    { title: 'Order Date', field: 'ord_date'},
+    { title: 'Customer Name', field: 'name'},
+    { title: 'Mailing Address', field: 'address'},
+    { title: 'Customer E-Mail', field: 'email'}
+  ]
 
-    const getData = async () => {
-    await axios.get('http://localhost:8080/orders/TestGet')
-    .then(function (response) {
-      // handle success
-      setEntries(response.data)
-      console.log(response);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
+  const [entries, setEntries] = useState([]);
+
+  const getData = async () => {
+    await axios.get('http://localhost:8080/orders/GetCustomerOrders')
+      .then(function (response) {
+        // handle success
+        setEntries(response.data)
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   }
 
-    useEffect(() => {
-        getData()
+  useEffect(() => {
+    getData()
 
-    }, [])
+  }, [])
 
-    let data = Array.from(entries);
-    console.log(data);
+  let data = Array.from(entries);
+  console.log(data);
 
-    return (
-        <div>
-            <MUIDataTable
-                title={"Temp List"}
-                data={data}
-                columns={columns}
-            />
-        </div>
-    )
+  return (
+    <div>
+        <MaterialTable
+          title={"Orders"}
+          data={data}
+          columns={column}
+          />
+    </div>
+  )
 
 }
