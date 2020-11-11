@@ -25,5 +25,15 @@ var connection = require('../connections/connection');
     })
   });
 
+  //subtract sold qty from current inventory
+  router.put('/sold/:id', function(req, res){
+    let stmt = 'UPDATE inventory SET qty = (inventory.qty - ?) WHERE part_number = ?';
+    let id = req.params.id;
+    connection.query(stmt, [req.body.qty, id], function(err, result){
+      if(err) throw err;
+      res.send(result);
+    })
+  });
+
 
   module.exports = router;

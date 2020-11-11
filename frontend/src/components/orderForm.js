@@ -67,14 +67,7 @@ export default function OrderForm (props) {
     //pull in state from redux
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.cart);
-    const cartTotal = useSelector(state => state.cart.total);
-  
-    //local state for customer input
-    const [customer, setCustomer] = useState({
-        name: "",
-        address: "",
-        email: ""
-    })  
+    const cartTotal = useSelector(state => state.cart.total); 
 
     const [custNum, setCustNum] = useState(0);
     const [orderNum, setOrderNum] = useState(0);
@@ -94,15 +87,6 @@ export default function OrderForm (props) {
     const submitOrder = async data => {
       console.log(data)
 
-      setCustomer(state => ({
-        ...state,
-        name: data.fName + " " + data.lName,
-        address: data.address + ", " + data.city + ", " + data.state + " " + data.zip,
-        email: data.email
-      }))
-
-      console.log(customer)
-
       //generate a random 9 digit transaction number
       let transactionNum = Math.floor(Math.random() * (999999999-100000000) + 100000000)
       let vendorID = 'VE123-99'
@@ -114,13 +98,13 @@ export default function OrderForm (props) {
       //seems like we can't use fake cc nums aside from the example
       //i have hard coded the example cc into the request body
       //but we can replace this with data.cc and data.exp in the future
-      // Axios.post('http://blitz.cs.niu.edu/CreditCard/', {
+      // await Axios.post('http://blitz.cs.niu.edu/CreditCard/', {
       //   vendor: vendorID,             
       //   trans: transactionNum,
       //   cc: '6011 1234 4321 1234',
-      //   name: customer.name, 
+      //   name: (data.fName + " " + data.lName), 
       //   exp: '12/2020', 
-      //   amount: cartTotal + props.shipping
+      //   amount: (cartTotal + props.shipping)
       // })
       // .then(function(response) {
       //     console.log(response)
@@ -137,113 +121,113 @@ export default function OrderForm (props) {
       //     console.log(error)
       //     alert("There was an error processing your request.")
       // })
-      processOrder()
+      processOrder(data)
+    }
+
+
+    //process the authorized order
+    async function processOrder(formData) {
+
+      //clean up name form data
+      let firstname = formData.fName.toLowerCase();
+      firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+
+      let lastname = formData.lName.toLowerCase();
+      lastname = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+      
+      let name = firstname + " " + lastname;
+      console.log(name)
+      
+
+      //see if customer is in db, if not add them
+      await Axios.post('http://localhost:8080/customer/get', {
+          name: name,
+          address: (formData.address + ", " + formData.city + ", " + formData.state + " " + formData.zip),
+          email: formData.email
+      })
+      .then(function(response) {
+          console.log(response)
+
+          //set customer number in state
+          //response.data will be customer_number
+          setCustNum(response.data)
+
+          //get date from timestamp to YYYY-MM-DD for db
+          let date = new Date(orderDate);
+          let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+
+          // post new order to order table
+          Axios.post('http://localhost:8080/orders/add', {
+              customer_number: response.data,
+              total: (cartTotal + props.shipping),
+              ord_date: formattedDate,
+              status: 'authorized'
+          })
+          .then(function(orderResponse) {
+              console.log(orderResponse)
+
+              //set order number in state
+              setOrderNum(orderResponse.data)
+
+              //for each item in the order, add that part
+              //to the products ordered table and subtract the
+              //ordered qty from inventory
+              cart.forEach(part => {
+              
+                //add the part ordered to table
+                Axios.post('http://localhost:8080/orders/parts', {
+                  order_number: orderResponse.data,
+                  part_number: part.id,
+                  qty: part.qty
+                })
+                .then(function(partResponse){
+                  console.log(partResponse)
+                })
+                .catch(function(error){
+                  console.log(error)
+                })
+                
+                //subtract qty ordered from inventory
+                Axios.put('http://localhost:8080/inventory/sold/' + part.id, {
+                  qty: part.qty
+                })
+                .then(function(inventoryResponse){
+                  console.log(inventoryResponse)
+                })
+                .catch(function(error){
+                  console.log(error)
+                })
+              })
+          })
+          .catch(function (error) {
+              console.log(error)
+          })
+
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
+
+      //send email
+      sendEmail(name, formData.email);
+      alert("Your Order Has Been Received! You will get an email confimation shortly. Thank you for shopping with us!")
 
       //clear cart
       dispatch(clearCart());
 
       //close modal
       handleClose();
+      
     }
 
-    //process the authorized order
-    function processOrder() {
-      //see if customer is in db, if not add them
-      Axios.post('http://localhost:8080/customer/name', {
-          name: customer.name
-      })
-      .then(function(response) {
-          console.log(response)
-          if(response.data.length === 0){
-              addCustomer();
-          }else{
-              setCustNum(response.data[0].customer_number)
-          }
-          //once we've gotten the customer's number, continue creating the order
-          createOrder()
-      })
-      .catch(function (error) {
-          console.log(error)
-      })
-    }
-
-    //add a new customer to the db
-    function addCustomer() {
-      Axios.post('http://localhost:8080/customer/add', {
-          name: customer.name,
-          email: customer.email,
-          address: customer.address
-      })
-      .then(function(response) {
-          console.log(response)
-          setCustNum(response.data)
-      })
-      .catch(function (error) {
-          console.log(error)
-      })
-    }
-
-    //create the order with order number customer id, date, and status
-    function createOrder() {
-
-      //get date from timestamp to YYYY-MM-DD for db
-      let date = new Date(orderDate);
-      let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-
-      // post new order to order table
-      Axios.post('http://localhost:8080/orders/add', {
-          customer_number: custNum,
-          total: (cartTotal + props.shipping),
-          ord_date: formattedDate,
-          status: 'authorized'
-      })
-      .then(function(response) {
-          console.log(response)
-          setOrderNum(response.data)
-      })
-      .catch(function (error) {
-          console.log(error)
-      })
-
-      // post parts ordered to db & subtract their qtys from inventory
-      console.log(cart);
-      cart.forEach(part => {
-        console.log(part.id, part.qty)
-        //add the part ordered to table
-        // Axios.post('http://localhost:8080/orders/parts', {
-        //   order_number: orderNum,
-        //   part_number: part.id,
-        //   qty: part.qty
-        // })
-        // .then(function(response){
-        //   console.log(response)
-        // })
-        // .catch(function(error){
-        //   console.log(error)
-        // })
-        // //subtract qty ordered from inventory
-        // Axios.put('http://localhost:8080/inventory/update' + part.id, {
-        //   qty: part.qty
-        // })
-        // .then(function(response){
-        //   console.log(response)
-        // })
-        // .catch(function(error){
-        //   console.log(error)
-        // })
-      })
-
-      //send email
-      sendEmail();
-    }
-
+  
     //send an order confirmation email
-    function sendEmail(){
-      console.log("email here")
+    function sendEmail(name, email){
+      console.log("email here " + name + ' ' + email)
       // emailjs.send("gmail","template_r3mb65m", {
       //   orderNum: orderNum,
-      //   to_name: customer.name,
-      //   to_email: customer.email
+      //   to_name: name,
+      //   to_email: email
       // }, "user_g1HvKmngxkCglwn9LDMBB")
       // .then((result) => {
       //   console.log(result.text);

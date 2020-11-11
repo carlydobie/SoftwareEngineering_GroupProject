@@ -23,4 +23,15 @@ router.post('/add', function(req, res){
   })
 })
 
+//route parts to the prods ordered table
+router.post('/parts', function(req, res){
+  let stmt = 'INSERT INTO prod_ordered SET ?';
+  connection.query(stmt, req.body, function(err, result){
+      if(err) throw err;
+      res.status(201).send(result.insertId.toString());
+  })
+})
+
+
+
 module.exports = router;
