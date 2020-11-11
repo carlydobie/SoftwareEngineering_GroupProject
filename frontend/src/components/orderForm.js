@@ -122,24 +122,26 @@ export default function OrderForm (props) {
       //     alert("There was an error processing your request.")
       // })
       processOrder(data)
-
-      //send email
-      sendEmail(data);
-      alert("Your Order Has Been Received! You will get an email confimation shortly. Thank you for shopping with us!")
-
-      //clear cart
-      dispatch(clearCart());
-
-      //close modal
-      handleClose();
     }
 
 
     //process the authorized order
     async function processOrder(formData) {
+
+      //clean up name form data
+      let firstname = formData.fName.toLowerCase();
+      firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+
+      let lastname = formData.lName.toLowerCase();
+      lastname = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+      
+      let name = firstname + " " + lastname;
+      console.log(name)
+      
+
       //see if customer is in db, if not add them
       await Axios.post('http://localhost:8080/customer/get', {
-          name: (formData.fName + " " + formData.lName),
+          name: name,
           address: (formData.address + ", " + formData.city + ", " + formData.state + " " + formData.zip),
           email: formData.email
       })
@@ -205,17 +207,27 @@ export default function OrderForm (props) {
       .catch(function (error) {
           console.log(error)
       })
+
+      //send email
+      sendEmail(name, formData.email);
+      alert("Your Order Has Been Received! You will get an email confimation shortly. Thank you for shopping with us!")
+
+      //clear cart
+      dispatch(clearCart());
+
+      //close modal
+      handleClose();
       
     }
 
   
     //send an order confirmation email
-    function sendEmail(formData){
-      console.log("email here")
+    function sendEmail(name, email){
+      console.log("email here " + name + ' ' + email)
       // emailjs.send("gmail","template_r3mb65m", {
       //   orderNum: orderNum,
-      //   to_name: (formData.fName + " " + formData.lName),
-      //   to_email: formData.email
+      //   to_name: name,
+      //   to_email: email
       // }, "user_g1HvKmngxkCglwn9LDMBB")
       // .then((result) => {
       //   console.log(result.text);
