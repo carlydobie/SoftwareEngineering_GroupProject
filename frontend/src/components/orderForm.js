@@ -158,14 +158,21 @@ export default function OrderForm (props) {
           name: (formData.fName + " " + formData.lName)
       })
       .then(function(response) {
-          console.log(response)
-          if(response.data.length === 0){
-              addCustomer(formData);
-          }else{
-              setCustNum(response.data[0].customer_number)
-          }
+
+        let customerNum = (response.data.length == 0 ? )
+
+          // console.log(response)
+          // if(response.data.length === 0){
+          //     addCustomer(formData);
+          // }else{
+          //     setCustNum(response.data[0].customer_number)
+          // }
           //once we've gotten the customer's number, continue creating the order
-          createOrder()
+          // createOrder()
+      })
+      .then(function(response){
+        console.log(custNum)
+        // createOrder();
       })
       .catch(function (error) {
           console.log(error)

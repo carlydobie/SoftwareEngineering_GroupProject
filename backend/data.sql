@@ -12,7 +12,8 @@ CREATE TABLE customer(
     customer_number INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
     name VARCHAR(40) NOT NULL, 
     email VARCHAR(40) NOT NULL, 
-    address VARCHAR(80) NOT NULL);
+    address VARCHAR(80) NOT NULL,
+    CONSTRAINT name_unique UNIQUE (name));
     
 CREATE TABLE orders(
     order_number INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
