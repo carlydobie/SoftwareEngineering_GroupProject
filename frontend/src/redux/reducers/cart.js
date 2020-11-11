@@ -22,6 +22,13 @@ const cartReducer = ( state = { cart: initialCart, total: initialTotal, weight: 
                 total: state.total + (action.item.price * action.item.qty),
                 weight: state.weight + (action.item.weight * action.item.qty)
             }
+        case 'CLEAR_CART':
+            return {
+                ...state,
+                cart: [],
+                total: 0,
+                weight: 0
+            }
         default:
             return state
     }

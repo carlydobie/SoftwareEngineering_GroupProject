@@ -33,4 +33,13 @@ router.post('/add', function(req, res){
     })
 })
 
+//add new customer or get their cust number if they exist
+router.post('/get', function(req, res){
+  let stmt = 'INSERT INTO customer (name, address, email) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE customer_number=LAST_INSERT_ID(customer_number), address = VALUES(address), email = VALUES(email)';
+  connection.query(stmt, [req.body.name, req.body.address, req.body.email], function(err, result){
+    if(err) throw err;
+    res.send(result.insertId.toString())
+  })
+})
+
   module.exports = router;
