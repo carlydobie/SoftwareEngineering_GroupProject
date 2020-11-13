@@ -19,8 +19,29 @@ const cartReducer = ( state = { cart: initialCart, total: initialTotal, weight: 
             return {
                 ...state,
                 cart: [...state.cart, action.item],
-                total: state.total + (action.item.price * action.item.qty),
-                weight: state.weight + (action.item.weight * action.item.qty)
+                total:  getTotal(state.cart), 
+                weight: getWeight(state.cart)
+            }
+        case 'UPDATE_CART':
+            //get the index of the item to update
+            const index = state.cart.findIndex(item => item.id === action.item.id)
+            //perform update on a temporary cart array
+            let newCart = [...state.cart];
+            newCart[index].qty = action.item.qty;
+            //update state with new cart array and recalculate totals
+            return {
+                ...state,
+                cart: newCart,
+                total: getTotal(newCart),
+                weight: getTotal(newCart)
+            }
+        case 'REMOVE_ITEM':
+            let removedCart = action.item
+            return {
+                ...state,
+                cart: removedCart,
+                total: getTotal(removedCart),
+                weight: getWeight(removedCart)
             }
         case 'CLEAR_CART':
             return {
@@ -32,6 +53,21 @@ const cartReducer = ( state = { cart: initialCart, total: initialTotal, weight: 
         default:
             return state
     }
+}
+
+//helper functions for calculating total cart price and weight
+//calculate total price
+function getTotal(cart) {
+    let total = 0;
+    cart.forEach(item => total += item.price * item.qty);
+    return total.toFixed(2);
+}
+
+//calculate total weight
+function getWeight(cart) {
+    let weight = 0;
+    cart.forEach(item => weight += item.weight * item.qty);
+    return weight;
 }
 
 export default cartReducer;

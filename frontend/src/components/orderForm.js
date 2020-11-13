@@ -104,7 +104,7 @@ export default function OrderForm (props) {
       //   cc: '6011 1234 4321 1234',
       //   name: (data.fName + " " + data.lName), 
       //   exp: '12/2020', 
-      //   amount: (cartTotal + props.shipping)
+      //   amount: props.total
       // })
       // .then(function(response) {
       //     console.log(response)
@@ -159,7 +159,7 @@ export default function OrderForm (props) {
           // post new order to order table
           Axios.post('http://localhost:8080/orders/add', {
               customer_number: response.data,
-              total: (cartTotal + props.shipping),
+              total: props.total,
               ord_date: formattedDate,
               status: 'authorized'
           })
@@ -244,7 +244,7 @@ export default function OrderForm (props) {
                 <h2>Order Summary: </h2>
                 <Typography>Cart Total: ${cartTotal}</Typography>
                 <Typography>Shipping & Handling: ${props.shipping}</Typography>
-                <Typography>Grand Total: ${cartTotal + props.shipping}</Typography>
+                <Typography>Grand Total: ${props.total}</Typography>
                 <h2>Shipping:</h2>
               </div>
               <div>
