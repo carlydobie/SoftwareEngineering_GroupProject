@@ -1,5 +1,5 @@
 import '../css/App.css'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/core/customerNav.js';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
@@ -20,6 +20,10 @@ function ShoppingCart() {
   const dispatch = useDispatch()
 //   const [orderTotal, setOrderTotal] = useState(0)
 
+  useEffect(() => {
+    // setOrderTotal(grandTotal())
+  }, [])
+
   //function to calculate shipping charges based on the total
   //weight of products in the cart, returns the S/H charge
   function calcShipping(){
@@ -35,8 +39,9 @@ function ShoppingCart() {
   //function to calculate and format the order total
   function grandTotal() {
       let total = cartTotal;
-      total += calcShipping();
-      total = +total
+      let shipping = calcShipping()
+      total = +total;
+      total += shipping
       return total.toFixed(2)
   }
 
@@ -80,6 +85,7 @@ function ShoppingCart() {
                                   dataUpdate[index] = newData;
                                   //send the new data to redux to update state
                                   dispatch(updateCart(dataUpdate[index]))
+                                //   setOrderTotal(grandTotal())
                                   resolve();
                               }, 1000);
                           }),
@@ -92,6 +98,7 @@ function ShoppingCart() {
                                   dataDelete.splice(index, 1);
                                   //send the new array with item removed to redux
                                   dispatch(removeItem(dataDelete));
+                                //   setOrderTotal(grandTotal())
                                   resolve();
                               }, 1000);
                           })
