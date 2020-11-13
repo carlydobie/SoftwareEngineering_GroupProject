@@ -23,11 +23,13 @@ function ShoppingCart() {
   //weight of products in the cart, returns the S/H charge
   function calcShipping(){
       let shipping;
-      brackets.map(element => {
-          if(cartWeight >= element.minWeight && cartWeight < element.maxWeight){
-              shipping = element.charge;
-          }
-      })
+      if(cartWeight < brackets[0].maxWeight){
+          shipping = brackets[0].charge
+      }else if(cartWeight >= brackets[1].minWeight && cartWeight < brackets[1].maxWeight){
+          shipping = brackets[1].charge
+      }else{
+          shipping = brackets[2].charge
+      }
       return shipping;
   }
 

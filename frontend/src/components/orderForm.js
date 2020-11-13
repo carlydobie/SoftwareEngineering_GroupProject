@@ -91,9 +91,6 @@ export default function OrderForm (props) {
       let transactionNum = Math.floor(Math.random() * (999999999-100000000) + 100000000)
       let vendorID = 'VE123-99'
 
-      //make sure that we have enough of all the parts in the inventory to sell??
-      //do this in add to cart function maybe?
-
       //submit cc auth
       //seems like we can't use fake cc nums aside from the example
       //i have hard coded the example cc into the request body

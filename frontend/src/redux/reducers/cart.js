@@ -15,12 +15,13 @@ const initialWeight = 86.5;
 const cartReducer = ( state = { cart: initialCart, total: initialTotal, weight: initialWeight }, action ) => {
     switch(action.type){
         case 'ADD_TO_CART':
+            let addCart = [...state.cart, action.item]
             //add the passed item to the cart and update the cart's total price and weight
             return {
                 ...state,
-                cart: [...state.cart, action.item],
-                total:  getTotal(state.cart), 
-                weight: getWeight(state.cart)
+                cart: addCart,
+                total:  getTotal(addCart), 
+                weight: getWeight(addCart)
             }
         case 'UPDATE_CART':
             //get the index of the item to update
