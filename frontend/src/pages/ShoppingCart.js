@@ -1,5 +1,5 @@
 import '../css/App.css'
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Navbar from '../components/core/customerNav.js';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
@@ -18,11 +18,6 @@ function ShoppingCart() {
   const cartWeight = useSelector(state => state.cart.weight);
   const brackets = useSelector(state => state.shipping.brackets);
   const dispatch = useDispatch()
-//   const [orderTotal, setOrderTotal] = useState(0)
-
-  useEffect(() => {
-    // setOrderTotal(grandTotal())
-  }, [])
 
   //function to calculate shipping charges based on the total
   //weight of products in the cart, returns the S/H charge
