@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MUIDataTable from 'mui-datatables';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table'
