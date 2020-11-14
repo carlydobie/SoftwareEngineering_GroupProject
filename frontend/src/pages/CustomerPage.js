@@ -5,34 +5,18 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import { TouchAppOutlined } from '@material-ui/icons';
 import axios from 'axios';
 import ProductGridItem from '../components/customer/product.js';
+import '../css/customerpage.css';
 
 const useStyles = makeStyles((theme) => ({
   root : {
     flexGrow: 1,
-    // alignContent: 'center',
-    // alignItems: 'center',
   },
   gridContainer: {
     paddingTop: "1vh",
     paddingLeft: "10vw",
     paddingRight: "8vw",
-  },
-  imageButton: {
-    // width: 50,
-    // height: 300
-  },
-  image : {
-    margin: 'auto',
-    display: 'block',
-    width: 300,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    margin: 'auto',
-    // maxWidth: 500,
   },
   gridItem: { 
     margin: '1vw'
@@ -55,7 +39,7 @@ export default function CustomerPage() {
     }
 
   return (
-    <div >
+    <div>
     <Navbar/>
     <div className={classes.root}>
                 <Box className={classes.gridContainer}>
@@ -83,45 +67,3 @@ export default function CustomerPage() {
     </div>
   );
 }
-
-
-          {/* <Grid item>
-          <ButtonBase className={classes.imageButton}>
-            <Paper>
-            <img className={classes.image} alt="monkee" src="https://cdn.cnn.com/cnnnext/dam/assets/160107100400-monkey-selfie-exlarge-169.jpg"/>
-            <h2>monkee</h2>
-            </Paper>
-            </ButtonBase>
-          </Grid>
-          <Grid item>
-          <ButtonBase className={classes.imageButton}>
-            <Paper>
-            <img className={classes.image} alt="monkee" src="https://cdn.cnn.com/cnnnext/dam/assets/160107100400-monkey-selfie-exlarge-169.jpg"/>
-            <h2>monkee</h2>
-            </Paper>
-            </ButtonBase>
-          </Grid>
-          <Grid item>
-          <ButtonBase className={classes.imageButton}>
-            <Paper>
-            <img className={classes.image} alt="monkee" src="https://cdn.cnn.com/cnnnext/dam/assets/160107100400-monkey-selfie-exlarge-169.jpg"/>
-            <h2>monkee</h2>
-            </Paper>
-            </ButtonBase>
-          </Grid>
-          <Grid item>
-          <ButtonBase className={classes.imageButton}>
-            <Paper>
-            <img className={classes.image} alt="monkee" src="https://cdn.cnn.com/cnnnext/dam/assets/160107100400-monkey-selfie-exlarge-169.jpg"/>
-            <h2>monkee</h2>
-            </Paper>
-            </ButtonBase>
-          </Grid>
-          <Grid item>
-          <ButtonBase className={classes.imageButton}>
-            <Paper>
-            <img className={classes.image} alt="monkee" src="https://cdn.cnn.com/cnnnext/dam/assets/160107100400-monkey-selfie-exlarge-169.jpg"/>
-            <h2>monkee</h2>
-            </Paper>
-            </ButtonBase>
-          </Grid> */}
