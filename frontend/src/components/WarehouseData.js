@@ -99,7 +99,6 @@ export default function WarehouseData() {
                 columns={packingColumns}
                 data={packingList}
               />
-                Bitch boy
             </div>
           )
         }}
