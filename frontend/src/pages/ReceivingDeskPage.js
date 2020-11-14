@@ -1,5 +1,5 @@
 import '../css/App.css';
-import {BrowserRouter } from 'react-router-dom';
+// import { BrowserRouter } from 'react-router-dom';
 import Navbar from '../components/core/employeeNav.js';
 import InventoryTable from '../components/receivingdesk/InventoryTable';
 import InventoryForm from '../components/receivingdesk/InventoryForm';
@@ -41,6 +41,7 @@ function ReceivingDeskPage() {
   return (
     <div className="App">
     <Navbar />
+
     <h2>Current Inventory</h2>
       <Grid container justify="center">
         <div style={{ width: '800px' }}>
@@ -52,6 +53,7 @@ function ReceivingDeskPage() {
           <InventoryForm/>
         </Grid>
       {/* </div> */}
+
     </div>
   );
 }
