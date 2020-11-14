@@ -71,9 +71,6 @@ export default function ShippingForm () {
     const brackets = useSelector(state => state.shipping.brackets);
     const dispatch = useDispatch();
 
-    console.log(brackets)
-
-
     //local state
     //for slider values
     const [sliderVals, setSliderVals] = useState({
@@ -109,7 +106,9 @@ export default function ShippingForm () {
 
     //submit form
     const handleSubmit = (e) => {
+        e.preventDefault()
         dispatch(setBracketCharges(sliderVals, charges))
+        handleClose()
     }
 
     //handle change in slider one

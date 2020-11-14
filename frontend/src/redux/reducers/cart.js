@@ -34,7 +34,7 @@ const cartReducer = ( state = { cart: initialCart, total: initialTotal, weight: 
                 ...state,
                 cart: newCart,
                 total: getTotal(newCart),
-                weight: getTotal(newCart)
+                weight: getWeight(newCart)
             }
         case 'REMOVE_ITEM':
             let removedCart = action.item

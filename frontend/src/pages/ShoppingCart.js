@@ -22,6 +22,7 @@ function ShoppingCart() {
   const brackets = useSelector(state => state.shipping.brackets);
   const dispatch = useDispatch()
 
+
   //function to calculate shipping charges based on the total
   //weight of products in the cart, returns the S/H charge
   function calcShipping(){
