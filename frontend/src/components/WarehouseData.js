@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import MUIDataTable from "mui-datatables";
 import MaterialTable from 'material-table';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
-export default function WarehouseData() {
-  // const columns = [
-  // { label: "Order ID", name: "order_number"},
-  // { label: "Status", name: "status"},
-  // { label: "Order Date", name: "ord_date"},
-  // { label: "Customer Name", name: "name"},
-  // { label: "Mailing Address", name: "address"},
-  // { label: "Customer E-Mail", name: "email"}
-  // ];
+export default function WarehouseData(props) {
 
+  //local state
+  const [orders, setOrders] = useState(props.data)
+  const [packingLists, setPackingLists] = useState(props.packingList)
+  const [loading, setLoading] = useState(false)
+
+  //set state with props on render
+  useEffect(() => {
+    setOrders(props.data)
+    setPackingLists(props.packingList)
+  }, [props])
+
+
+  //col definitions
   const column = [
     { title: 'Order ID', field: 'order_number' },
     { title: 'Status', field: 'status' },
@@ -22,84 +26,62 @@ export default function WarehouseData() {
     { title: 'Customer E-Mail', field: 'email' }
   ]
 
+  //sub col definitions
   const packingColumns = [
     { title: 'Part Number', field: 'part_number' },
     { title: 'Part Name', field: 'description' },
     { title: 'Quantity', field: 'qty' }
   ]
 
-  const [entries, setEntries] = useState([]);
-  const [packingList, setPackingList] = useState([]);
-  const [greg, setGreg] = useState(false);
+  //make an axios call here to update shipping status
+  const updateStatus = async(orderNum) => {
+    console.log(orderNum)
+    
+    //update local state
+    let newOrders = [...orders]
+    let index = orders.findIndex(order => order.order_number === orderNum)
+    newOrders[index].status = "shipped";
+    setOrders(newOrders)
 
+    //do your axios thing here to update db
 
-  const getData = async () => {
-    await axios.get('http://localhost:8080/orders/GetCustomerOrders')
-      .then(function (response) {
-        // handle success
-        setEntries(response.data)
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    setLoading(false)
   }
 
-  const updatePackingList = async (data) => {
-    console.log(data);
-    let orderNumber = data.order_number;
-    let url = 'http://localhost:8080/orders/PartsInOrder/' + orderNumber;
-
-    await axios.get(url)
-      .then(function (response) {
-        // handle success
-        console.log(response);
-        setPackingList(Array.from(response.data))
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-  }
-
-  useEffect(() => {
-    getData()
-
-  }, [])
-
-  let data = Array.from(entries);
-  console.log(data);
-
+  //Table
   return (
     <div>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
       <MaterialTable
         title={"Orders"}
-        data={data}
+        data={orders}
         columns={column}
+        isLoading={loading}
         actions={[
           {
-            icon: 'save',
-            tooltip: 'Test Action',
-            onClick: (event, rowData) => alert("Yoinked: " + rowData.order_number)
-          },
-          {
-            icon: 'update',
-            tooltip: 'Test Action',
-            onClick: (event, rowData) => updatePackingList(rowData)
+            icon: LocalShippingIcon,
+            tooltip: 'Shipped',
+            onClick: (event, rowData) => {
+              setLoading(true)
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  updateStatus(rowData.order_number);
+                  resolve()
+                }, 1000)
+              })
+            },
           }
         ]}
         detailPanel={rowData => {
-          updatePackingList(rowData)
+          //find the object in the array of orders in packingLists where the order numnber matches
+          let orderData = packingLists.filter(order => order[0].order_number === rowData.order_number)
           return (
             <div>
               <MaterialTable
                 title={"Packing List"}
                 columns={packingColumns}
-                data={packingList}
-              />
-               
+                data={orderData[0]}
+              />  
             </div>
           )
         }}
