@@ -33,6 +33,16 @@ router.post('/parts', function(req, res){
   })
 })
 
+router.get('/PartsInOrder/:orderNumber', function (req, res) {
+  let columns = 'po.part_number, i.description, po.qty';
+  let stmt = 'SELECT ' + columns + ' FROM orders o, inventory i, prod_ordered po '
+  + 'WHERE o.order_number = po.order_number AND i.part_number = po.part_number AND o.customer_number = ?'
+
+  connection.query(stmt, req.params.orderNumber, function(err, result) {
+    if (err) throw err;
+    res.json(result);
+  })
+})
 
 
 module.exports = router;
