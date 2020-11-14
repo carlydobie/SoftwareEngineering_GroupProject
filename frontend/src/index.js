@@ -1,3 +1,4 @@
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -11,7 +12,7 @@ const store = createStore(
   rootReducer
 )
 // import reportWebVitals from './reportWebVitals';
-import './index.css';
+
 
 ReactDOM.render(
   <Provider store={store}>
