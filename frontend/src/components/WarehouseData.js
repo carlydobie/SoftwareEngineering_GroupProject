@@ -47,7 +47,7 @@ export default function WarehouseData() {
   }
 
   const updatePackingList = async (data) => {
-    console.log(data.order_number);
+    console.log(data);
     let orderNumber = data.order_number;
     let url = 'http://localhost:8080/orders/PartsInOrder/' + orderNumber;
 
@@ -99,11 +99,12 @@ export default function WarehouseData() {
                 columns={packingColumns}
                 data={packingList}
               />
-                Bitch boy
+               
             </div>
           )
         }}
       />
+
     </div>
   )
 
