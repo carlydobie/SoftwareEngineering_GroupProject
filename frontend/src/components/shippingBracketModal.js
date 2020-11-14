@@ -150,23 +150,23 @@ export default function ShippingForm () {
             <div style={modalStyle} className={classes.paper}>
                 <div>
                     <Typography variant="h5">Update Shipping Brackets</Typography>
+                    <br></br><br></br>
                     <ThemeProvider theme={theme}>
                         <form noValidate>
-                            <Grid container spacing={1}>
+                            <Grid container spacing={8}>
                                 <Grid item xs={12} sm={6}> 
                                     {/**Bracket One */}
-                                    <InputLabel>Bracket One Weight</InputLabel>
                                     <Slider
                                       label="Bracket 1 Weight"
                                       value={sliderVals.sliderOne}
                                       name="sliderOne"
                                       onChange={handleSliderOne}
-                                      valueLabelDisplay="auto"
+                                      valueLabelDisplay="on"
                                       max={1000}
                                     />
+                                    <InputLabel>Bracket One Weight (lbs)</InputLabel>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <InputLabel>Bracket One Charge</InputLabel>
                                     <Input
                                         margin="dense"
                                         onChange={handleCharge}
@@ -176,21 +176,21 @@ export default function ShippingForm () {
                                         value={charges.bracketOne}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     />
+                                     <InputLabel>Bracket One Charge</InputLabel>
                                 </Grid>
                                 <Grid item xs={12} sm={6}> 
                                     {/**Bracket Two */}
-                                    <InputLabel>Bracket Two Weight</InputLabel>
                                     <Slider
                                       label="Bracket 1 Weight"
                                       value={sliderVals.sliderTwo}
                                       name="sliderOne"
                                       onChange={handleSliderTwo}
-                                      valueLabelDisplay="auto"
+                                      valueLabelDisplay="on"
                                       max={1000}
                                     />
+                                    <InputLabel>Bracket Two Weight (lbs)</InputLabel>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <InputLabel>Bracket Two Charge</InputLabel>
                                     <Input
                                         margin="dense"
                                         onChange={handleCharge}
@@ -200,21 +200,21 @@ export default function ShippingForm () {
                                         value={charges.bracketTwo}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     />
+                                    <InputLabel>Bracket Two Charge</InputLabel>
                                 </Grid>
                                 {/**Bracket Three */}
                                 <Grid item xs={12} sm={6}> 
-                                    <InputLabel>Bracket Three Weight</InputLabel>
                                     <Slider
                                       label="Bracket 1 Weight"
                                       value={sliderVals.sliderThree}
                                       name="sliderOne"
                                       onChange={handleSliderThree}
-                                      valueLabelDisplay="auto"
+                                      valueLabelDisplay="on"
                                       max={1000}
                                     />
+                                    <InputLabel>Bracket Three Weight (lbs)</InputLabel>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <InputLabel>Bracket Three Charge</InputLabel>
                                     <Input
                                         margin="dense"
                                         onChange={handleCharge}
@@ -224,6 +224,7 @@ export default function ShippingForm () {
                                         value={charges.bracketThree}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     />
+                                    <InputLabel>Bracket Three Charge</InputLabel>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <Button  
