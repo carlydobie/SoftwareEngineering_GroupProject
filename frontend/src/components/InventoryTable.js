@@ -30,14 +30,6 @@ export default function ProductTable(props) {
         getData()
     }, [])
 
-
-    const options = {
-      onRowClick: (event, rowData) => {
-         //this.handleClickedActionButton(event, rowData);
-         console.log(rowData)
-         //change a state to true
-      },
-  };
   //Updates the row in the inventory database
   const setData = async (data) => {
     const id = data.part_number //The parts part number to edit
