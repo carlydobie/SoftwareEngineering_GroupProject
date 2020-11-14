@@ -15,3 +15,17 @@ export const clearCart = () => {
         type: 'CLEAR_CART'
     }
 }
+
+export const updateCart = (item) => {
+    return {
+        type: 'UPDATE_CART',
+        item: item
+    }
+}
+
+export const removeItem = (item) => {
+    return {
+        type: 'REMOVE_ITEM',
+        item: item
+    }
+}
