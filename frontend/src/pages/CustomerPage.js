@@ -1,9 +1,13 @@
 import '../css/App.css'
-import {BrowserRouter } from 'react-router-dom';
 import Navbar from '../components/core/customerNav.js';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/actions/cart'
-
+/*
+ *  Customer Page to view all products and select parts to 
+ *  purchase. Customers can add parts to the shopping cart
+ *  and view the cart before submitting their order
+ * 
+ */
 function CustomerPage() {
 
   //testing redux to add a part to cart
@@ -19,7 +23,7 @@ function CustomerPage() {
     <Navbar/>
       Hello CustomerPage!
       {/**will replace this poopy button with actually products that can be selected */}
-      <button onClick={addPart()}>add a part to cart</button>
+      <button onClick={addPart}>add a part to cart</button>
     </div>
   );
 }

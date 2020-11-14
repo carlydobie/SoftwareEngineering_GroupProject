@@ -8,6 +8,9 @@ import MaterialTable from 'material-table'
 import { updateCart, removeItem } from '../redux/actions/cart';
 /*
  *  Shopping Cart Page for Customer's Selected Products
+ *  Customer can view the parts they have selected and 
+ *  update quantities or remove items. They can see their
+ *  order total and submit their order. 
  */
 
 function ShoppingCart() {
@@ -34,9 +37,11 @@ function ShoppingCart() {
   }
 
   //function to calculate and format the order total
+  //cart total plus the shipping charges
   function grandTotal() {
       let total = cartTotal;
       let shipping = calcShipping()
+      shipping = +shipping;
       total = +total;
       total += shipping
       return total.toFixed(2)
@@ -102,6 +107,7 @@ function ShoppingCart() {
                     }}
                 />
                 </div>
+                {/**Show Cart Total, Shipping Cost, and Order Grand Total */}
                 <Typography>Cart Total: ${cartTotal}</Typography>
                 <Typography>Shipping & Handling: ${calcShipping()}</Typography>
                 <Typography>Grand Total: ${grandTotal()}</Typography>

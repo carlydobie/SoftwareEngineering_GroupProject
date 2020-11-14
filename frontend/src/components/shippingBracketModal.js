@@ -3,21 +3,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input'
 import Slider from '@material-ui/core/Slider';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
-import Axios from 'axios';
 import { blue, grey } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useForm, Controller } from 'react-hook-form';
-import emailjs from 'emailjs-com';
 import { useDispatch } from 'react-redux';
-import { clearCart } from '../redux/actions/cart';
+import { setBracketCharges } from '../redux/actions/shipping';
 import { InputLabel } from '@material-ui/core';
-
+/*
+ *  Update Shipping Brachet Charge Form Modal
+ * 
+ *  Allows admin users to set the bracket weights and charges
+ *  for shipping costs
+ *  
+ */
 
 //color theme
 const theme = createMuiTheme({
@@ -58,7 +60,7 @@ const useStyles = makeStyles(() => ({
 
 
 //Update Shipping Modal Component
-export default function ShippingForm (props) {
+export default function ShippingForm () {
 
     //hooks for modal
     const classes = useStyles();
@@ -107,10 +109,7 @@ export default function ShippingForm (props) {
 
     //submit form
     const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log("submit")
-        console.log(sliderVals)
-        console.log(charges)
+        dispatch(setBracketCharges(sliderVals, charges))
     }
 
     //handle change in slider one
@@ -156,6 +155,7 @@ export default function ShippingForm (props) {
                         <form noValidate>
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}> 
+                                    {/**Bracket One */}
                                     <InputLabel>Bracket One Weight</InputLabel>
                                     <Slider
                                       label="Bracket 1 Weight"
@@ -172,13 +172,14 @@ export default function ShippingForm (props) {
                                         margin="dense"
                                         onChange={handleCharge}
                                         type="number"
-                                        InputProps={{ inputProps: { min: 1, step: .01 } }}
+                                        inputprops={{ inputProps: { min: 1, step: .01 } }}
                                         name="bracketOne"
                                         value={charges.bracketOne}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}> 
+                                    {/**Bracket Two */}
                                     <InputLabel>Bracket Two Weight</InputLabel>
                                     <Slider
                                       label="Bracket 1 Weight"
@@ -195,12 +196,13 @@ export default function ShippingForm (props) {
                                         margin="dense"
                                         onChange={handleCharge}
                                         type="number"
-                                        InputProps={{ inputProps: { min: 1, step: .01 } }}
+                                        inputprops={{ inputProps: { min: 1, step: .01 } }}
                                         name="bracketTwo"
                                         value={charges.bracketTwo}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     />
                                 </Grid>
+                                {/**Bracket Three */}
                                 <Grid item xs={12} sm={6}> 
                                     <InputLabel>Bracket Three Weight</InputLabel>
                                     <Slider
@@ -218,7 +220,7 @@ export default function ShippingForm (props) {
                                         margin="dense"
                                         onChange={handleCharge}
                                         type="number"
-                                        InputProps={{ inputProps: { min: 1, step: .01 } }}
+                                        inputprops={{ inputProps: { min: 1, step: .01 } }}
                                         name="bracketThree"
                                         value={charges.bracketThree}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
