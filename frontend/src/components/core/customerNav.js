@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,18 +8,26 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom';
+import SearchBar from './searchbar.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
-      margin: '20px'
+      margin: '20px',
+    },
+    appbar: {
+      background: '#1F404F',
     },
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    link: {
-      flexGrow: 1,
+    button: {
+      color: 'white',
     },
+    shoppingCart: {
+      color: 'white',
+    },
+
   }));
 
   export default function ButtonAppBar() {
@@ -27,19 +35,23 @@ const useStyles = makeStyles((theme) => ({
   
     return (
       <div className={classes.root}>
-        <AppBar color="white" position="static">
+        <AppBar position="static">
           <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
-            <div className={classes.link}>
-            <Button to="/" component={Link}>
+            <Button to="/" component={Link} className={classes.button}>
                 <Typography>
                     Home
                 </Typography>
             </Button>
-            </div>
-            <IconButton>
+            <Button to="/Customer" component={Link} className={classes.button}>
+                <Typography>
+                    Shop
+                </Typography>
+            </Button>
+              <SearchBar />
+            <IconButton className={classes.shoppingCart}>
                 <ShoppingCartIcon />
             </IconButton>
           </Toolbar>
