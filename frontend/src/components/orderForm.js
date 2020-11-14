@@ -13,7 +13,16 @@ import { useForm, Controller } from 'react-hook-form';
 import emailjs from 'emailjs-com';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '../redux/actions/cart';
-
+/*
+ *  Order Form Modal
+ * 
+ *  Takes the calculated shipping charges and order grand total as props.
+ *  Customer reviews their order and inputs their billing and shipping info
+ *  User input is validated by the form before being submitted. 
+ *  Submit order function processes the payment and then calls process order
+ *  Process order updates that database, sends the confirmation email and then clears the cart
+ *  
+ */
 
 //color theme
 const theme = createMuiTheme({
@@ -68,10 +77,6 @@ export default function OrderForm (props) {
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.cart);
     const cartTotal = useSelector(state => state.cart.total); 
-
-    const [custNum, setCustNum] = useState(0);
-    const [orderNum, setOrderNum] = useState(0);
-    const [orderDate, setOrderDate] = useState(1604752985353);  //timestamp for testing, change this back to null when uncomment auth funct
   
     //open modal
     const handleOpen = () => {
@@ -84,15 +89,13 @@ export default function OrderForm (props) {
     };
   
     //submit order
+    //takes the form input data as props, generates a transaction number
+    //and authorizes the payment. Once authorization number is obtained,
+    //calls function process order to finish the transaction
     const submitOrder = async data => {
-      console.log(data)
-
       //generate a random 9 digit transaction number
       let transactionNum = Math.floor(Math.random() * (999999999-100000000) + 100000000)
       let vendorID = 'VE123-99'
-
-      //make sure that we have enough of all the parts in the inventory to sell??
-      //do this in add to cart function maybe?
 
       //submit cc auth
       //seems like we can't use fake cc nums aside from the example
@@ -112,7 +115,7 @@ export default function OrderForm (props) {
       //     if(response.data.authorization){
       //         console.log("your auth num: " + response.data.authorization)
       //         setOrderDate(response.data.timeStamp)
-      //         processOrder();
+      //         processOrder(data, response.data.timeStamp);
       //     }else{
       //         alert(response.data.errors[0]);
       //     }
@@ -121,13 +124,16 @@ export default function OrderForm (props) {
       //     console.log(error)
       //     alert("There was an error processing your request.")
       // })
-      processOrder(data)
+      processOrder(data, Date.now())
     }
 
 
     //process the authorized order
-    async function processOrder(formData) {
-
+    //takes the form data and authorization date as props
+    //gets the customer id, or adds the new customer to the db,
+    //adds the new order to the db, and updates inventory before
+    //sending confirmation email and clearing the shopping cart
+    async function processOrder(formData, authDate) {
       //clean up name form data
       let firstname = formData.fName.toLowerCase();
       firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
@@ -138,25 +144,18 @@ export default function OrderForm (props) {
       let name = firstname + " " + lastname;
       console.log(name)
       
-
-      //see if customer is in db, if not add them
+      //see if customer is in db, if not add them, returns customer num as response.data
       await Axios.post('http://localhost:8080/customer/get', {
           name: name,
           address: (formData.address + ", " + formData.city + ", " + formData.state + " " + formData.zip),
           email: formData.email
       })
       .then(function(response) {
-          console.log(response)
-
-          //set customer number in state
-          //response.data will be customer_number
-          setCustNum(response.data)
-
           //get date from timestamp to YYYY-MM-DD for db
-          let date = new Date(orderDate);
+          let date = new Date(authDate);
           let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 
-          // post new order to order table
+          // post new order to order table, returns order number as orderResponse.data
           Axios.post('http://localhost:8080/orders/add', {
               customer_number: response.data,
               total: props.total,
@@ -164,16 +163,10 @@ export default function OrderForm (props) {
               status: 'authorized'
           })
           .then(function(orderResponse) {
-              console.log(orderResponse)
-
-              //set order number in state
-              setOrderNum(orderResponse.data)
-
               //for each item in the order, add that part
               //to the products ordered table and subtract the
               //ordered qty from inventory
               cart.forEach(part => {
-              
                 //add the part ordered to table
                 Axios.post('http://localhost:8080/orders/parts', {
                   order_number: orderResponse.data,
@@ -207,17 +200,13 @@ export default function OrderForm (props) {
       .catch(function (error) {
           console.log(error)
       })
-
       //send email
       sendEmail(name, formData.email);
       alert("Your Order Has Been Received! You will get an email confimation shortly. Thank you for shopping with us!")
-
       //clear cart
       dispatch(clearCart());
-
       //close modal
       handleClose();
-      
     }
 
   
@@ -237,10 +226,12 @@ export default function OrderForm (props) {
     }
 
     //body of the modal, contains the order form for customer input
+    //form input is validated by react-hook-form before it can be submitted
     const body = () => {
       return (
           <div style={modalStyle} className={classes.paper}>
               <div>
+                {/**Display Order Summary */}
                 <h2>Order Summary: </h2>
                 <Typography>Cart Total: ${cartTotal}</Typography>
                 <Typography>Shipping & Handling: ${props.shipping}</Typography>
@@ -248,9 +239,11 @@ export default function OrderForm (props) {
                 <h2>Shipping:</h2>
               </div>
               <div>
+                {/**Form for users shipping and billing input */}
                 <ThemeProvider theme={theme}>
                   <form onSubmit={handleSubmit(submitOrder)}>
                     <Grid container spacing={1}>
+                      {/**First Name */}
                       <Grid item xs={12} sm={6}>
                         <Controller 
                           name="fName"
@@ -276,6 +269,7 @@ export default function OrderForm (props) {
                           }}
                         />
                       </Grid>
+                      {/**Last Name */}
                       <Grid item xs={12} sm={6}>
                         <Controller 
                           name="lName"
@@ -300,6 +294,7 @@ export default function OrderForm (props) {
                           }}
                         />
                       </Grid>
+                      {/**Address */}
                       <Grid item xs={12}>
                         <Controller 
                           name="address"
@@ -324,6 +319,7 @@ export default function OrderForm (props) {
                           }}
                         />
                       </Grid>
+                      {/**City */}
                       <Grid item xs={12} sm={4}>
                         <Controller 
                           name="city"
@@ -348,6 +344,7 @@ export default function OrderForm (props) {
                           }}
                         />
                       </Grid>
+                      {/**State */}
                       <Grid item xs={12} sm={4}>
                         <Controller 
                           name="state"
@@ -384,6 +381,7 @@ export default function OrderForm (props) {
                           }}
                         />
                       </Grid>
+                      {/**Zip Code */}
                       <Grid item xs={12} sm={4}>
                         <Controller 
                           name="zip"
@@ -423,6 +421,7 @@ export default function OrderForm (props) {
                       <Grid item xs={12}>
                         <h2>Billing:</h2>
                       </Grid>
+                      {/**Credit Cart Number */}
                       <Grid item xs={12} sm={8}>
                         <Controller 
                           name="cc"
@@ -445,7 +444,7 @@ export default function OrderForm (props) {
                               message: "card number is required"
                             },
                             pattern: {
-                              value: /([0-9][- ]*){16}/,
+                              value: /([0-9][ ]*){4}([0-9][ ]*){4}([0-9][ ]*){4}([0-9][ ]*){4}/,
                               message: "invalid cc: XXXX XXXX XXXX XXXX"
                             },
                             minLength: {
@@ -459,6 +458,7 @@ export default function OrderForm (props) {
                           }}
                         />
                       </Grid>
+                      {/**Credit Card Expiration Date */}
                       <Grid item xs={12} sm={4}>
                         <Controller 
                           name="exp"
@@ -495,6 +495,7 @@ export default function OrderForm (props) {
                           }}
                         />
                       </Grid>
+                      {/**Customer Email */}
                       <Grid item xs={12}>
                         <Controller
                         name="email"

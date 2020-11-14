@@ -10,12 +10,14 @@ export const addToCart = (item) => {
     }
 }
 
+//clear the cart and reset weight, total, etc
 export const clearCart = () => {
     return {
         type: 'CLEAR_CART'
     }
 }
 
+//update a qty for an item in the cart
 export const updateCart = (item) => {
     return {
         type: 'UPDATE_CART',
@@ -23,6 +25,7 @@ export const updateCart = (item) => {
     }
 }
 
+//delete and item from the cart
 export const removeItem = (item) => {
     return {
         type: 'REMOVE_ITEM',
