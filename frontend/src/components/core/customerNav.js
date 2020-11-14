@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
                 </Typography>
             </Button>
               <SearchBar />
-            <IconButton className={classes.shoppingCart}>
+            <IconButton to="/ShoppingCart" component={Link} className={classes.shoppingCart}>
                 <ShoppingCartIcon />
             </IconButton>
           </Toolbar>

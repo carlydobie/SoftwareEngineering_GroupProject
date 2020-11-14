@@ -1,5 +1,4 @@
 var express = require('express');
-const connection = require('../connections/connection');
 var router = express.Router();
 var legacy = require('../connections/legacy');
 
