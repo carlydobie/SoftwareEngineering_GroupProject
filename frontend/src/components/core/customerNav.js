@@ -34,10 +34,14 @@ const useStyles = makeStyles((theme) => ({
 
   export default function ButtonAppBar() {
     const classes = useStyles();
+
+    //pull in redux state
     const cart = useSelector(state => state.cart.cart);
 
+    //local state for toal items in the shopping cart
     const [totalItems, setTotalItems] = useState(0)
 
+    //on render, count the total items in the cart and set local state
     useEffect(() => {
       let countItems = 0
       cart.forEach(part => {
