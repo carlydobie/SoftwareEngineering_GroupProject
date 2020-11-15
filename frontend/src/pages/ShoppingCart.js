@@ -1,11 +1,12 @@
 import '../css/App.css'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/core/customerNav.js';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import OrderForm from '../components/orderForm';
 import MaterialTable from 'material-table'
 import { updateCart, removeItem } from '../redux/actions/cart';
+import axios from 'axios'
 /*
  *  Shopping Cart Page for Customer's Selected Products
  *  Customer can view the parts they have selected and 
@@ -22,6 +23,33 @@ function ShoppingCart() {
   const brackets = useSelector(state => state.shipping.brackets);
   const dispatch = useDispatch()
 
+  //local state for inventory
+  const [inventory, setInventory] = useState([])
+
+  //get inventory quantities to validate
+  const getInventory = async () => {
+    await axios.get('http://localhost:8080/inventory/all')
+    .then(function (response) {
+      // handle success
+      setInventory(response.data)
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+  }
+
+  //make sure the new quantity is less than or equal to the amount in inventory
+  function checkInventory(row){
+    const index = inventory.findIndex(item => item.part_number === row.id)
+    return (row.qty <= inventory[index].qty)
+  }
+
+
+  //get inventory on render
+  useEffect(() => {
+      getInventory()
+  }, [])
 
   //function to calculate shipping charges based on the total
   //weight of products in the cart, returns the S/H charge
@@ -54,7 +82,7 @@ function ShoppingCart() {
     { title: 'Description', field: "description", editable: 'never' }, 
     { title: 'Unit Price', field: "price", editable: 'never'}, 
     { title: 'Unit Weight', field: "weight", editable: 'never'}, 
-    { title: 'Quantity', field: "qty"} , 
+    { title: 'Quantity', field: "qty", type: 'numeric', validate: rowData => (rowData.qty > 0 && checkInventory(rowData)) ? { isValid: true } : { isValid: false, helperText: 'not enough in inventory'}},
     { title: 'Total Price', field: "total", editable: 'never', render: rowData => {return (rowData.price * rowData.qty).toFixed(2)} }
   ] 
   
@@ -82,14 +110,13 @@ function ShoppingCart() {
                       onRowUpdate: (newData, oldData) =>
                           new Promise((resolve, reject) => {
                               setTimeout(() => {
-                                  const dataUpdate = [...cart];
-                                  //find the index of the updated item and assign it to the new data
-                                  const index = oldData.tableData.id;
-                                  dataUpdate[index] = newData;
-                                  //send the new data to redux to update state
-                                  dispatch(updateCart(dataUpdate[index]))
-                                //   setOrderTotal(grandTotal())
-                                  resolve();
+                                const dataUpdate = [...cart];
+                                //find the index of the updated item and assign it to the new data
+                                const index = oldData.tableData.id;
+                                dataUpdate[index] = newData;
+                                //send the new data to redux to update state
+                                dispatch(updateCart(dataUpdate[index]))
+                                resolve();
                               }, 1000);
                           }),
                       onRowDelete: oldData =>
@@ -123,11 +150,11 @@ function ShoppingCart() {
   return (
     <div className="App">
     <Navbar/>
-        <div>
+        <div style={{marginLeft: '15%'}}>
             <Typography variant="h3">
                 Your Cart
             </Typography>
-            <div style={{ width: '70%', marginLeft: '15%',}}> 
+            <div style={{ width: '70%'}}> 
                 {displayCart()}
             </div>
         </div>

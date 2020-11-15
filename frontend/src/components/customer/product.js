@@ -40,8 +40,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductGridItem(props) {
 
-    console.log(props.number, props.description);
-
     const classes = useStyles();
 
     return (
