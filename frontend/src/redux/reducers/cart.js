@@ -12,10 +12,20 @@ const initialTotal = 0;
 const initialWeight = 0;
 const initialCart = [];
 
-const cartReducer = ( state = { cart: initialCart, total: initialTotal, weight: initialWeight }, action ) => {
+const cartReducer = ( state = { total: initialTotal, weight: initialWeight, cart: initialCart }, action ) => {
     switch(action.type){
         case 'ADD_TO_CART':
-            let addCart = [...state.cart, action.item]
+            //see if the item is already in the cart
+            const i = state.cart.findIndex(item => item.id === action.item.id)
+            let addCart;
+            if(i === -1){
+                //item not in cart yet
+                addCart = [...state.cart, action.item]
+            }else{
+                //item is already in there, update qty
+                addCart = [...state.cart]
+                addCart[i].qty += action.item.qty
+            }
             //add the passed item to the cart and update the cart's total price and weight
             return {
                 ...state,
