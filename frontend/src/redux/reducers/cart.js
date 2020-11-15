@@ -4,13 +4,13 @@
  */
 
 //using these init vals for testers for now...
-const initialCart = [{"id": 1, "description": "part", "price": 14.99, "weight": 43, "qty": 2}, {"id": 2, "description": "other part", "price": 23.49, "weight": .5, "qty": 1}];
-const initialTotal = 53.47;
-const initialWeight = 86.5;
+// const initialCart = [{"id": 1, "description": "part", "price": 14.99, "weight": 43, "qty": 2}, {"id": 2, "description": "other part", "price": 23.49, "weight": .5, "qty": 1}];
+// const initialTotal = 53.47;
+// const initialWeight = 86.5;
 
-// const initialTotal = 0;
-// const initialWeight = 0;
-// const initialCart = [];
+const initialTotal = 0;
+const initialWeight = 0;
+const initialCart = [];
 
 const cartReducer = ( state = { cart: initialCart, total: initialTotal, weight: initialWeight }, action ) => {
     switch(action.type){

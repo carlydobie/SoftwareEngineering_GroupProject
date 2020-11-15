@@ -556,9 +556,11 @@ export default function OrderForm (props) {
     //modal button and component
     return (
       <div>
-        <Button onClick={handleOpen}>
-          Submit Order
-        </Button>
+        <ThemeProvider theme={theme}>
+          <Button onClick={handleOpen} color='primary' variant='contained' >
+            Submit Order
+          </Button>
+        </ThemeProvider>
         <Modal
           open={open}
           onClose={handleClose}
