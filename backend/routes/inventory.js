@@ -35,5 +35,15 @@ var connection = require('../connections/connection');
     })
   });
 
+  //get the inventory of a part by its number
+  router.get('/qty/:id', function(req, res){
+    let stmt = 'SELECT qty FROM inventory WHERE part_number = ?';
+    let id = req.params.id;
+    connection.query(stmt, id, function(err, result){
+      if(err) throw err;
+      res.send(result)
+    })
+  })
+
 
   module.exports = router;
