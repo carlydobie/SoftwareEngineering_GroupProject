@@ -1,11 +1,14 @@
 import '../css/App.css'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/core/customerNav.js';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import OrderForm from '../components/orderForm';
 import MaterialTable from 'material-table'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
 import { updateCart, removeItem } from '../redux/actions/cart';
+import axios from 'axios'
 /*
  *  Shopping Cart Page for Customer's Selected Products
  *  Customer can view the parts they have selected and 
@@ -22,6 +25,33 @@ function ShoppingCart() {
   const brackets = useSelector(state => state.shipping.brackets);
   const dispatch = useDispatch()
 
+  //local state for inventory
+  const [inventory, setInventory] = useState([])
+
+  //get inventory quantities to validate
+  const getInventory = async () => {
+    await axios.get('http://localhost:8080/inventory/all')
+    .then(function (response) {
+      // handle success
+      setInventory(response.data)
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+  }
+
+  //make sure the new quantity is less than or equal to the amount in inventory
+  function checkInventory(row){
+    const index = inventory.findIndex(item => item.part_number === row.id)
+    return (row.qty <= inventory[index].qty)
+  }
+
+
+  //get inventory on render
+  useEffect(() => {
+      getInventory()
+  }, [])
 
   //function to calculate shipping charges based on the total
   //weight of products in the cart, returns the S/H charge
@@ -34,7 +64,7 @@ function ShoppingCart() {
       }else{
           shipping = brackets[2].charge
       }
-      return shipping;
+      return shipping.toFixed(2);
   }
 
   //function to calculate and format the order total
@@ -54,7 +84,7 @@ function ShoppingCart() {
     { title: 'Description', field: "description", editable: 'never' }, 
     { title: 'Unit Price', field: "price", editable: 'never'}, 
     { title: 'Unit Weight', field: "weight", editable: 'never'}, 
-    { title: 'Quantity', field: "qty"} , 
+    { title: 'Quantity', field: "qty", type: 'numeric', validate: rowData => (rowData.qty > 0 && checkInventory(rowData)) ? { isValid: true } : { isValid: false, helperText: 'not enough in inventory'}},
     { title: 'Total Price', field: "total", editable: 'never', render: rowData => {return (rowData.price * rowData.qty).toFixed(2)} }
   ] 
   
@@ -71,50 +101,73 @@ function ShoppingCart() {
       }else{
           //cart is not empty, show all items in a table followed by calculated totals, and submit order button
           return (
-              <div>
-                <div style={{height: 450}}>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
-                <MaterialTable
-                    title={"Part Cart"}
-                    data={cart}
-                    columns={cols}
-                    editable={{
-                      onRowUpdate: (newData, oldData) =>
-                          new Promise((resolve, reject) => {
-                              setTimeout(() => {
-                                  const dataUpdate = [...cart];
-                                  //find the index of the updated item and assign it to the new data
-                                  const index = oldData.tableData.id;
-                                  dataUpdate[index] = newData;
-                                  //send the new data to redux to update state
-                                  dispatch(updateCart(dataUpdate[index]))
-                                //   setOrderTotal(grandTotal())
-                                  resolve();
-                              }, 1000);
-                          }),
-                      onRowDelete: oldData =>
-                          new Promise((resolve, reject) => {
-                              setTimeout(() => {
-                                  const dataDelete = [...cart];
-                                  //find the index of the item to delete and remove it from temp array
-                                  const index = oldData.tableData.id;
-                                  dataDelete.splice(index, 1);
-                                  //send the new array with item removed to redux
-                                  dispatch(removeItem(dataDelete));
-                                //   setOrderTotal(grandTotal())
-                                  resolve();
-                              }, 1000);
-                          })
-                    }}
-                />
-                </div>
-                {/**Show Cart Total, Shipping Cost, and Order Grand Total */}
-                <Typography>Cart Total: ${cartTotal}</Typography>
-                <Typography>Shipping & Handling: ${calcShipping()}</Typography>
-                <Typography>Grand Total: ${grandTotal()}</Typography>
-                {/**Submit Order Button to pull up Order Form Modal */}
-                <OrderForm shipping={calcShipping()} total={grandTotal()} />
-              </div>
+            <div style={{height: 450}}>
+                <Grid container spacing={2}>
+                    <Grid item xs={9}>
+                        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
+                        <MaterialTable
+                            title={"Part Cart"}
+                            data={cart}
+                            columns={cols}
+                            editable={{
+                              onRowUpdate: (newData, oldData) =>
+                                  new Promise((resolve, reject) => {
+                                      setTimeout(() => {
+                                        const dataUpdate = [...cart];
+                                        //find the index of the updated item and assign it to the new data
+                                        const index = oldData.tableData.id;
+                                        dataUpdate[index] = newData;
+                                        //send the new data to redux to update state
+                                        dispatch(updateCart(dataUpdate[index]))
+                                        resolve();
+                                      }, 1000);
+                                  }),
+                              onRowDelete: oldData =>
+                                  new Promise((resolve, reject) => {
+                                      setTimeout(() => {
+                                          const dataDelete = [...cart];
+                                          //find the index of the item to delete and remove it from temp array
+                                          const index = oldData.tableData.id;
+                                          dataDelete.splice(index, 1);
+                                          //send the new array with item removed to redux
+                                          dispatch(removeItem(dataDelete));
+                                        //   setOrderTotal(grandTotal())
+                                          resolve();
+                                      }, 1000);
+                                  })
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
+                        {/**Show Cart Total, Shipping Cost, and Order Grand Total */}
+                        <Paper elevation={3} style={{'padding': '10px'}}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={6} style={{'paddingTop': '20px'}}>
+                                <Typography>Cart Total:</Typography>
+                            </Grid>
+                            <Grid item xs={6} style={{'paddingTop': '20px'}}>
+                                <Typography align='right'>${cartTotal}</Typography>
+                            </Grid><Grid item xs={6}>
+                                <Typography>Shipping & Handling:</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography align='right'>${calcShipping()}</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography>Grand Total:</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography align='right'>${grandTotal()}</Typography>
+                            </Grid>
+                            <Grid item xs={12} style={{'marginLeft': '20%', 'padding': '20px'}}>
+                                {/**Submit Order Button to pull up Order Form Modal */}
+                                <OrderForm shipping={calcShipping()} total={grandTotal()} />
+                            </Grid>
+                        </Grid>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </div>
           )
       }
   }
@@ -123,11 +176,11 @@ function ShoppingCart() {
   return (
     <div className="App">
     <Navbar/>
-        <div>
+        <div style={{marginLeft: '5%'}}>
             <Typography variant="h3">
                 Your Cart
             </Typography>
-            <div style={{ width: '70%', marginLeft: '15%',}}> 
+            <div style={{ width: '90%'}}> 
                 {displayCart()}
             </div>
         </div>

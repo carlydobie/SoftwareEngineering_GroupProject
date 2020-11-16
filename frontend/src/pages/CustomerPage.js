@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../components/core/customerNav.js';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../redux/actions/cart'
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -33,8 +31,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomerPage() {
   const classes = useStyles();
+
   const [data, setData] = useState([])
+
   useEffect(() => {getData()}, [])
+
+  //get all parts
   const getData = async() => {
     await axios.get('http://localhost:8080/legacy/all')
         .then(function (response) {
@@ -49,29 +51,28 @@ export default function CustomerPage() {
 
   return (
     <div>
-    <Navbar/>
-    <div className={classes.root}>
-                <Box className={classes.gridContainer}>
-                  <Grid container spacing={2}>
-          {data.map(part => {
-            console.log(part)
-            return (
-                  <div>
-                    <Grid item className={classes.gridItem}>
-                      <ProductGridItem 
+      <Navbar/>
+      <div className={classes.root}>
+        <Box className={classes.gridContainer}>
+          <Grid container spacing={2}>
+            {data.map(part => {
+              return (
+                <div>
+                  <Grid item className={classes.gridItem}>
+                    <ProductGridItem 
                       number = {part.number} 
                       description = {part.description}
                       price = {part.price}
                       weight = {part.weight}
                       pictureURL = {part.pictureURL}
-                      />
-                    </Grid>
-              </div>
-            );
-          })}
-          </Grid>
-                </Box>
+                    />
+                  </Grid>
                 </div>
+              );
+            })}
+          </Grid>
+        </Box>
+      </div>
     </div>
   );
 }
