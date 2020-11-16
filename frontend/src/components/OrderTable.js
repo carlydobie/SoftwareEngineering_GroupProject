@@ -4,7 +4,7 @@ import MaterialTable from 'material-table'
 const column = [
     { title: 'Order Number', field: 'order_number', editable: 'never'},
     { title: 'Status', field: 'status'},
-    { title: 'Order Date', field: 'ord_date'},
+    { title: 'Order Date', type: 'date', field: 'ord_date'},
     { title: 'Customer Name', field: 'name'},
     { title: 'Address', field: 'address'},
     { title: 'Email', field: 'email'}
@@ -18,6 +18,9 @@ function OrderTable(props){
             <MaterialTable
             columns={column}
             data={props.orders}
+            options={{
+                filtering: true
+              }}
             />
         </div>
     );
