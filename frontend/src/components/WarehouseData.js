@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import emailjs from 'emailjs-com'
+import axios from 'axios';
 
 export default function WarehouseData(props) {
 
@@ -36,7 +38,7 @@ export default function WarehouseData(props) {
   ]
 
   //make an axios call here to update shipping status
-  const updateStatus = async(orderNum) => {
+  const updateStatus = async(orderNum, cust_name, cust_email) => {
     console.log(orderNum)
     
     //update local state
@@ -46,8 +48,22 @@ export default function WarehouseData(props) {
     setOrders(newOrders)
 
     //do your axios thing here to update db
-
-    //i think send emai will go here too, let cust know order has shipped
+    axios.post('http://localhost:8080/orders/UpdateOrderStatus/' + orderNum)
+      .catch(function (error) {
+        console.log(error);
+      })
+    
+    //i think send email will go here too, let cust know order has shipped
+    emailjs.send("gmail", "template_uzx5x6j", {
+      orderNum: orderNum,
+      to_name: cust_name,
+      to_email: cust_email,
+    }, "user_g1HvKmngxkCglwn9LDMBB")
+    .then((result) => {
+      console.log(result.text);
+    }, (error) => {
+      console.log(error.text);
+    });
 
     setLoading(false)
     setAllSelected(false)
@@ -79,7 +95,7 @@ export default function WarehouseData(props) {
                 setLoading(true)
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
-                    updateStatus(rowData.order_number);
+                    updateStatus(rowData.order_number, rowData.name, rowData.email);
                     resolve()
                   }, 1000)
                 })
