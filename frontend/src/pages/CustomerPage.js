@@ -34,20 +34,42 @@ export default function CustomerPage() {
 
   const [data, setData] = useState([])
 
-  useEffect(() => {getData()}, [])
+  useEffect(() => {getPartInfo()}, [])
 
   //get all parts
-  const getData = async() => {
+  const getPartInfo = async() => {
     await axios.get('http://localhost:8080/legacy/all')
         .then(function (response) {
-          setData(response.data) 
-            console.log(response)
+          //loop through each part in the response
+          response.data.forEach(part => {
+            //get that part's current qty
+            axios.get('http://localhost:8080/inventory/qty/' + part.number)
+            .then(function (partResponse){
+              //add the qty to the part object
+              part.qty = partResponse.data[0].qty
+              //add the part to the data set 
+              setData(data => [...data, part])
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+          })
         })
         .catch(function (error) {
-            console.log(error);
+            console.log(error)
         });
     }
-
+  
+    function getQuantity(item) {
+      axios.get('localhost:8080/inventory/qty' + item.number)
+        .then(function (response) {
+          setData(response.data)
+            console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+    }
 
   return (
     <div>
@@ -65,6 +87,7 @@ export default function CustomerPage() {
                       price = {part.price}
                       weight = {part.weight}
                       pictureURL = {part.pictureURL}
+                      qty = {part.qty}
                     />
                   </Grid>
                 </div>

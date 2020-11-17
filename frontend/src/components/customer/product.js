@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
       margin: 'auto',
       width: '25vh',
-      height: '300px',
+      height: '325px',
       borderStyle: 'inset',
     },
     image: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: '0%',
     },
     textBox: {
-        height: '11vh'
+        height: '13vh'
     }
   }))
 
@@ -55,14 +55,15 @@ export default function ProductGridItem(props) {
                     <Box className={classes.imageBox}>
                         <img className={classes.image} src={props.pictureURL}/>
                     </Box>
-                    <Typography>
-                        <div className={classes.textBox}>
+                    <Box  className={classes.textBox}>
+                        <Typography className={classes.textBox}>
                             <h4 className={classes.title}>{props.description}</h4>
                             <h4 className={classes.price}>${props.price}</h4>
-                        </div>
-                        <Button className={classes.button} onClick={addItem}>Add to Cart</Button>
-                    </Typography>
+                            In stock: {props.qty}
+                        </Typography>
                     </Box>
+                    <Button className={classes.button} onClick={addItem}>Add to Cart</Button>
+                </Box>
             </Paper>
         </div>
     );
