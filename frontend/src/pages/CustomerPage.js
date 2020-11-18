@@ -1,19 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../components/core/customerNav.js';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../redux/actions/cart'
-
-// function CustomerPage() {
-
-//   //testing redux to add a part to cart
-//   const dispatch = useDispatch();
-//   const item = {"id": 3, "description": "third part", "price": 12.99, "weight": 43, "qty": 3}
-
-//   const addPart = () => {
-//     dispatch(addToCart(item));
-//   }
-
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -21,6 +8,12 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import axios from 'axios';
 import ProductGridItem from '../components/customer/product.js';
 import '../css/customerpage.css';
+/*
+ *  Customer Page to view all products and select parts to 
+ *  purchase. Customers can add parts to the shopping cart
+ *  and view the cart before submitting their order
+ * 
+ */
 
 const useStyles = makeStyles((theme) => ({
   root : {
@@ -38,45 +31,71 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomerPage() {
   const classes = useStyles();
+
   const [data, setData] = useState([])
-  useEffect(() => {getData()}, [])
-  const getData = async() => {
+
+  useEffect(() => {getPartInfo()}, [])
+
+  //get all parts
+  const getPartInfo = async() => {
     await axios.get('http://localhost:8080/legacy/all')
         .then(function (response) {
-          setData(response.data) 
-            console.log(response)
+          //loop through each part in the response
+          response.data.forEach(part => {
+            //get that part's current qty
+            axios.get('http://localhost:8080/inventory/qty/' + part.number)
+            .then(function (partResponse){
+              //add the qty to the part object
+              part.qty = partResponse.data[0].qty
+              //add the part to the data set 
+              setData(data => [...data, part])
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+          })
         })
         .catch(function (error) {
-            console.log(error);
+            console.log(error)
         });
     }
-
+  
+    // function getQuantity(item) {
+    //   axios.get('localhost:8080/inventory/qty' + item.number)
+    //     .then(function (response) {
+    //       setData(response.data)
+    //         console.log(response)
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error)
+    //     })
+    // }
 
   return (
     <div>
-    <Navbar/>
-    <div className={classes.root}>
-                <Box className={classes.gridContainer}>
-                  <Grid container spacing={2}>
-          {data.map(part => {
-            console.log(part)
-            return (
-                  <div>
-                    <Grid item className={classes.gridItem}>
-                      <ProductGridItem 
+      <Navbar/>
+      <div className={classes.root}>
+        <Box className={classes.gridContainer}>
+          <Grid container spacing={2}>
+            {data.map(part => {
+              return (
+                <div>
+                  <Grid item className={classes.gridItem}>
+                    <ProductGridItem 
                       number = {part.number} 
                       description = {part.description}
                       price = {part.price}
                       weight = {part.weight}
                       pictureURL = {part.pictureURL}
-                      />
-                    </Grid>
-              </div>
-            );
-          })}
-          </Grid>
-                </Box>
+                      qty = {part.qty}
+                    />
+                  </Grid>
                 </div>
+              );
+            })}
+          </Grid>
+        </Box>
+      </div>
     </div>
   );
 }
