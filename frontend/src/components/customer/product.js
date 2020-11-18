@@ -1,3 +1,4 @@
+import React, { useState, uesEffect } from 'react'
 import { Paper, Typography, Button, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch } from 'react-redux';
@@ -49,14 +50,19 @@ export default function ProductGridItem(props) {
     const classes = useStyles();
     const dispatch = useDispatch()
 
+    const [onHandQty, setOnHandQty] = useState(props.qty)
+
     //add item to the shopping cart
     const addItem = () => {
+        //add one of the item to the shopping cart
         let item ={ "id": props.number, "description": props.description, "price": props.price, "weight": props.weight, "qty": 1 }
         dispatch(addToCart(item))
+        //subtract 1 from local qty state
+        setOnHandQty(onHandQty - 1)
     }
 
-    const addToCartButton = () => {
-        if (props.qty <= 0) {
+    const addToCartButton = (quant) => {
+        if (quant <= 0) {
             return (
                 <Button disabled className={classes.buttonDisabled} onClick={addItem}>Add to Cart</Button>
             )
@@ -80,11 +86,10 @@ export default function ProductGridItem(props) {
                         <Typography className={classes.textBox}>
                             <h4 className={classes.title}>{props.description}</h4>
                             <h4 className={classes.price}>${props.price}</h4>
-                            In stock: {props.qty}
+                            In stock: {onHandQty}
                         </Typography>
                     </Box>
-                        {addToCartButton(props.qty)}
-                    {/* <Button className={classes.button} onClick={addItem}>Add to Cart</Button> */}
+                        {addToCartButton(onHandQty)}
                 </Box>
             </Paper>
         </div>
