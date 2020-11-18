@@ -28,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         width: '25vh',
     },
+    buttonDisabled: {
+        flexGrow: 1,
+        background: '#BEBEBE',
+        display: 'block',
+        margin: 'auto',
+        width: '25vh',
+    },
     price: {
         color: '#DC2502',
         lineHeight: '0%',
@@ -48,6 +55,20 @@ export default function ProductGridItem(props) {
         dispatch(addToCart(item))
     }
 
+    const addToCartButton = () => {
+        if (props.qty <= 0) {
+            return (
+                <Button disabled className={classes.buttonDisabled} onClick={addItem}>Add to Cart</Button>
+            )
+        }
+        else {
+            return (
+                <Button className={classes.button} onClick={addItem}>Add to Cart</Button>
+
+            )
+        }
+    }
+
     return (
         <div>
             <Paper className={classes.paper} elevation={4}>
@@ -62,7 +83,8 @@ export default function ProductGridItem(props) {
                             In stock: {props.qty}
                         </Typography>
                     </Box>
-                    <Button className={classes.button} onClick={addItem}>Add to Cart</Button>
+                        {addToCartButton(props.qty)}
+                    {/* <Button className={classes.button} onClick={addItem}>Add to Cart</Button> */}
                 </Box>
             </Paper>
         </div>
