@@ -15,6 +15,16 @@ router.get('/GetCustomerOrders', function (req, res) {
   })
 })
 
+//Join between custuomer table and order table. Same as above but has total price!
+router.get('/GetCustomerOrdersPrice', function (req, res) {
+  let columns = 'o.order_number, o.status, o.ord_date, o.total, c.name, c.address, c.email ';
+  let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number';
+  connection.query(stmt, function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  })
+})
+
 //route to add a new order to orders table
 router.post('/add', function(req, res){
   let stmt = 'INSERT INTO orders SET ?';

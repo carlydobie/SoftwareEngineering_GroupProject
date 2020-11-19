@@ -6,7 +6,7 @@ export default function OrderTable(props) {
 
   //local state
   const [orders, setOrders] = useState(props.data)
-  const [packingLists, setPackingLists] = useState(props.packingList)
+  const [packingLists, setPackingLists] = useState(props.packingList) //Change this name, order detail
   const [loading, setLoading] = useState(false)
   const [allSelected, setAllSelected] = useState(false)
   const [currentPackingSlip, setCurrentPackingSlip] = useState(0)
@@ -17,7 +17,6 @@ export default function OrderTable(props) {
     setPackingLists(props.packingList)
   }, [props])
 
-
   //col definitions
   const column = [
     { title: 'Order ID', field: 'order_number' },
@@ -25,14 +24,17 @@ export default function OrderTable(props) {
     { title: 'Order Date', field: 'ord_date', type: 'date'},
     { title: 'Customer Name', field: 'name' },
     { title: 'Mailing Address', field: 'address' },
-    { title: 'Customer E-Mail', field: 'email' }
+    { title: 'Customer E-Mail', field: 'email' },
+    { title: 'Total', field: 'total' }
   ]
 
   //sub col definitions
   const packingColumns = [
     { title: 'Part Number', field: 'part_number' },
     { title: 'Part Name', field: 'description' },
-    { title: 'Quantity', field: 'qty' }
+    { title: 'Quantity', field: 'qty' },
+    //{ title: 'Weight', field: 'Weight' },
+    //{ title: 'Individual Price', field: 'Individual Price' },
   ]
 
   //make an axios call here to update shipping status

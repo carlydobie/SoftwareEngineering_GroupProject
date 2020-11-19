@@ -12,7 +12,7 @@ const [packingList, setPackingList] = useState([]);
 
 const getData = async () => {
   //get orders for main table
-  await axios.get('http://localhost:8080/orders/GetCustomerOrders')
+  await axios.get('http://localhost:8080/orders/GetCustomerOrdersPrice')
     .then(function (response) {
       // handle success
       setEntries(response.data)
