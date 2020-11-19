@@ -18,14 +18,14 @@ export default function HomePage() {
           <Grid container spacing={3}>
               <Grid item xs={12} lg={12}>
                 <Paper className="home-grid-item">
-                  <h2>Welcome to hell!</h2>
+                  <h2>Amazing Auto Parts Galore</h2>
                 </Paper>
               </Grid>
               <Grid item xs={6} lg={6}>
               <Paper className="home-grid-item">
               <Button to="/Customer" component={Link}>
                     <Typography>
-                      Customer Link
+                      SHOP
                     </Typography>
                     </Button>
                 </Paper>
@@ -34,7 +34,7 @@ export default function HomePage() {
                 <Paper className="home-grid-item">
                 <Button to="/Warehouse" component={Link}>
                     <Typography>
-                      Employee Link
+                      EMPLOYEE
                     </Typography>
                     </Button>
                 </Paper>
