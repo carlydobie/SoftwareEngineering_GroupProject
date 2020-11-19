@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import emailjs from 'emailjs-com'
-import axios from 'axios';
 
-export default function WarehouseData(props) {
+export default function OrderTable(props) {
 
   //local state
   const [orders, setOrders] = useState(props.data)
-  const [packingLists, setPackingLists] = useState(props.packingList)
+  const [packingLists, setPackingLists] = useState(props.packingList) //Change this name, order detail
   const [loading, setLoading] = useState(false)
   const [allSelected, setAllSelected] = useState(false)
   const [currentPackingSlip, setCurrentPackingSlip] = useState(0)
@@ -19,7 +17,6 @@ export default function WarehouseData(props) {
     setPackingLists(props.packingList)
   }, [props])
 
-
   //col definitions
   const column = [
     { title: 'Order ID', field: 'order_number' },
@@ -27,18 +24,21 @@ export default function WarehouseData(props) {
     { title: 'Order Date', field: 'ord_date', type: 'date'},
     { title: 'Customer Name', field: 'name' },
     { title: 'Mailing Address', field: 'address' },
-    { title: 'Customer E-Mail', field: 'email' }
+    { title: 'Customer E-Mail', field: 'email' },
+    { title: 'Total', field: 'total' }
   ]
 
   //sub col definitions
   const packingColumns = [
     { title: 'Part Number', field: 'part_number' },
     { title: 'Part Name', field: 'description' },
-    { title: 'Quantity', field: 'qty' }
+    { title: 'Quantity', field: 'qty' },
+    //{ title: 'Weight', field: 'Weight' },
+    //{ title: 'Individual Price', field: 'Individual Price' },
   ]
 
   //make an axios call here to update shipping status
-  const updateStatus = async(orderNum, cust_name, cust_email) => {
+  const updateStatus = async(orderNum) => {
     console.log(orderNum)
     
     //update local state
@@ -48,22 +48,8 @@ export default function WarehouseData(props) {
     setOrders(newOrders)
 
     //do your axios thing here to update db
-    axios.post('http://localhost:8080/orders/UpdateOrderStatus/' + orderNum)
-      .catch(function (error) {
-        console.log(error);
-      })
-    
-    //i think send email will go here too, let cust know order has shipped
-    emailjs.send("gmail", "template_uzx5x6j", {
-      orderNum: orderNum,
-      to_name: cust_name,
-      to_email: cust_email,
-    }, "user_g1HvKmngxkCglwn9LDMBB")
-    .then((result) => {
-      console.log(result.text);
-    }, (error) => {
-      console.log(error.text);
-    });
+
+    //i think send emai will go here too, let cust know order has shipped
 
     setLoading(false)
     setAllSelected(false)
@@ -86,6 +72,9 @@ export default function WarehouseData(props) {
         data={orders}
         columns={column}
         isLoading={loading}
+        options={{
+            filtering: true
+          }}
         actions={[
             rowData => ({
               icon: LocalShippingIcon,
@@ -95,7 +84,7 @@ export default function WarehouseData(props) {
                 setLoading(true)
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
-                    updateStatus(rowData.order_number, rowData.name, rowData.email);
+                    updateStatus(rowData.order_number);
                     resolve()
                   }, 1000)
                 })
