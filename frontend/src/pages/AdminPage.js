@@ -14,7 +14,6 @@ function AdminPage() {
 //state to hold axios responses
 const [entries, setEntries] = useState([]);
 const [packingList, setPackingList] = useState([]);
-const [dateError, setDateError] = useState(false)
 
 //get today's date to use in "to" for date range default
 let now = new Date(Date.now());
@@ -35,6 +34,7 @@ const [prices, setPrices] = useState({
   max: 1000000
 })
 
+//get data from backend
 const getData = async () => {
   //get orders for main table
   await axios.post('http://localhost:8080/orders/GetCustomerOrdersPrice', {
@@ -87,9 +87,8 @@ const handlePriceChange = (e, end) => {
   }
 }
 
-console.log(prices)
-console.log(prices.min > prices.max)
-
+//admin page component, with picker for price and date range,
+//button to adjust shipping charges, and table of orders
 return (
     <div className="App">
       <Navbar />
@@ -97,6 +96,7 @@ return (
         <h2>Hello Admin!</h2>
         <Grid container spacing={1}>
           <Grid item xs={9}>
+            {/**Date Range Picker: From Date */}
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 margin="dense"
@@ -107,6 +107,7 @@ return (
                 name="from"
                 onChange={(e) => {handleDateChange(e, "from")}}
               />
+              {/**Date Range Picker: To Date */}
               <KeyboardDatePicker
                 margin="dense"
                 id="to-date"
@@ -119,9 +120,11 @@ return (
             </MuiPickersUtilsProvider>
           </Grid>
           <Grid item xs={3}>
+            {/**Update Shipping Charge Modal Button */}
             <ShippingForm/>
           </Grid>
           <Grid item xs={9}>
+            {/**Price Range Picker: Min Price */}
             <TextField
               type="number"
               margin="dense"
@@ -140,6 +143,7 @@ return (
               error={(prices.min > prices.max) || (prices.min < 0)}
               helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
             />
+            {/**Price Range Picker: Max Price */}
             <TextField
               type="number"
               margin="dense"
@@ -161,6 +165,7 @@ return (
           </Grid>
         </Grid>
       </div>
+      {/**Table of Orders */}
       <Grid container justify="center">
         <div style={{ width: '1200px' }}>
           <OrderTable data={entries} packingList={packingList}/>
