@@ -3,6 +3,8 @@ import Navbar from '../components/core/employeeNav.js';
 import ShippingForm from '../components/shippingBracketModal';
 import OrderTable from '../components/OrderTable'
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { useState, useEffect } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -12,22 +14,34 @@ function AdminPage() {
 //state to hold axios responses
 const [entries, setEntries] = useState([]);
 const [packingList, setPackingList] = useState([]);
+const [dateError, setDateError] = useState(false)
 
 //get today's date to use in "to" for date range default
 let now = new Date(Date.now());
 let today = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+//create date one month ago for default 
+let monthAgo = new Date(Date.now());
+monthAgo.setMonth(now.getMonth() - 1)
 
 //default date range will be for orders from beginning of year til now
 const [dates, setDates] = useState({
-  from: '2020-01-01',
+  from: monthAgo,
   to: today
 });
+
+//default price range will be for orders between 0 and million dollars
+const [prices, setPrices] = useState({
+  min: 0,
+  max: 1000000
+})
 
 const getData = async () => {
   //get orders for main table
   await axios.post('http://localhost:8080/orders/GetCustomerOrdersPrice', {
     fromDate: dates.from,
-    toDate: dates.to
+    toDate: dates.to,
+    minPrice: prices.min,
+    maxPrice: prices.max
   })
     .then(function (response) {
       // handle success
@@ -54,13 +68,27 @@ const getData = async () => {
 
 useEffect(() => {
   getData()
-}, [dates]);
+}, [dates, prices]);
 
-
+//handle change in date range
 const handleDateChange = (e, end) => {
-  let newDate = e.getFullYear() + "-" + (e.getMonth() + 1) + "-" + e.getDate();
-  setDates(dates => ({...dates, [end]: newDate}))
+  if(e != null){
+    let newDate = e.getFullYear() + "-" + (e.getMonth() + 1) + "-" + e.getDate();
+    setDates(dates => ({...dates, [end]: newDate}))
+  }
 }
+
+//handle change in price range
+const handlePriceChange = (e, end) => {
+  let newPrice = e.target.value
+  if(newPrice) {
+    let newPrice = e.target.value
+    setPrices(prices => ({...prices, [end]: newPrice}))
+  }
+}
+
+console.log(prices)
+console.log(prices.min > prices.max)
 
 return (
     <div className="App">
@@ -92,6 +120,44 @@ return (
           </Grid>
           <Grid item xs={3}>
             <ShippingForm/>
+          </Grid>
+          <Grid item xs={9}>
+            <TextField
+              type="number"
+              margin="dense"
+              id="min"
+              name="min"
+              label="Min Price"
+              value={prices.min}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    $
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {handlePriceChange(e, "min")}}
+              error={(prices.min > prices.max) || (prices.min < 0)}
+              helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
+            />
+            <TextField
+              type="number"
+              margin="dense"
+              id="max"
+              name="max"
+              label="Max Price"
+              value={prices.max}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    $
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {handlePriceChange(e, "max")}}
+              error={(prices.min > prices.max)}
+              helperText={(prices.min > prices.max) ? "Invalid Range" : null}
+            />
           </Grid>
         </Grid>
       </div>

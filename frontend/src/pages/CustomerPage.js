@@ -59,18 +59,7 @@ export default function CustomerPage() {
             console.log(error)
         });
     }
-  
-    // function getQuantity(item) {
-    //   axios.get('localhost:8080/inventory/qty' + item.number)
-    //     .then(function (response) {
-    //       setData(response.data)
-    //         console.log(response)
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error)
-    //     })
-    // }
-
+    
   return (
     <div>
       <Navbar/>
