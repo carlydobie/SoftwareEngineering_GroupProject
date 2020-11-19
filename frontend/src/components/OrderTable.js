@@ -3,10 +3,10 @@ import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 export default function OrderTable(props) {
-
+  console.log(props.packingList)
   //local state
   const [orders, setOrders] = useState(props.data)
-  const [packingLists, setPackingLists] = useState(props.packingList) //Change this name, order detail
+  const [packingLists, setPackingLists] = useState(props.parts) //Change this name, order detail
   const [loading, setLoading] = useState(false)
   const [allSelected, setAllSelected] = useState(false)
   const [currentPackingSlip, setCurrentPackingSlip] = useState(0)
@@ -33,8 +33,8 @@ export default function OrderTable(props) {
     { title: 'Part Number', field: 'part_number' },
     { title: 'Part Name', field: 'description' },
     { title: 'Quantity', field: 'qty' },
-    //{ title: 'Weight', field: 'Weight' },
-    //{ title: 'Individual Price', field: 'Individual Price' },
+    { title: 'Weight', field: 'weight' },
+    { title: 'Individual Price', field: 'price' }
   ]
 
   //make an axios call here to update shipping status
@@ -93,13 +93,13 @@ export default function OrderTable(props) {
         ]}
         detailPanel={rowData => {
           //find the object in the array of orders in packingLists where the order numnber matches
-          let orderData = packingLists.filter(order => order[0].order_number === rowData.order_number)
+          let orderData = packingLists.filter(order => order.order_number === rowData.order_number)
           return (
             <div style={{'width': '60%', 'marginLeft': '20%'}}>
               <MaterialTable
                 title={"Packing List"}
                 columns={packingColumns}
-                data={orderData[0]}
+                data={orderData}
                 options={{
                   selection: true
                 }}
