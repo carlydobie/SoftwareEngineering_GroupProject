@@ -82,7 +82,6 @@ const handleDateChange = (e, end) => {
 const handlePriceChange = (e, end) => {
   let newPrice = e.target.value
   if(newPrice) {
-    let newPrice = e.target.value
     setPrices(prices => ({...prices, [end]: newPrice}))
   }
 }
