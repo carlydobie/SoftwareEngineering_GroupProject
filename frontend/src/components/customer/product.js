@@ -8,40 +8,41 @@ const useStyles = makeStyles((theme) => ({
     paper: {
       padding: theme.spacing(2),
       margin: 'auto',
-      width: '25vh',
-      height: '325px',
+      width: '30vh',
+      height: '315px',
       borderStyle: 'inset',
     },
     image: {
         display: 'block',
         margin: 'auto',
+        height: "14vh",
     },
     title: {
         textTransform: 'capitalize',
     },
     imageBox: {
-        height: '15vh'
+        height: '130px'
     },
     button: {
         flexGrow: 1,
         background: '#FFAC20',
         display: 'block',
         margin: 'auto',
-        width: '25vh',
+        width: '100%',
     },
     buttonDisabled: {
         flexGrow: 1,
         background: '#BEBEBE',
         display: 'block',
         margin: 'auto',
-        width: '25vh',
+        width: '100%',
     },
     price: {
         color: '#DC2502',
         lineHeight: '0%',
     },
     textBox: {
-        height: '13vh'
+        height: '135px'
     }
   }))
 
@@ -70,7 +71,6 @@ export default function ProductGridItem(props) {
         else {
             return (
                 <Button className={classes.button} onClick={addItem}>Add to Cart</Button>
-
             )
         }
     }
