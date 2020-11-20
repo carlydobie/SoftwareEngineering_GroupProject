@@ -84,7 +84,7 @@ function ShoppingCart() {
     { title: 'Description', field: "description", editable: 'never' }, 
     { title: 'Unit Price', field: "price", editable: 'never'}, 
     { title: 'Unit Weight', field: "weight", editable: 'never'}, 
-    { title: 'Quantity', field: "qty", type: 'numeric', validate: rowData => (rowData.qty > 0 && checkInventory(rowData)) ? { isValid: true } : { isValid: false, helperText: 'not enough in inventory'}},
+    { title: 'Quantity', field: "qty", type: 'numeric', validate: rowData => (rowData.qty >= 0 && checkInventory(rowData)) ? { isValid: true } : { isValid: false, helperText: 'not enough in inventory'}},
     { title: 'Total Price', field: "total", editable: 'never', render: rowData => {return (rowData.price * rowData.qty).toFixed(2)} }
   ] 
   
