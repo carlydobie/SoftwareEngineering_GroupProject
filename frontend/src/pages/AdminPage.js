@@ -23,13 +23,11 @@ const getData = async () => {
           //append the result to the packing list array
             orderResponse.data.forEach(part => {
               axios.get('http://localhost:8080/legacy/' + part.part_number)
-                .then(function (partResponse){
-                  
+                .then(function (partResponse){ 
                   //add the price to the order object
                   part.price = partResponse.data[0].price
                   //add the total weight to the order object
                   part.weight = partResponse.data[0].weight
-                  
                   setPackingList(packingList => [...packingList, part])
                 })
                 .catch(function (error) {
@@ -42,7 +40,6 @@ const getData = async () => {
           // handle error
           console.log(error);
         })
-
       })
     })
     .catch(function (error) {
