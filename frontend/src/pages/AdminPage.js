@@ -174,14 +174,15 @@ return (
               helperText={(prices.min > prices.max) ? "Invalid Range" : null}
             />
           </Grid>
+          {/**Table of Orders */}
+          <Grid item xs={12} justify="center">
+            <div>
+              <OrderTable data={entries} packingList={packingList}/>
+            </div>
+          </Grid>
         </Grid>
       </div>
-      {/**Table of Orders */}
-      <Grid container justify="center">
-        <div style={{ width: '1200px' }}>
-          <OrderTable data={entries} packingList={packingList}/>
-        </div>
-      </Grid>
+      
     </div>
   );
 }
