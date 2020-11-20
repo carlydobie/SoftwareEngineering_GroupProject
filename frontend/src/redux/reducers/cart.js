@@ -33,7 +33,12 @@ const cartReducer = ( state = { total: initialTotal, weight: initialWeight, cart
             const index = state.cart.findIndex(item => item.id === action.item.id)
             //perform update on a temporary cart array
             let newCart = [...state.cart];
-            newCart[index].qty = action.item.qty;
+            //if the new quantity is 0, just remove it
+            if(action.item.qty === 0){
+                newCart.splice(index, 1)
+            }else{
+                newCart[index].qty = action.item.qty;
+            }
             //update state with new cart array and recalculate totals
             return {
                 ...state,
