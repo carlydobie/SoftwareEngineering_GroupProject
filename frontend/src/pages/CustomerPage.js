@@ -21,11 +21,10 @@ const useStyles = makeStyles((theme) => ({
   },
   gridContainer: {
     paddingTop: "1vh",
-    paddingLeft: "10vw",
-    paddingRight: "8vw",
+    paddingLeft: "15vw",
   },
   gridItem: { 
-    margin: '1vw'
+    margin: '0.5vw'
   }
 }))
 
@@ -59,17 +58,6 @@ export default function CustomerPage() {
             console.log(error)
         });
     }
-  
-    // function getQuantity(item) {
-    //   axios.get('localhost:8080/inventory/qty' + item.number)
-    //     .then(function (response) {
-    //       setData(response.data)
-    //         console.log(response)
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error)
-    //     })
-    // }
 
   return (
     <div>
