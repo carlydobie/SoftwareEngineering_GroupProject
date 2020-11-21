@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input'
@@ -13,8 +14,10 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { useDispatch } from 'react-redux';
 import { setBracketCharges } from '../redux/actions/shipping';
 import { InputLabel } from '@material-ui/core';
+import Boxes from '../graphics/cardboard-box.png'
+
 /*
- *  Update Shipping Brachet Charge Form Modal
+ *  Update Shipping Bracket Charge Form Modal
  * 
  *  Allows admin users to set the bracket weights and charges
  *  for shipping costs
@@ -55,6 +58,9 @@ const useStyles = makeStyles(() => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     outline: 0
+  },
+  image: {
+    width: '10vw',
   }
 }));
 
@@ -258,9 +264,9 @@ export default function ShippingForm () {
      //modal button and component
      return (
         <div>
-          <Button onClick={handleOpen}>
-            Update Shipping
-          </Button>
+          <ButtonBase onClick={handleOpen}>
+            <img className={classes.image} src={Boxes}/>
+          </ButtonBase>
           <Modal
             open={open}
             onClose={handleClose}
