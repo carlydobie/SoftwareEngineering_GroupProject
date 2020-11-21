@@ -3,6 +3,7 @@ import Navbar from '../components/core/employeeNav.js';
 import ShippingForm from '../components/shippingBracketModal';
 import OrderTable from '../components/OrderTable'
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useState, useEffect } from 'react';
@@ -15,18 +16,11 @@ const useStyles = makeStyles((theme) => ({
   root : {
     flexGrow: 1,
     margin: 'auto',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifySelf: 'center'
   },
-  gridContainer: {
-    paddingTop: "1vh",
-    paddingLeft: "25vh",
-    paddingRight: "25vh",
-  },
-  orderTable: {
-    width: '1200px',
+  box : {
+    // padding: '5vh',
+    paddingLeft: '5vw',
+    paddingBottom: '2vh'
   }
 }))
 
@@ -125,11 +119,12 @@ const handlePriceChange = (e, end) => {
 return (
     <div className={classes.root}>
       <Navbar />
-      <div style={{ marginLeft: '2%'}}>
-          <h2>Hello Admin!</h2>
-      </div>
-          <Grid container className={classes.gridContainer} spacing={1}>
-          <Grid item xs={2}>
+      <Grid container justify='center' spacing={4}>
+      <Grid item lg={12} xs={12}>
+          <h2 style={{ marginLeft: '2%'}}>Hello Admin!</h2>
+      </Grid>
+        <Grid container lg={3} xs={6} justify='center' spacing={3}>
+          <Grid item lg={6} xs={6}>
             {/**Date Range Picker: From Date */}
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
@@ -143,7 +138,7 @@ return (
               />
               </MuiPickersUtilsProvider>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item lg={6} xs={6}>
               {/**Date Range Picker: To Date */}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
@@ -157,11 +152,7 @@ return (
               />
             </MuiPickersUtilsProvider>
           </Grid>
-          <Grid item xs={8}>
-            {/**Update Shipping Charge Modal Button */}
-            <ShippingForm/>
-          </Grid>
-          <Grid item xs={2}>
+          <Grid item lg={6} xs={6}>
             {/**Price Range Picker: Min Price */}
             <TextField
               type="number"
@@ -182,7 +173,7 @@ return (
               helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
             />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item lg={6} xs={6}>
             {/**Price Range Picker: Max Price */}
             <TextField
               type="number"
@@ -203,12 +194,18 @@ return (
               helperText={(prices.min > prices.max) ? "Invalid Range" : null}
             />
           </Grid>
-
+          </Grid>
+          <Grid containter lg={6} xs={3} justify='center'>
+          <Grid item lg={12} xs={12}>
+          <Box className={classes.box}>
+            {/**Update Shipping Charge Modal Button */}
+            <ShippingForm/>
+            </Box>
+          </Grid>
+        </Grid>
           {/**Table of Orders */}
-          <Grid item xs={12}>
-          <div className={classes.orderTable}>
+          <Grid item lg={10} xs={10}>
               <OrderTable data={entries} packingList={packingList}/>
-          </div>
         </Grid>
         </Grid>
       </div>
