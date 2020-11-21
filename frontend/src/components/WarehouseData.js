@@ -100,10 +100,6 @@ export default function WarehouseData(props) {
                   }, 1000)
                 })
               },
-            }),
-            rowData => ({
-              icon: LocalShippingIcon,
-              tooltip: "invoice"
             })
         ]}
         detailPanel={rowData => {
