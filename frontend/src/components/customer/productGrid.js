@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
  * 
  */
 export default function ProductGrid(props) {
-
     //pull in state from redux to access the search bar term
     const searchTerm = useSelector(state => state.search.term);
 
@@ -32,9 +31,9 @@ export default function ProductGrid(props) {
     //and displaying a grid item for each product
     return(
       <Grid container spacing={2}>
-        {filterData().map(part => {
+        {filterData().map((part, id) => {
           return (
-            <div>
+            <div key={id}>
               <Grid item style={{ margin: '0.5vw' }}>
                 <ProductGridItem 
                   number = {part.number} 
