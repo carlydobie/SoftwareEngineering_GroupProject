@@ -54,20 +54,20 @@ export default function WarehouseData(props) {
       })
     
     //send email to let cust know order has shipped
-  //   emailjs.send("gmail", "template_uzx5x6j", {
-  //     orderNum: orderNum,
-  //     to_name: cust_name,
-  //     to_email: cust_email,
-  //   }, "user_g1HvKmngxkCglwn9LDMBB")
-  //   .then((result) => {
-  //     console.log(result.text);
-  //   }, (error) => {
-  //     console.log(error.text);
-  //   });
+    // emailjs.send("gmail", "template_uzx5x6j", {
+    //   orderNum: orderNum,
+    //   to_name: cust_name,
+    //   to_email: cust_email,
+    // }, "user_g1HvKmngxkCglwn9LDMBB")
+    // .then((result) => {
+    //   console.log(result.text);
+    // }, (error) => {
+    //   console.log(error.text);
+    // });
 
-  //   setLoading(false)
-  //   setAllSelected(false)
-  // }
+     setLoading(false)
+     setAllSelected(false)
+   }
 
   //display shipping icon if all parts in an order have been checked
   const handleSelectRow = (rowLength, order) => {
