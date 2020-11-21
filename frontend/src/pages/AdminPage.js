@@ -8,9 +8,31 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { useState, useEffect } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
+const useStyles = makeStyles((theme) => ({
+  root : {
+    flexGrow: 1,
+    margin: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifySelf: 'center'
+  },
+  gridContainer: {
+    paddingTop: "1vh",
+    paddingLeft: "25vh",
+    paddingRight: "25vh",
+  },
+  orderTable: {
+    width: '1200px',
+  }
+}))
+
 function AdminPage() {
+  const classes = useStyles();
+
 //state to hold axios responses
 const [entries, setEntries] = useState([]);
 const [packingList, setPackingList] = useState([]);
@@ -101,12 +123,13 @@ const handlePriceChange = (e, end) => {
 //admin page component, with picker for price and date range,
 //button to adjust shipping charges, and table of orders
 return (
-    <div className="App">
+    <div className={classes.root}>
       <Navbar />
       <div style={{ marginLeft: '2%'}}>
-        <h2>Hello Admin!</h2>
-        <Grid container spacing={1}>
-          <Grid item xs={9}>
+          <h2>Hello Admin!</h2>
+      </div>
+          <Grid container className={classes.gridContainer} spacing={1}>
+          <Grid item xs={2}>
             {/**Date Range Picker: From Date */}
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
@@ -118,7 +141,11 @@ return (
                 name="from"
                 onChange={(e) => {handleDateChange(e, "from")}}
               />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={2}>
               {/**Date Range Picker: To Date */}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 margin="dense"
                 id="to-date"
@@ -130,11 +157,11 @@ return (
               />
             </MuiPickersUtilsProvider>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={8}>
             {/**Update Shipping Charge Modal Button */}
             <ShippingForm/>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={2}>
             {/**Price Range Picker: Min Price */}
             <TextField
               type="number"
@@ -154,6 +181,8 @@ return (
               error={(prices.min > prices.max) || (prices.min < 0)}
               helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
             />
+            </Grid>
+            <Grid item xs={2}>
             {/**Price Range Picker: Max Price */}
             <TextField
               type="number"
@@ -174,17 +203,17 @@ return (
               helperText={(prices.min > prices.max) ? "Invalid Range" : null}
             />
           </Grid>
+
           {/**Table of Orders */}
-          <Grid item xs={12} justify="center">
-            <div>
+          <Grid item xs={12}>
+          <div className={classes.orderTable}>
               <OrderTable data={entries} packingList={packingList}/>
-            </div>
-          </Grid>
+          </div>
+        </Grid>
         </Grid>
       </div>
-      
-    </div>
   );
 }
 
 export default AdminPage;
+
