@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
   gridContainer: {
     paddingTop: "1vh",
-    paddingLeft: "15vw",
+    paddingLeft: "12vw",
+    paddingRight: "12vw",
   },
   gridItem: { 
     margin: '0.5vw'
