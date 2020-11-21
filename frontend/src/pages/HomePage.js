@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 export default function HomePage() {
 
   return (
-    <body className="home-bg">
+    <div className="home-bg">
           <Box className="home-menu-box"> 
           <Grid container spacing={3}>
               <Grid item xs={12} lg={12}>
@@ -38,6 +38,6 @@ export default function HomePage() {
               </Grid>
           </Grid>
           </Box>
-    </body>
+    </div>
   );
 }

@@ -265,7 +265,7 @@ export default function ShippingForm () {
      return (
         <div>
           <ButtonBase onClick={handleOpen}>
-            <img className={classes.image} src={Boxes}/>
+            <img className={classes.image} src={Boxes} alt="update shipping"/>
           </ButtonBase>
           <Modal
             open={open}
