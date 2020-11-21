@@ -2,17 +2,23 @@ import React from 'react';
 import ProductGridItem from './product.js';
 import Grid from '@material-ui/core/Grid'
 import { useSelector } from 'react-redux'
-
+/*
+ *  Product Grid Component that renders and a grid 
+ *  displaying all the product items. Implements search
+ *  function that is connected to search bar through redux
+ * 
+ */
 export default function ProductGrid(props) {
 
+    //pull in state from redux to access the search bar term
     const searchTerm = useSelector(state => state.search.term);
 
+    //filter the data based on the search bar term
     function filterData(){
         if(searchTerm !== ""){
-          let length = searchTerm.length
           let filtered = [];
           props.data.forEach(part => {
-            if(part.description.substring(0, length) === searchTerm){
+            if(part.description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1){
               filtered.push(part)
             }
           })
@@ -22,6 +28,8 @@ export default function ProductGrid(props) {
         }
       }
 
+    //render the grid by looping thru the filtered data
+    //and displaying a grid item for each product
     return(
       <Grid container spacing={2}>
         {filterData().map(part => {

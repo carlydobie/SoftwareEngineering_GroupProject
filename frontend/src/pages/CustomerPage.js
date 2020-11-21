@@ -4,7 +4,6 @@ import ProductGrid from '../components/customer/productGrid';
 import Navbar from '../components/core/customerNav.js';
 import Box from '@material-ui/core/Box';
 import axios from 'axios';
-
 import '../css/customerpage.css';
 /*
  *  Customer Page to view all products and select parts to 
@@ -13,6 +12,7 @@ import '../css/customerpage.css';
  * 
  */
 
+//styles
 const useStyles = makeStyles((theme) => ({
   root : {
     flexGrow: 1,
@@ -23,11 +23,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+// page component
 export default function CustomerPage() {
   const classes = useStyles();
 
+  //local state for results of axios calls
   const [data, setData] = useState([])
 
+  //call the get part info function when the page loads
   useEffect(() => { getPartInfo() }, [])
 
   //get all parts
@@ -54,6 +57,7 @@ export default function CustomerPage() {
         });
     }
 
+  //render the product grid and pass it the data from the database
   return (
     <div>
       <Navbar/>
