@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import ProductGrid from '../components/customer/productGrid';
 import Navbar from '../components/core/customerNav.js';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import axios from 'axios';
-import ProductGridItem from '../components/customer/product.js';
+
 import '../css/customerpage.css';
 /*
  *  Customer Page to view all products and select parts to 
@@ -22,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
   gridContainer: {
     paddingTop: "1vh",
     paddingLeft: "15vw",
-  },
-  gridItem: { 
-    margin: '0.5vw'
   }
 }))
 
@@ -33,7 +28,7 @@ export default function CustomerPage() {
 
   const [data, setData] = useState([])
 
-  useEffect(() => {getPartInfo()}, [])
+  useEffect(() => { getPartInfo() }, [])
 
   //get all parts
   const getPartInfo = async() => {
@@ -64,24 +59,7 @@ export default function CustomerPage() {
       <Navbar/>
       <div className={classes.root}>
         <Box className={classes.gridContainer}>
-          <Grid container spacing={2}>
-            {data.map(part => {
-              return (
-                <div>
-                  <Grid item className={classes.gridItem}>
-                    <ProductGridItem 
-                      number = {part.number} 
-                      description = {part.description}
-                      price = {part.price}
-                      weight = {part.weight}
-                      pictureURL = {part.pictureURL}
-                      qty = {part.qty}
-                    />
-                  </Grid>
-                </div>
-              );
-            })}
-          </Grid>
+         <ProductGrid data={data}/>
         </Box>
       </div>
     </div>
