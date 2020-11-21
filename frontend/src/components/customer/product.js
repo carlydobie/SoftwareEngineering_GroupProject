@@ -99,7 +99,7 @@ export default function ProductGridItem(props) {
             <Paper className={classes.paper} elevation={4}>
                 <Box>
                     <Box className={classes.imageBox}>
-                        <img className={classes.image} src={props.pictureURL}/>
+                        <img className={classes.image} src={props.pictureURL} alt={props.description}/>
                     </Box>
                     <Box  className={classes.textBox}>
                         <div className={classes.textBox}>

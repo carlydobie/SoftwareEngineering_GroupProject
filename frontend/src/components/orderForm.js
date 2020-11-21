@@ -70,8 +70,8 @@ export default function OrderForm (props) {
 
     //hooks for modal
     const classes = useStyles();
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
+    const [modalStyle] = useState(getModalStyle);
+    const [open, setOpen] = useState(false);
   
     //pull in state from redux
     const dispatch = useDispatch();

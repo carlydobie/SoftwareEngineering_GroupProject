@@ -1,8 +1,5 @@
 import '../css/homepage.css'
-// import { BrowserRouter } from 'react-router-dom'
-// import Background from '../graphics/AProj-BG.png'
 import Grid from '@material-ui/core/Grid'
-import Container from '@material-ui/core/Container'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'

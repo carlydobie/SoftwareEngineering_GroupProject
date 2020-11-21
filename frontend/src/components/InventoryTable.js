@@ -7,7 +7,7 @@ import MaterialTable from 'material-table'
   const column = [
     { title: 'Part Number', field: 'part_number', editable: 'never'},
     { title: 'Description', field: 'description', editable: 'never'},
-    { title: 'Quantity', field: 'qty', validate: rowData => (rowData.qty >= 0) ? { isValid: true } : { isValid: false, helperText: 'not enough in inventory'}}
+    { title: 'Quantity', field: 'qty', validate: rowData => (rowData.qty >= 0) ? { isValid: true } : { isValid: false, helperText: 'invalid quantity'}}
   ];
 export default function ProductTable(props) {
   const [entries, setEntries] = useState([]);
@@ -18,7 +18,6 @@ export default function ProductTable(props) {
     .then(function (response) {
       // handle success
       setEntries(response.data)
-      console.log(response);
     })
     .catch(function (error) {
       // handle error
@@ -34,7 +33,6 @@ export default function ProductTable(props) {
   const setData = async (data) => {
     const id = data.part_number //The parts part number to edit
     const qty = data.qty        //Updated quantity
-    console.log(qty);
     if(data.qty >= 0 ){
       await axios.put('http://localhost:8080/inventory/update/' +id, {qty: qty})
       .then(function (response) {
@@ -45,10 +43,7 @@ export default function ProductTable(props) {
         // handle error
         console.log(error);
       });
-      }
-      else{
-        console.log('dfasdfasd')
-      }
+    }
   }
 
     //Make entries state into an array
