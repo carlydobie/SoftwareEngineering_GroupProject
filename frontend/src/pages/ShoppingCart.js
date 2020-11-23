@@ -92,7 +92,7 @@ function ShoppingCart() {
   //display, otherwise an empty cart message
   const displayCart = () => {
       //cart is empty
-      if(cart.length == 0){
+      if(cart.length === 0){
           return (
               <Typography>
                   Nothing in Your Cart Yet!
