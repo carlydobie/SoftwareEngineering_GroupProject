@@ -120,97 +120,103 @@ return (
     <div className={classes.root}>
       <Navbar />
       <Grid container justify='center' spacing={4}>
-      <Grid item lg={12} xs={12}>
-          <h2 style={{ marginLeft: '2%'}}>Hello Admin!</h2>
-      </Grid>
-        <Grid container lg={3} xs={6} justify='center' spacing={3}>
-          <Grid item lg={6} xs={6}>
-            {/**Date Range Picker: From Date */}
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                margin="dense"
-                id="from-date"
-                label="From:"
-                format="MM/dd/yyyy"
-                value={dates.from}
-                name="from"
-                onChange={(e) => {handleDateChange(e, "from")}}
-              />
-              </MuiPickersUtilsProvider>
+        <Grid item lg={12} xs={12}>
+            <h2 style={{ marginLeft: '2%'}}>Hello Admin!</h2>
+        </Grid>
+        <Grid item lg={3} xs={6}>
+          <Grid container justify='center' spacing={3}>
+            <Grid item lg={6} xs={6}>
+              {/**Date Range Picker: From Date */}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  margin="dense"
+                  id="from-date"
+                  label="From:"
+                  format="MM/dd/yyyy"
+                  value={dates.from}
+                  name="from"
+                  onChange={(e) => {handleDateChange(e, "from")}}
+                />
+                </MuiPickersUtilsProvider>
             </Grid>
             <Grid item lg={6} xs={6}>
               {/**Date Range Picker: To Date */}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                margin="dense"
-                id="to-date"
-                label="To:"
-                format="MM/dd/yyyy"
-                value={dates.to}
-                name="to"
-                onChange={(e) => {handleDateChange(e, "to")}}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
-          <Grid item lg={6} xs={6}>
-            {/**Price Range Picker: Min Price */}
-            <TextField
-              type="number"
-              margin="dense"
-              id="min"
-              name="min"
-              label="Min Price"
-              value={prices.min}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    $
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {handlePriceChange(e, "min")}}
-              error={(prices.min > prices.max) || (prices.min < 0)}
-              helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
-            />
+                <KeyboardDatePicker
+                  margin="dense"
+                  id="to-date"
+                  label="To:"
+                  format="MM/dd/yyyy"
+                  value={dates.to}
+                  name="to"
+                  onChange={(e) => {handleDateChange(e, "to")}}
+                />
+              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item lg={6} xs={6}>
-            {/**Price Range Picker: Max Price */}
-            <TextField
-              type="number"
-              margin="dense"
-              id="max"
-              name="max"
-              label="Max Price"
-              value={prices.max}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    $
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {handlePriceChange(e, "max")}}
-              error={(prices.min > prices.max)}
-              helperText={(prices.min > prices.max) ? "Invalid Range" : null}
-            />
-          </Grid>
-          </Grid>
-          <Grid containter lg={6} xs={3} justify='center'>
-          <Grid item lg={12} xs={12}>
-          <Box className={classes.box}>
-            {/**Update Shipping Charge Modal Button */}
-            <ShippingForm/>
-            </Box>
+              {/**Price Range Picker: Min Price */}
+              <TextField
+                type="number"
+                margin="dense"
+                id="min"
+                name="min"
+                label="Min Price"
+                value={prices.min}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      $
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {handlePriceChange(e, "min")}}
+                error={(prices.min > prices.max) || (prices.min < 0)}
+                helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
+              />
+            </Grid>
+            <Grid item lg={6} xs={6}>
+              {/**Price Range Picker: Max Price */}
+              <TextField
+                type="number"
+                margin="dense"
+                id="max"
+                name="max"
+                label="Max Price"
+                value={prices.max}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      $
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {handlePriceChange(e, "max")}}
+                error={(prices.min > prices.max)}
+                helperText={(prices.min > prices.max) ? "Invalid Range" : null}
+              />
+            </Grid>
           </Grid>
         </Grid>
-          {/**Table of Orders */}
-          <Grid item lg={10} xs={10}>
+        <Grid item lg={6} xs={3}>
+          <Grid containter justify='center'>
+            <Grid item lg={12} xs={12}>
+              <Box className={classes.box}>
+                {/**Update Shipping Charge Modal Button */}
+                <ShippingForm/>
+              </Box>  
+            </Grid>
+          </Grid>
+        </Grid>
+        </Grid>
+        {/**Table of Orders */}
+        <Grid item lg={12} xs={12}>
+          <Grid container justify="center">
+            <Grid item xs={10}>
               <OrderTable data={entries} packingList={packingList}/>
-        </Grid>
+            </Grid>
+          </Grid>
         </Grid>
       </div>
-    </div>
-
   );
 }
 

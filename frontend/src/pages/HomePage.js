@@ -1,8 +1,5 @@
 import '../css/homepage.css'
-// import { BrowserRouter } from 'react-router-dom'
-// import Background from '../graphics/AProj-BG.png'
 import Grid from '@material-ui/core/Grid'
-import Container from '@material-ui/core/Container'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
@@ -13,7 +10,7 @@ import { Link } from 'react-router-dom'
 export default function HomePage() {
 
   return (
-    <body className="home-bg">
+    <div className="home-bg">
           <Box className="home-menu-box"> 
           <Grid container spacing={3}>
               <Grid item xs={12} lg={12}>
@@ -41,6 +38,6 @@ export default function HomePage() {
               </Grid>
           </Grid>
           </Box>
-    </body>
+    </div>
   );
 }
