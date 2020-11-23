@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import Invoice from './Invoice';
 import emailjs from 'emailjs-com'
 import axios from 'axios';
+import '../css/Invoice.css';
 
 export default function WarehouseData(props) {
 
@@ -27,7 +29,8 @@ export default function WarehouseData(props) {
     { title: 'Order Date', field: 'ord_date', type: 'date'},
     { title: 'Customer Name', field: 'name' },
     { title: 'Mailing Address', field: 'address' },
-    { title: 'Customer E-Mail', field: 'email' }
+    { title: 'Customer E-Mail', field: 'email' },
+    { title: 'Show Invoice', render: rowData => <Invoice data={rowData} packingLists={props.packingList[rowData.order_number-1]}/>}
   ]
 
   //sub col definitions
@@ -54,7 +57,7 @@ export default function WarehouseData(props) {
       })
     
     //i think send email will go here too, let cust know order has shipped
-    emailjs.send("gmail", "template_uzx5x6j", {
+    /*emailjs.send("gmail", "template_uzx5x6j", {
       orderNum: orderNum,
       to_name: cust_name,
       to_email: cust_email,
@@ -63,7 +66,7 @@ export default function WarehouseData(props) {
       console.log(result.text);
     }, (error) => {
       console.log(error.text);
-    });
+    });*/
 
     setLoading(false)
     setAllSelected(false)
@@ -79,7 +82,7 @@ export default function WarehouseData(props) {
 
   //Table
   return (
-    <div>
+    <div className="invoice-box">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
       <MaterialTable
         title={"Orders"}
@@ -101,7 +104,8 @@ export default function WarehouseData(props) {
                 })
               },
             })
-        ]}
+        ]
+      }
         detailPanel={rowData => {
           //find the object in the array of orders in packingLists where the order numnber matches
           let orderData = packingLists.filter(order => order[0].order_number === rowData.order_number)
@@ -112,7 +116,8 @@ export default function WarehouseData(props) {
                 columns={packingColumns}
                 data={orderData[0]}
                 options={{
-                  selection: true
+                  selection: true,
+                  paging: false
                 }}
                 onSelectionChange={(rows) => handleSelectRow(rows.length, orderData[0])}
               />  
@@ -120,7 +125,6 @@ export default function WarehouseData(props) {
           )
         }}
       />
-
     </div>
   )
 

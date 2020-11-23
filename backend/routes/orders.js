@@ -16,7 +16,7 @@ router.get('/GetCustomerOrders', function (req, res) {
 })
 
 router.get('/PartsInOrder/:orderNumber', function (req, res) {
-  let columns = 'po.order_number, po.part_number, i.description, po.qty';
+  let columns = 'po.order_number, po.part_number, i.description, po.qty, o.total';
   let stmt = 'SELECT ' + columns + ' FROM orders o, inventory i, prod_ordered po '
   + 'WHERE o.order_number = po.order_number AND i.part_number = po.part_number AND o.order_number = ?'
   
