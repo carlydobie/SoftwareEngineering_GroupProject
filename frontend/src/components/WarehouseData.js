@@ -88,6 +88,9 @@ export default function WarehouseData(props) {
         title={"Orders"}
         data={orders}
         columns={column}
+        options={{
+          pageSize: 10
+        }}
         isLoading={loading}
         actions={[
             rowData => ({

@@ -1,25 +1,23 @@
-/* .invoice-modal {
-    max-width: 800px;
-    min-height: 90vh;
-    margin: auto;
-    padding: 30px;
-    border: 1px solid #eee;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-    font-size: 16px;
-    line-height: 24px;
-    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-    color: #555;
-    background-color: #eee;
+.invoice-modal {
+    table-layout: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    /* border: 1px solid black */
 }
 
 .invoice-modal table {
-    width: 95%;
-    table-layout: auto;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid black
+    border: 1px solid black;
+    background: #eee;
+    font-size: 11px;
 }
 
-.invoice-modal th, td {
-    border: 1px solid black
-} */
+.invoice-modal th {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    background: #aaa;
+    font-size: 11px;
+}
+
+.invoice-modal td {
+    font-size: 11px;
+}

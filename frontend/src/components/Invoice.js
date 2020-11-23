@@ -34,7 +34,8 @@ function getModalStyle() {
 const useStyles = makeStyles(() => ({
     paper: {
         position: 'absolute',
-        width: '65%',
+        width: '75%',
+        height: '95vh',
         backgroundColor: theme.palette.background.paper,
         border: 'none',
         borderRadius: '0px',
@@ -54,9 +55,9 @@ export default function Invoice(props) {
             rows = rows
                 + "<tr>"
                 + "<td>" + row.part_number + "</td>"
-                + "<td>" + row.qty + "x " + row.description + "</td>"
-                + "<td align='right'>" + row.weight * row.qty + "</td>"
-                + "<td align='right'>" + (row.price * row.qty).toFixed(2) + "</td>"
+                + "<td>(" + row.qty + "x) " + row.description + "</td>"
+                + "<td align='right'>" + (row.weight * row.qty).toFixed(2) + "</td>"
+                + "<td align='right'>$" + (row.price * row.qty).toFixed(2) + "</td>"
                 + "</tr>";
         });
 
@@ -82,8 +83,7 @@ export default function Invoice(props) {
                     + "<th align='right'>Weight</th>"
                     + "<th align='right'>Cost</th>"
                     + GetDataRows()
-                    + "</table><br/>"
-
+                    + "</table>"
                     + "<table width='40%'>"
                     + "<tr><td><b>Subtotal</b>:</td><td align='right'>$" + subtotal.toFixed(2) + "</td></tr><br/>"
                     + "<tr><td><b>Shipping:</b></td><td align='right'>$" + shippingCharge.toFixed(2) + "</td></tr><br/>"
@@ -115,7 +115,7 @@ export default function Invoice(props) {
     const body = () => {
         return (
             <div style={modalStyle} className={classes.paper}>
-                <div>
+                <div className="invoice-modal">
                     <div>
                         Amazing Auto Parts Galore LLC<br />
                         1234 Invisible St.<br />
