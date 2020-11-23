@@ -65,9 +65,9 @@ export default function WarehouseData(props) {
     //   console.log(error.text);
     // });
 
-    setLoading(false)
-    setAllSelected(false)
-  }
+     setLoading(false)
+     setAllSelected(false)
+   }
 
   //display shipping icon if all parts in an order have been checked
   const handleSelectRow = (rowLength, order) => {

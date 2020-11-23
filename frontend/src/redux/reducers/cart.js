@@ -17,9 +17,10 @@ const cartReducer = ( state = { total: initialTotal, weight: initialWeight, cart
                 //item not in cart yet
                 addCart = [...state.cart, action.item]
             }else{
-                //item is already in there, update qty
+                //item is already in there, update qty and subtract from on hand amount
                 addCart = [...state.cart]
                 addCart[i].qty += action.item.qty
+                addCart[i].onHand -= action.item.qty
             }
             //add the passed item to the cart and update the cart's total price and weight
             return {
@@ -37,6 +38,8 @@ const cartReducer = ( state = { total: initialTotal, weight: initialWeight, cart
             if(action.item.qty === 0){
                 newCart.splice(index, 1)
             }else{
+                //update the on hand amount and the cart quantity
+                newCart[index].onHand += (newCart[index].qty - action.item.qty)
                 newCart[index].qty = action.item.qty;
             }
             //update state with new cart array and recalculate totals
@@ -55,6 +58,10 @@ const cartReducer = ( state = { total: initialTotal, weight: initialWeight, cart
                 total: getTotal(removedCart),
                 weight: getWeight(removedCart)
             }
+        // case 'GET_ITEM':
+        //     return {
+
+        //     }
         case 'CLEAR_CART':
             return {
                 ...state,
