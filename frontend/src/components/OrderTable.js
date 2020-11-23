@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
-import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 export default function OrderTable(props) {
-  console.log(props.packingList)
   //local state
   const [orders, setOrders] = useState(props.data)
   const [packingLists, setPackingLists] = useState(props.parts) 
-  const [loading, setLoading] = useState(false)
 
   //set state with props on render
   useEffect(() => {
@@ -45,7 +42,6 @@ export default function OrderTable(props) {
         title={"Orders"}
         data={orders}
         columns={column}
-        isLoading={loading}
         options={{
             filtering: true
           }}
