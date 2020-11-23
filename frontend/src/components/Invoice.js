@@ -48,26 +48,46 @@ const useStyles = makeStyles(() => ({
 
 export default function Invoice(props) {
 
-    function getRows() {
+    function GetDataRows() {
         let rows = "";
         props.packingLists.forEach(row => {
             rows = rows
                 + "<tr>"
                 + "<td>" + row.part_number + "</td>"
                 + "<td>" + row.qty + "x " + row.description + "</td>"
+                + "<td align='right'>" + row.weight * row.qty + "</td>"
+                + "<td align='right'>" + (row.price * row.qty).toFixed(2) + "</td>"
                 + "</tr>";
         });
 
         return rows;
     }
 
-    function foo() {
+    function GetSubtotal() {
+        let subtotal = 0;
+        props.packingLists.forEach(row => {
+            subtotal += (row.price * row.qty)
+        })
+        return subtotal;
+    }
+
+    function RenderTableAndSummary() {
         if (props.packingLists != null) {
+            let subtotal = GetSubtotal();
+            let shippingCharge = (props.data.total) - subtotal;
             return <div dangerouslySetInnerHTML={{
                 __html: "<table width='90%'>"
                     + "<th align='left' width='15%'>Part No.</th>"
                     + "<th> </th>"
-                    + getRows()
+                    + "<th align='right'>Weight</th>"
+                    + "<th align='right'>Cost</th>"
+                    + GetDataRows()
+                    + "</table><br/>"
+
+                    + "<table width='40%'>"
+                    + "<tr><td><b>Subtotal</b>:</td><td align='right'>$" + subtotal.toFixed(2) + "</td></tr><br/>"
+                    + "<tr><td><b>Shipping:</b></td><td align='right'>$" + shippingCharge.toFixed(2) + "</td></tr><br/>"
+                    + "<tr><td><b>TOTAL:</b></td><td align='right'>$" + props.data.total.toFixed(2) + "</td></tr><br/>"
                     + "</table>"
             }} />
         } else {
@@ -83,7 +103,7 @@ export default function Invoice(props) {
 
     const handleOpen = () => {
         console.log(props.packingLists);
-        getRows();
+        GetDataRows();
         setOpen(true);
         //{ console.log(props.packingLists) }
     };
@@ -112,17 +132,7 @@ export default function Invoice(props) {
                         {props.data.email}<br />
                         <br />
                     </div>
-                    {foo()}
-                    <table width="95%">
-                        <th align="left">Sicko</th>
-                        <th>Mode</th>
-                        <th>Scott</th>
-                        <tr>
-                            <td>1</td><td>2</td><td>3</td>
-                        </tr>
-                    </table>
-                    <br />
-                    <b>TOTAL:</b> $!!Total Order Cost!!
+                    {RenderTableAndSummary()}
                 </div>
             </div>
         )
