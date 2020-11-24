@@ -6,7 +6,8 @@ import Box from '@material-ui/core/Box';
 import axios from 'axios';
 import '../css/customerpage.css';
 /*
- *  Customer Page to view all products and select parts to 
+ *  Customer Page Component
+ *  Shopping page for customer to view all products and select parts to 
  *  purchase. Customers can add parts to the shopping cart
  *  and view the cart before submitting their order
  * 
@@ -58,7 +59,7 @@ export default function CustomerPage() {
         });
     }
 
-  //render the product grid and pass it the data from the database
+  //pass the product data to the product grid and render
   return (
     <div>
       <Navbar/>

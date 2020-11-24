@@ -1,6 +1,5 @@
 /*
  * Search Tearm Reducer to handle customer search bar
- *
  */
  const searchReducer = ( state = { term: "" }, action ) => {
      switch(action.type){

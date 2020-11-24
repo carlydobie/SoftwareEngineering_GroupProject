@@ -11,112 +11,122 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+/*
+ *  Admin Page Component
+ *  Gets the Order Data and Order Details from the backend
+ *  to pass to the admin table, also renders date and price
+ *  range pickers to filter the table data. Additionally,
+ *  admins have access to a shipping button that will update
+ *  the shipping charges.
+ *
+ */
 
+//styles
 const useStyles = makeStyles((theme) => ({
   root : {
     flexGrow: 1,
     margin: 'auto',
   },
   box : {
-    // padding: '5vh',
     paddingLeft: '5vw',
     paddingBottom: '2vh'
   }
 }))
 
+//Admin Page
 function AdminPage() {
   const classes = useStyles();
 
-//state to hold axios responses
-const [entries, setEntries] = useState([]);
-const [packingList, setPackingList] = useState([]);
+  //state to hold axios responses
+  const [entries, setEntries] = useState([]);
+  const [packingList, setPackingList] = useState([]);
 
-//get today's date to use in "to" for date range default
-let now = new Date(Date.now());
-let today = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
-//create date one month ago for default 
-let monthAgo = new Date(Date.now());
-monthAgo.setMonth(now.getMonth() - 1)
+  //get today's date to use in "to" for date range default
+  let now = new Date(Date.now());
+  let today = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+  //create date one month ago for default 
+  let monthAgo = new Date(Date.now());
+  monthAgo.setMonth(now.getMonth() - 1)
 
-//default date range will be for orders from beginning of year til now
-const [dates, setDates] = useState({
-  from: monthAgo,
-  to: today
-});
+  //default date range will be for orders from beginning of year til now
+  const [dates, setDates] = useState({
+    from: monthAgo,
+    to: today
+  });
 
-//default price range will be for orders between 0 and million dollars
-const [prices, setPrices] = useState({
-  min: 0,
-  max: 1000000
-})
-
-//get data from backend
-const getData = async () => {
-  //get orders for main table
-  await axios.post('http://localhost:8080/orders/GetCustomerOrdersPrice', {
-    fromDate: dates.from,
-    toDate: dates.to,
-    minPrice: prices.min,
-    maxPrice: prices.max
+  //default price range will be for orders between 0 and million dollars
+  const [prices, setPrices] = useState({
+    min: 0,
+    max: 1000000
   })
-    .then(function (response) {
-      // handle success
-      setEntries(response.data)
-      //get products ordered for each order number
-      response.data.forEach(order => {
-        axios.get('http://localhost:8080/orders/PartsInOrder/' + order.order_number)
-        .then(function (orderResponse) {
-          //append the result to the packing list array
-            orderResponse.data.forEach(part => {
-              axios.get('http://localhost:8080/legacy/' + part.part_number)
-                .then(function (partResponse){ 
-                  //add the price to the order object
-                  part.price = partResponse.data[0].price
-                  //add the total weight to the order object
-                  part.weight = partResponse.data[0].weight
-                  setPackingList(packingList => [...packingList, part])
+
+  //get data from backend
+  const getData = async () => {
+    //get orders for main table
+    await axios.post('http://localhost:8080/orders/GetCustomerOrdersPrice', {
+      fromDate: dates.from,
+      toDate: dates.to,
+      minPrice: prices.min,
+      maxPrice: prices.max
+    })
+      .then(function (response) {
+        // handle success
+        setEntries(response.data)
+        //get products ordered for each order number
+        response.data.forEach(order => {
+          axios.get('http://localhost:8080/orders/PartsInOrder/' + order.order_number)
+          .then(function (orderResponse) {
+              //get the part details for each part in the order
+              orderResponse.data.forEach(part => {
+                axios.get('http://localhost:8080/legacy/' + part.part_number)
+                  .then(function (partResponse){ 
+                    //add the price to the part object
+                    part.price = partResponse.data[0].price
+                    //add the total weight to the part object
+                    part.weight = partResponse.data[0].weight
+                    setPackingList(packingList => [...packingList, part])
+                  })
+                  .catch(function (error) {
+                    console.log(error)
+                  })
                 })
-                .catch(function (error) {
-                  console.log(error)
-                })
-                //console.log(orderResponse.data)
-              })
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
         })
       })
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
-}
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  } 
 
-useEffect(() => {
-  getData()
-}, [dates, prices]);
+  //get the order data when the page loads
+  useEffect(() => {
+      getData()
+  }, [dates, prices]);
 
-//handle change in date range
-const handleDateChange = (e, end) => {
-  if(e != null){
-    let newDate = e.getFullYear() + "-" + (e.getMonth() + 1) + "-" + e.getDate();
-    setDates(dates => ({...dates, [end]: newDate}))
+  //handle change in date range
+  const handleDateChange = (e, end) => {
+    if(e != null){
+      let newDate = e.getFullYear() + "-" + (e.getMonth() + 1) + "-" + e.getDate();
+      setDates(dates => ({...dates, [end]: newDate}))
+    }
   }
-}
 
-//handle change in price range
-const handlePriceChange = (e, end) => {
-  let newPrice = e.target.value
-  if(newPrice) {
-    setPrices(prices => ({...prices, [end]: newPrice}))
+  //handle change in price range
+  const handlePriceChange = (e, end) => {
+    let newPrice = e.target.value
+    if(newPrice) {
+      setPrices(prices => ({...prices, [end]: newPrice}))
+    }
   }
-}
 
-//admin page component, with picker for price and date range,
-//button to adjust shipping charges, and table of orders
-return (
+  //admin page component, with picker for price and date range,
+  //button to adjust shipping charges, and table of orders
+  return (
     <div className={classes.root}>
       <Navbar />
       <Grid container justify='center' spacing={4}>

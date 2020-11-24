@@ -10,7 +10,8 @@ import Paper from '@material-ui/core/Paper'
 import { updateCart, removeItem } from '../redux/actions/cart';
 import axios from 'axios'
 /*
- *  Shopping Cart Page for Customer's Selected Products
+ *  Shopping Cart Page
+ *  Displays Customer's Selected Products
  *  Customer can view the parts they have selected and 
  *  update quantities or remove items. They can see their
  *  order total and submit their order. 
@@ -46,7 +47,6 @@ function ShoppingCart() {
     const index = inventory.findIndex(item => item.part_number === row.id)
     return (row.qty <= inventory[index].qty)
   }
-
 
   //get inventory on render
   useEffect(() => {
