@@ -5,10 +5,17 @@ import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
-
+/*
+ *  Home Page Component
+ *  The landing page for the website where customers can 
+ *  go to the online shopping platform, or employees can
+ *  login to do their work
+ *
+ */
 
 export default function HomePage() {
-
+  //render the title and buttons to navigate to the
+  //customer and employee sides of the app
   return (
     <div className="home-bg">
           <Box className="home-menu-box"> 
