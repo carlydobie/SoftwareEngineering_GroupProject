@@ -15,8 +15,17 @@ router.get('/GetCustomerOrders', function (req, res) {
   })
 })
 
+router.get('/GetCustomerOrderByID/:orderNumber', function (req, res) {
+  let columns = 'o.order_number, o.status, o.ord_date, c.name, c.address, c.email, o.total';
+  let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number AND o.order_number = ?';
+  connection.query(stmt, req.params.orderNumber, function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  })
+})
+
 router.get('/PartsInOrder/:orderNumber', function (req, res) {
-  let columns = 'po.order_number, po.part_number, i.description, po.qty, i.price, i.weight';
+  let columns = 'po.order_number, po.part_number, i.description, po.qty';
   let stmt = 'SELECT ' + columns + ' FROM orders o, inventory i, prod_ordered po '
   + 'WHERE o.order_number = po.order_number AND i.part_number = po.part_number AND o.order_number = ?'
   
