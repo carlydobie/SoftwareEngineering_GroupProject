@@ -47,7 +47,6 @@ function InvoicePage() {
         })
         
     }
-    console.log(entries)
     useEffect(() => {
         getData()
     }, [])

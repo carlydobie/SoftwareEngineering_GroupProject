@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import Invoice from './Invoice';
 import { useHistory } from 'react-router-dom'
 import emailjs from 'emailjs-com'
 import axios from 'axios';
-import '../css/Invoice.css';
 
 export default function WarehouseData(props) {
 
@@ -32,8 +30,7 @@ export default function WarehouseData(props) {
     { title: 'Order Date', field: 'ord_date', type: 'date'},
     { title: 'Customer Name', field: 'name' },
     { title: 'Mailing Address', field: 'address' },
-    { title: 'Customer E-Mail', field: 'email' },
-    { title: 'Show Invoice', render: rowData => <Invoice data={rowData} packingLists={props.packingList[rowData.order_number-1]}/>}
+    { title: 'Customer E-Mail', field: 'email' }
   ]
 
   //sub col definitions

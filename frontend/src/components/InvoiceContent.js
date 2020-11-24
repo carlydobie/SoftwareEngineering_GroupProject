@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { DataGrid } from '@material-ui/data-grid';
+import '../css/Invoice.css';
 
 export default function InvoiceContent(props) {
     const [orders, setOrders] = useState(props.data)
@@ -46,15 +47,15 @@ export default function InvoiceContent(props) {
                 __html: "<table width='90%'>"
                     + "<th align='left' width='15%'>Part No.</th>"
                     + "<th> </th>"
-                    + "<th align='right'>Weight</th>"
-                    + "<th align='right'>Cost</th>"
+                    + "<th align='right' width='10%'>Weight</th>"
+                    + "<th align='right' width='10%'>Cost</th>"
                     + GetDataRows()
-                    + "</table>"
+                    + "<div className=\'invoice-summary\'></table>"
                     + "<table width='40%'>"
                     + "<tr><td><b>Subtotal</b>:</td><td align='right'>$" + subtotal.toFixed(2) + "</td></tr><br/>"
                     + "<tr><td><b>Shipping:</b></td><td align='right'>$" + shippingCharge.toFixed(2) + "</td></tr><br/>"
                     + "<tr><td><b>TOTAL:</b></td><td align='right'>$" + orders.total.toFixed(2) + "</td></tr><br/>"
-                    + "</table>"
+                    + "</table></div>"
             }} />
         } else {
             return "";
@@ -62,7 +63,7 @@ export default function InvoiceContent(props) {
     }
 
     return (
-        <div>
+        <div className='invoice'>
             <div>
                 Amazing Auto Parts Galore LLC<br />
                 1234 Invisible St.<br />
