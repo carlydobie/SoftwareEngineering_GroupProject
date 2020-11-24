@@ -16,11 +16,12 @@ import { Link } from 'react-router-dom'
  */
 
 export default function HomePage() {
-  //render the title and buttons to navigate to the
-  //customer and employee sides of the app
-
+  
+  //hook for sound effect
   const [playHorn, {stop}] = useSound(horn);
 
+  //render the title and buttons to navigate to the
+  //customer and employee sides of the app
   return (
     <div className="home-bg">
       <Box className="home-menu-box"> 

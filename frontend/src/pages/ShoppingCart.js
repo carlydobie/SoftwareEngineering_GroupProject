@@ -176,7 +176,7 @@ function ShoppingCart() {
   return (
     <div className="App">
     <Navbar/>
-        <div style={{marginLeft: '5%'}}>
+        <div style={{ marginLeft: '5%', paddingTop: '15vh'}}>
             <Typography variant="h3">
                 Your Cart
             </Typography>
