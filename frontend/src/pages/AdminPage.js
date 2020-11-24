@@ -125,7 +125,7 @@ return (
         </Grid>
         <Grid item lg={3} xs={6}>
           <Grid container justify='center' spacing={3}>
-            <Grid item lg={6} xs={6}>
+            <Grid item lg={6} xs={6} style={{paddingTop: '5vh'}}>
               {/**Date Range Picker: From Date */}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -139,7 +139,7 @@ return (
                 />
                 </MuiPickersUtilsProvider>
             </Grid>
-            <Grid item lg={6} xs={6}>
+            <Grid item lg={6} xs={6} style={{paddingTop: '5vh'}}>
               {/**Date Range Picker: To Date */}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -209,7 +209,7 @@ return (
         </Grid>
         </Grid>
         {/**Table of Orders */}
-        <Grid item lg={12} xs={12}>
+        <Grid item lg={12} xs={12} style={{paddingBottom: '10vh'}}>
           <Grid container justify="center">
             <Grid item xs={10}>
               <OrderTable data={entries} packingList={packingList}/>
