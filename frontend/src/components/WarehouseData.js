@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import DoneIcon from '@material-ui/icons/Done';
 import emailjs from 'emailjs-com'
 import axios from 'axios';
 
@@ -74,6 +75,8 @@ export default function WarehouseData(props) {
     setCurrentPackingSlip(order[0].order_number)
     if(rowLength === order.length) {
       setAllSelected(true)
+    }else{
+      setAllSelected(false)
     }
   }
 
@@ -87,9 +90,11 @@ export default function WarehouseData(props) {
         columns={column}
         isLoading={loading}
         actions={[
-            rowData => ({
+            (rowData) => {
+              return (rowData.status === 'shipped') ? { icon: DoneIcon, tooltip: 'Order has Shipped'} :
+            {
               icon: LocalShippingIcon,
-              tooltip: 'Shipped',
+              tooltip: 'Ship Now',
               disabled: (!allSelected || (currentPackingSlip !== rowData.order_number)),
               onClick: (event, rowData) => {
                 setLoading(true)
@@ -100,7 +105,8 @@ export default function WarehouseData(props) {
                   }, 1000)
                 })
               },
-            })
+            }
+          }
         ]}
         detailPanel={rowData => {
           //find the object in the array of orders in packingLists where the order numnber matches
