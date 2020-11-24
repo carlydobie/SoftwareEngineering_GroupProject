@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
   },
   box : {
+    paddingTop: '15vh',
     paddingLeft: '5vw',
     paddingBottom: '2vh'
   }
@@ -112,7 +113,7 @@ function AdminPage() {
   const handleDateChange = (e, end) => {
     if(e != null){
       let newDate = e.getFullYear() + "-" + (e.getMonth() + 1) + "-" + e.getDate();
-      setDates(dates => ({...dates, [end]: newDate}))
+      setDates(prevDates => ({...prevDates, [end]: newDate}))
     }
   }
 
@@ -120,7 +121,7 @@ function AdminPage() {
   const handlePriceChange = (e, end) => {
     let newPrice = e.target.value
     if(newPrice) {
-      setPrices(prices => ({...prices, [end]: newPrice}))
+      setPrices(prevPrices => ({...prevPrices, [end]: newPrice}))
     }
   }
 
@@ -129,13 +130,14 @@ function AdminPage() {
   return (
     <div className={classes.root}>
       <Navbar />
-      <Grid container justify='center' spacing={4}>
-        <Grid item lg={12} xs={12}>
-            <h2 style={{ marginLeft: '2%'}}>Hello Admin!</h2>
+      <h2 style={{ marginLeft: '2%'}}>Hello Admin!</h2>
+      <Grid container justify='center' spacing={4} style={{ paddingLeft: '5vh', paddingRight: '5vh'}}>
+        <Grid item xs={9}>
+            <OrderTable data={entries} packingList={packingList}/>
         </Grid>
-        <Grid item lg={3} xs={6}>
-          <Grid container justify='center' spacing={3}>
-            <Grid item lg={6} xs={6} style={{paddingTop: '5vh'}}>
+        <Grid item xs={3}>
+          <Grid container spacing={3}>
+            <Grid item lg={6} xs={6}>
               {/**Date Range Picker: From Date */}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -149,7 +151,7 @@ function AdminPage() {
                 />
                 </MuiPickersUtilsProvider>
             </Grid>
-            <Grid item lg={6} xs={6} style={{paddingTop: '5vh'}}>
+            <Grid item lg={6} xs={6}>
               {/**Date Range Picker: To Date */}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -180,8 +182,8 @@ function AdminPage() {
                   ),
                 }}
                 onChange={(e) => {handlePriceChange(e, "min")}}
-                error={(prices.min > prices.max) || (prices.min < 0)}
-                helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
+                error={((+prices.min > +prices.max) || (+prices.min) < 0)}
+                helperText={((+prices.min > +prices.max) || (+prices.min < 0)) ? "Invalid Range" : null}
               />
             </Grid>
             <Grid item lg={6} xs={6}>
@@ -201,14 +203,10 @@ function AdminPage() {
                   ),
                 }}
                 onChange={(e) => {handlePriceChange(e, "max")}}
-                error={(prices.min > prices.max)}
-                helperText={(prices.min > prices.max) ? "Invalid Range" : null}
+                error={(+prices.min > +prices.max)}
+                helperText={(+prices.min > +prices.max) ? "Invalid Range" : null}
               />
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid item lg={6} xs={3}>
-          <Grid containter justify='center'>
             <Grid item lg={12} xs={12}>
               <Box className={classes.box}>
                 {/**Update Shipping Charge Modal Button */}
@@ -217,16 +215,8 @@ function AdminPage() {
             </Grid>
           </Grid>
         </Grid>
-        </Grid>
-        {/**Table of Orders */}
-        <Grid item lg={12} xs={12} style={{paddingBottom: '10vh'}}>
-          <Grid container justify="center">
-            <Grid item xs={10}>
-              <OrderTable data={entries} packingList={packingList}/>
-            </Grid>
-          </Grid>
-        </Grid>
-      </div>
+      </Grid>
+    </div>
   );
 }
 
