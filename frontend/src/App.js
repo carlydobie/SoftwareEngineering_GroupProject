@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import WarehousePage from './pages/WarehousePage';
 import ReceivingDeskPage from './pages/ReceivingDeskPage';
 import ShoppingCart from './pages/ShoppingCart';
+import InvoicePage from './pages/InvoicePage'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route exact path="/Warehouse" component={WarehousePage} />
               <Route exact path="/ReceivingDesk" component={ReceivingDeskPage} />
               <Route exact path="/ShoppingCart" component={ShoppingCart} />
+              <Route exact path="/InvoicePage/:id" component={InvoicePage}/>
             </Switch>
         </div>
       </Router>

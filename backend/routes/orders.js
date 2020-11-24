@@ -7,9 +7,18 @@ router.get('/all', function (req, res, next) {
 });
 
 router.get('/GetCustomerOrders', function (req, res) {
-  let columns = 'o.order_number, o.status, o.ord_date, c.name, c.address, c.email';
+  let columns = 'o.order_number, o.status, o.ord_date, c.name, c.address, c.email, o.total';
   let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number';
   connection.query(stmt, function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  })
+})
+
+router.get('/GetCustomerOrderByID/:orderNumber', function (req, res) {
+  let columns = 'o.order_number, o.status, o.ord_date, c.name, c.address, c.email, o.total';
+  let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number AND o.order_number = ?';
+  connection.query(stmt, req.params.orderNumber, function (err, result) {
     if (err) throw err;
     res.json(result);
   })

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import { useHistory } from 'react-router-dom'
 import emailjs from 'emailjs-com'
 import axios from 'axios';
 
@@ -12,6 +14,7 @@ export default function WarehouseData(props) {
   const [loading, setLoading] = useState(false)
   const [allSelected, setAllSelected] = useState(false)
   const [currentPackingSlip, setCurrentPackingSlip] = useState(0)
+  const history = useHistory();
 
   //set state with props on render
   useEffect(() => {
@@ -53,17 +56,17 @@ export default function WarehouseData(props) {
         console.log(error);
       })
     
-    //send email to let cust know order has shipped
-    // emailjs.send("gmail", "template_uzx5x6j", {
-    //   orderNum: orderNum,
-    //   to_name: cust_name,
-    //   to_email: cust_email,
-    // }, "user_g1HvKmngxkCglwn9LDMBB")
-    // .then((result) => {
-    //   console.log(result.text);
-    // }, (error) => {
-    //   console.log(error.text);
-    // });
+    //i think send email will go here too, let cust know order has shipped
+    /*emailjs.send("gmail", "template_uzx5x6j", {
+      orderNum: orderNum,
+      to_name: cust_name,
+      to_email: cust_email,
+    }, "user_g1HvKmngxkCglwn9LDMBB")
+    .then((result) => {
+      console.log(result.text);
+    }, (error) => {
+      console.log(error.text);
+    });*/
 
      setLoading(false)
      setAllSelected(false)
@@ -79,17 +82,20 @@ export default function WarehouseData(props) {
 
   //Table
   return (
-    <div>
+    <div className="invoice-box">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
       <MaterialTable
         title={"Orders"}
         data={orders}
         columns={column}
+        options={{
+          pageSize: 10
+        }}
         isLoading={loading}
         actions={[
             rowData => ({
               icon: LocalShippingIcon,
-              tooltip: 'Shipped',
+              tooltip: 'Ship Order',
               disabled: (!allSelected || (currentPackingSlip !== rowData.order_number)),
               onClick: (event, rowData) => {
                 setLoading(true)
@@ -100,8 +106,16 @@ export default function WarehouseData(props) {
                   }, 1000)
                 })
               },
+            }),
+            rowData => ({
+              icon: AssignmentIcon,
+              tooltip: 'View Invoice',
+              onClick: (event, rowData) => {
+                history.push('/InvoicePage/' + rowData.order_number)
+              }
             })
-        ]}
+        ]
+      }
         detailPanel={rowData => {
           //find the object in the array of orders in packingLists where the order numnber matches
           let orderData = packingLists.filter(order => order[0].order_number === rowData.order_number)
@@ -112,7 +126,8 @@ export default function WarehouseData(props) {
                 columns={packingColumns}
                 data={orderData[0]}
                 options={{
-                  selection: true
+                  selection: true,
+                  paging: false
                 }}
                 onSelectionChange={(rows) => handleSelectRow(rows.length, orderData[0])}
               />  
@@ -120,7 +135,6 @@ export default function WarehouseData(props) {
           )
         }}
       />
-
     </div>
   )
 

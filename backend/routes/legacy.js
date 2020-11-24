@@ -31,4 +31,13 @@ router.get('/:id', function(req, res){
   })
 })
 
+router.get('/getPWPerPart/:id', function(req, res){
+  let stmt = "SELECT price, weight FROM parts WHERE number = ?";
+  let id = req.params.id;
+  legacy.query(stmt, id, function(err, result){
+    if(err) throw err;
+    res.send(result);
+  })
+})
+
 module.exports = router;
