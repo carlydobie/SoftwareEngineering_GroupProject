@@ -90,6 +90,7 @@ export default function WarehouseData(props) {
         columns={column}
         isLoading={loading}
         actions={[
+            //if the order has already shipped display a done checkmark, else display the ship now action
             (rowData) => {
               return (rowData.status === 'shipped') ? { icon: DoneIcon, tooltip: 'Order has Shipped'} :
             {
@@ -126,8 +127,6 @@ export default function WarehouseData(props) {
           )
         }}
       />
-
     </div>
   )
-
 }
