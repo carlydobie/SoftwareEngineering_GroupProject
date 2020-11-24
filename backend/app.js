@@ -10,8 +10,10 @@ var indexRouter = require('./routes/');
 var customerRouter = require('./routes/customer');
 var orderRouter = require('./routes/orders');
 
+//app
 var app = express();
 
+//using statements
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,14 +22,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//set up router
 app.use('/', indexRouter);
 app.use('/legacy', legacyRouter);
 app.use('/inventory', inventoryRouter);
-
-//Made Andrea angry
 app.use('/orders', orderRouter);
 app.use('/customer', customerRouter);
 
+//function for cross-origin cors stuff
 app.use(function(req, res, next){
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -40,15 +42,6 @@ app.use(function(req, res, next){
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
-});
-
-app.use(function(req, res, next){
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  next();
 });
 
 // error handler

@@ -1,8 +1,7 @@
 var express = require("express");
 var mysql = require("mysql");
 
-//connection to legacy parts DB
-//only works thru NIU VPN right now
+//connection object for legacy parts DB
 var legacy = mysql.createConnection({
     host: 'blitz.cs.niu.edu',
     user: 'student',
@@ -11,6 +10,7 @@ var legacy = mysql.createConnection({
     database: 'csci467'
   });
 
+  //connect to the db
   legacy.connect(function (err) {
     if(err){
       console.log('Error connecting: ', err);

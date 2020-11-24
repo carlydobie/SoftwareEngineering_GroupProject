@@ -3,7 +3,7 @@ var router = express.Router();
 var connection = require('../connections/connection');
 
 /*
- *  Routes to interact with customer table in db
+ *  Routes to interact with customer table in local db
  */
 
 //get all customers
@@ -33,7 +33,7 @@ router.post('/add', function(req, res){
     })
 })
 
-//add new customer or get their cust number if they exist
+//add new customer or get their cust number if they already exist
 router.post('/get', function(req, res){
   let stmt = 'INSERT INTO customer (name, address, email) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE customer_number=LAST_INSERT_ID(customer_number), address = VALUES(address), email = VALUES(email)';
   connection.query(stmt, [req.body.name, req.body.address, req.body.email], function(err, result){

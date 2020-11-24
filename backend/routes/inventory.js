@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var connection = require('../connections/connection');
+/*
+ *  Routes to interact with Inventory table in local db
+ */
 
 /* get all parts from the inventory db 
    with the router this is actually localhost:8080/inventory/all */
@@ -15,7 +18,7 @@ var connection = require('../connections/connection');
 // Update part quantity
 //localhost:8080/inventory/update/:id
 //Request object has the url parameters
-//reg.body has the json
+//req.body has the json
   router.put('/update/:id', function(req, res){
     let stmt = 'UPDATE inventory SET qty = ? WHERE part_number = ?';
     let id = req.params.id;
@@ -35,7 +38,7 @@ var connection = require('../connections/connection');
     })
   });
 
-  //get the inventory of a part by its number
+  //get the inventory qty of a part by its number
   router.get('/qty/:id', function(req, res){
     let stmt = 'SELECT qty FROM inventory WHERE part_number = ?';
     let id = req.params.id;
