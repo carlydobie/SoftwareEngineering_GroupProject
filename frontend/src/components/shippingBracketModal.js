@@ -64,21 +64,21 @@ const useStyles = makeStyles(() => ({
   },
   updateShippingButton: {
     backgroundImage: `url(${Boxes})`,
-    backgroundSize: '10vw',
+    backgroundSize: '10vw', //set size otherwise way too big
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'no-repeat', //only one image of boxes
     width: '15vw',
     height: '10vh',
-    paddingTop: '15vh',
+    paddingTop: '15vh', //moves text down to second box
   },
   buttonTextBackground: {
-    width: 'auto',
+    width: 'auto', //in order for it to center
     marginLeft: '60px',
     marginRight: '60px',
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)', //transparent white
   },
   buttonText: {
-    ...theme.typography.button,
+    ...theme.typography.button, //text look like button text
   }
 }));
 
