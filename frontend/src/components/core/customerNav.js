@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       margin: '20px',
     },
-    appbar: {
+    barBackground: {
       background: '#1F404F',
     },
     menuButton: {
@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
         countItems += part.qty
       })
       setTotalItems(countItems)
-    })
+    }, [cart])
   
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" className={classes.barBackground}>
           <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />

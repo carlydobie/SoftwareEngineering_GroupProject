@@ -7,9 +7,11 @@ function ReceivingDeskPage() {
   return (
     <div className="App">
     <Navbar />
-    <h2>Current Inventory</h2>
+    <div style={{ marginLeft: '2%'}}>
+      <h2>Receiving</h2>
+    </div>
       <Grid container justify="center">
-        <div style={{ width: '800px' }}>
+        <div style={{ width: '1200px' }}>
           <InventoryTable/>
         </div>
       </Grid>

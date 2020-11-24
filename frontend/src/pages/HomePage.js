@@ -1,46 +1,49 @@
 import '../css/homepage.css'
-// import { BrowserRouter } from 'react-router-dom'
-// import Background from '../graphics/AProj-BG.png'
 import Grid from '@material-ui/core/Grid'
-import Container from '@material-ui/core/Container'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
+import ButtonBase from '@material-ui/core/ButtonBase'
 import { Link } from 'react-router-dom'
+import useSound from 'use-sound';
+import engineSound from '../sounds/engine-starting.mp3';
+import horn from '../sounds/horn.wav';
+import motorBike from '../sounds/motorbike-start.wav';
 
 
 export default function HomePage() {
 
+  // let audio = document.createElement("audio");
+  // audio.src = "../sounds/engine-starting.mp3";
+  // document.body.appendChild(audio);
+
+  const [playHorn, {stop}] = useSound(horn);
+  // const [playMotorBike] = useSound(motorBike);
+
   return (
-    <body className="home-bg">
+    <div className="home-bg">
           <Box className="home-menu-box"> 
           <Grid container spacing={3}>
               <Grid item xs={12} lg={12}>
-                <Paper className="home-grid-item">
-                  <h2>Amazing Auto Parts Galore</h2>
+                <Paper className="home-grid-item-title">
+                  <h2 style={{fontFamily: "Impact", fontSize: "50px"}}>Amazing Auto Parts Galore</h2>
                 </Paper>
               </Grid>
-              <Grid item xs={6} lg={6}>
+              <Grid item xs={6} lg={6} onMouseEnter={playHorn} onMouseLeave={() => {stop()}}>
+              <ButtonBase to="/Customer" component={Link} style={{display: 'block'}}>
               <Paper className="home-grid-item">
-              <Button to="/Customer" component={Link}>
-                    <Typography>
                       SHOP
-                    </Typography>
-                    </Button>
-                </Paper>
+                    </Paper>
+                    </ButtonBase>
               </Grid>
-              <Grid item xs={6} lg={6}>
-                <Paper className="home-grid-item">
-                <Button to="/Warehouse" component={Link}>
-                    <Typography>
+              <Grid item xs={6} lg={6} onMouseEnter={playHorn} onMouseLeave={() => {stop()}}>
+              <ButtonBase to="/Warehouse" component={Link} style={{display: 'block'}}>
+              <Paper className="home-grid-item">
                       EMPLOYEE
-                    </Typography>
-                    </Button>
                 </Paper>
+                </ButtonBase>
               </Grid>
           </Grid>
           </Box>
-    </body>
+    </div>
   );
 }
