@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import Invoice from './Invoice';
+import { useHistory } from 'react-router-dom'
 import emailjs from 'emailjs-com'
 import axios from 'axios';
 import '../css/Invoice.css';
@@ -14,6 +16,7 @@ export default function WarehouseData(props) {
   const [loading, setLoading] = useState(false)
   const [allSelected, setAllSelected] = useState(false)
   const [currentPackingSlip, setCurrentPackingSlip] = useState(0)
+  const history = useHistory();
 
   //set state with props on render
   useEffect(() => {
@@ -95,7 +98,7 @@ export default function WarehouseData(props) {
         actions={[
             rowData => ({
               icon: LocalShippingIcon,
-              tooltip: 'Shipped',
+              tooltip: 'Ship Order',
               disabled: (!allSelected || (currentPackingSlip !== rowData.order_number)),
               onClick: (event, rowData) => {
                 setLoading(true)
@@ -106,6 +109,13 @@ export default function WarehouseData(props) {
                   }, 1000)
                 })
               },
+            }),
+            rowData => ({
+              icon: AssignmentIcon,
+              tooltip: 'View Invoice',
+              onClick: (event, rowData) => {
+                history.push('/InvoicePage/' + rowData.order_number)
+              }
             })
         ]
       }
