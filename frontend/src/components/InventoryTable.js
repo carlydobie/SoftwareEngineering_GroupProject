@@ -3,17 +3,20 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table'
 
-// MaterialTable
+// MaterialTable cols
   const column = [
     { title: 'Part Number', field: 'part_number', editable: 'never'},
     { title: 'Description', field: 'description', editable: 'never'},
     { title: 'Quantity', field: 'qty', validate: rowData => (rowData.qty >= 0) ? { isValid: true } : { isValid: false, helperText: 'invalid quantity'}}
   ];
+
 export default function ProductTable(props) {
+  //State to hold axios responses
   const [entries, setEntries] = useState([]);
   
-  //Gets data for the table
+  //Function that gets all the data for the table
   const getData = async () => {
+    // get inventory
     await axios.get('http://localhost:8080/inventory/all')
     .then(function (response) {
       // handle success
@@ -25,9 +28,9 @@ export default function ProductTable(props) {
     });
   }
 
-    useEffect(() => {
-        getData()
-    }, [])
+  useEffect(() => {
+      getData()
+  }, [])
 
   //Updates the row in the inventory database
   const setData = async (data) => {
@@ -46,7 +49,7 @@ export default function ProductTable(props) {
     }
   }
 
-    //Make entries state into an array
+    //Turns entries state into an array
     let data = Array.from(entries);
 
     return (
