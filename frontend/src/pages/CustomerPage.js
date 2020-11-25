@@ -62,7 +62,7 @@ export default function CustomerPage() {
   //pass the product data to the product grid and render
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className={classes.root}>
         <Box className={classes.gridContainer}>
          <ProductGrid data={data}/>

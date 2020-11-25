@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { DataGrid } from '@material-ui/data-grid';
 import '../css/Invoice.css';
 
 export default function InvoiceContent(props) {
@@ -50,7 +49,7 @@ export default function InvoiceContent(props) {
                     + "<th align='right' width='10%'>Weight</th>"
                     + "<th align='right' width='10%'>Cost</th>"
                     + GetDataRows()
-                    + "<div className=\'invoice-summary\'></table>"
+                    + "<div className='invoice-summary'></table>"
                     + "<table width='40%'>"
                     + "<tr><td><b>Subtotal</b>:</td><td align='right'>$" + subtotal.toFixed(2) + "</td></tr><br/>"
                     + "<tr><td><b>Shipping:</b></td><td align='right'>$" + shippingCharge.toFixed(2) + "</td></tr><br/>"
