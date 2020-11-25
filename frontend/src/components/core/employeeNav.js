@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
       marginRight: theme.spacing(2),
+      color: 'white'
     },
     link: {
       flexGrow: 1,
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
       <div className={classes.root}>
         <AppBar color='#000000' position="static" className={classes.barBackgroundEmp}>
           <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} aria-label="menu" className={classes.button}>
+            <IconButton edge="start" className={classes.menuButton} aria-label="menu">
               <MenuIcon />
             </IconButton>
             <div className={classes.link}>

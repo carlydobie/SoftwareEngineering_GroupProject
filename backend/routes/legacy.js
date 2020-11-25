@@ -3,7 +3,7 @@ var router = express.Router();
 var legacy = require('../connections/legacy');
 
 /*
- * We'll put all the routes related to the legacy DB in here...
+ * Routes to Interact with the Legacy Database
  */
 
 /* default index for legacy... */

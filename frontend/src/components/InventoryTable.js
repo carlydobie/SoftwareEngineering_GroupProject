@@ -7,7 +7,7 @@ import MaterialTable from 'material-table'
   const column = [
     { title: 'Part Number', field: 'part_number', editable: 'never'},
     { title: 'Description', field: 'description', editable: 'never'},
-    { title: 'Quantity', field: 'qty', validate: rowData => (rowData.qty >= 0) ? { isValid: true } : { isValid: false, helperText: 'invalid quantity'}}
+    { title: 'Quantity', field: 'qty', type: 'numeric', validate: rowData => (rowData.qty >= 0) ? { isValid: true } : { isValid: false, helperText: 'invalid quantity'}}
   ];
 
 export default function ProductTable(props) {

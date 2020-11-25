@@ -3,6 +3,7 @@
  *  global state until order is submitted. 
  */
 
+//initial values for cart state
 const initialTotal = 0;
 const initialWeight = 0;
 const initialCart = [];
@@ -58,10 +59,6 @@ const cartReducer = ( state = { total: initialTotal, weight: initialWeight, cart
                 total: getTotal(removedCart),
                 weight: getWeight(removedCart)
             }
-        // case 'GET_ITEM':
-        //     return {
-
-        //     }
         case 'CLEAR_CART':
             return {
                 ...state,

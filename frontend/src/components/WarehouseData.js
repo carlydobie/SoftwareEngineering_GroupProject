@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import DoneIcon from '@material-ui/icons/Done';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { useHistory } from 'react-router-dom'
 import emailjs from 'emailjs-com'
@@ -77,6 +78,8 @@ export default function WarehouseData(props) {
     setCurrentPackingSlip(order[0].order_number)
     if(rowLength === order.length) {
       setAllSelected(true)
+    }else{
+      setAllSelected(false)
     }
   }
 
@@ -93,9 +96,12 @@ export default function WarehouseData(props) {
         }}
         isLoading={loading}
         actions={[
-            rowData => ({
+            //if the order has already shipped display a done checkmark, else display the ship now action
+            (rowData) => {
+              return (rowData.status === 'shipped') ? { icon: DoneIcon, tooltip: 'Order has Shipped'} :
+            {
               icon: LocalShippingIcon,
-              tooltip: 'Ship Order',
+              tooltip: 'Ship Now',
               disabled: (!allSelected || (currentPackingSlip !== rowData.order_number)),
               onClick: (event, rowData) => {
                 setLoading(true)
@@ -106,7 +112,7 @@ export default function WarehouseData(props) {
                   }, 1000)
                 })
               },
-            }),
+            }},
             rowData => ({
               icon: AssignmentIcon,
               tooltip: 'View Invoice',
@@ -114,8 +120,7 @@ export default function WarehouseData(props) {
                 history.push('/InvoicePage/' + rowData.order_number)
               }
             })
-        ]
-      }
+        ]}
         detailPanel={rowData => {
           //find the object in the array of orders in packingLists where the order numnber matches
           let orderData = packingLists.filter(order => order[0].order_number === rowData.order_number)
@@ -137,5 +142,4 @@ export default function WarehouseData(props) {
       />
     </div>
   )
-
 }

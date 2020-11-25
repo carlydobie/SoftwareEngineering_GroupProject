@@ -7,7 +7,10 @@ import WarehousePage from './pages/WarehousePage';
 import ReceivingDeskPage from './pages/ReceivingDeskPage';
 import ShoppingCart from './pages/ShoppingCart';
 import InvoicePage from './pages/InvoicePage'
-
+/*
+ *  App
+ *  Sets up the router for front end routes
+ */
 function App() {
   return (
     <div>

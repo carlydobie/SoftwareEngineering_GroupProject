@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var connection = require('../connections/connection');
+/*
+ *  Routes to interact with Orders table in local db
+ */
 
-router.get('/all', function (req, res, next) {
-  res.send('hello world');
-});
-
+//get all the orders with the customer details (warehouse version)
 router.get('/GetCustomerOrders', function (req, res) {
   let columns = 'o.order_number, o.status, o.ord_date, c.name, c.address, c.email, o.total';
   let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number';
@@ -15,6 +15,7 @@ router.get('/GetCustomerOrders', function (req, res) {
   })
 })
 
+//get one order with the customer details (invoice version)
 router.get('/GetCustomerOrderByID/:orderNumber', function (req, res) {
   let columns = 'o.order_number, o.status, o.ord_date, c.name, c.address, c.email, o.total';
   let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number AND o.order_number = ?';
@@ -24,6 +25,18 @@ router.get('/GetCustomerOrderByID/:orderNumber', function (req, res) {
   })
 })
 
+//Join between custuomer table and order table. Same as above but has total price
+//and gets orders between date and price ranges (admin version)
+router.post('/GetCustomerOrdersPrice', function (req, res) {
+  let columns = 'o.order_number, o.status, o.ord_date, o.total, c.name, c.address, c.email ';
+  let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number AND o.ord_date BETWEEN ? AND ? AND o.total BETWEEN ? AND ?';
+  connection.query(stmt, [req.body.fromDate, req.body.toDate, req.body.minPrice, req.body.maxPrice], function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  })
+})
+
+//get the parts ordered in a particular order 
 router.get('/PartsInOrder/:orderNumber', function (req, res) {
   let columns = 'po.order_number, po.part_number, i.description, po.qty';
   let stmt = 'SELECT ' + columns + ' FROM orders o, inventory i, prod_ordered po '
@@ -32,17 +45,6 @@ router.get('/PartsInOrder/:orderNumber', function (req, res) {
   connection.query(stmt, req.params.orderNumber, function(err, result) {
         if (err) throw err;
         res.json(result);
-  })
-})
-
-//Join between custuomer table and order table. Same as above but has total price
-//and gets orders between date and price ranges
-router.post('/GetCustomerOrdersPrice', function (req, res) {
-  let columns = 'o.order_number, o.status, o.ord_date, o.total, c.name, c.address, c.email ';
-  let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number AND o.ord_date BETWEEN ? AND ? AND o.total BETWEEN ? AND ?';
-  connection.query(stmt, [req.body.fromDate, req.body.toDate, req.body.minPrice, req.body.maxPrice], function (err, result) {
-    if (err) throw err;
-    res.json(result);
   })
 })
 
@@ -55,7 +57,7 @@ router.post('/add', function(req, res){
   })
 })
 
-//route parts to the prods ordered table
+//route to add parts to the products ordered table
 router.post('/parts', function(req, res){
   let stmt = 'INSERT INTO prod_ordered SET ?';
   connection.query(stmt, req.body, function(err, result){
@@ -64,6 +66,7 @@ router.post('/parts', function(req, res){
   })
 })
 
+//route to update the status of an order once it has shipped
 router.post('/UpdateOrderStatus/:orderNumber', function(req, res) {
   console.log(req.params.orderNumber)
   let stmt = 'UPDATE Orders SET status = \'shipped\' WHERE order_number = ?'

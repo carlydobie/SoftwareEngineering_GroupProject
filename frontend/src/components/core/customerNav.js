@@ -15,7 +15,9 @@ import { useSelector } from 'react-redux'
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
-      margin: '20px',
+      position: "fixed",
+      width: '100%',
+      zIndex: 100
     },
     barBackground: {
       background: '#1F404F',

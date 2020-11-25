@@ -1,4 +1,3 @@
-import Navbar from '../components/core/employeeNav.js';
 import InvoiceContent from '../components/InvoiceContent.js';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
