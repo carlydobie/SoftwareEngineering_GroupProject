@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "15vh",
     paddingLeft: "12vw",
     paddingRight: "12vw",
-  }
+  },
 }))
 
 // page component
@@ -62,7 +62,9 @@ export default function CustomerPage() {
   //pass the product data to the product grid and render
   return (
     <div>
-      <Navbar />
+      <div className={classes.nav}>
+        <Navbar />
+      </div>
       <div className={classes.root}>
         <Box className={classes.gridContainer}>
          <ProductGrid data={data}/>
