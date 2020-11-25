@@ -18,7 +18,10 @@ import { Link } from 'react-router-dom'
 export default function HomePage() {
   
   //hook for sound effect
-  const [playHorn, {stop}] = useSound(horn);
+  const [playHorn, {stop}] = useSound(
+    horn,
+    {volume: 0.25}
+  );
 
   //render the title and buttons to navigate to the
   //customer and employee sides of the app
