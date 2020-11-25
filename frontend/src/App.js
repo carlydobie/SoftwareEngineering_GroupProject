@@ -6,11 +6,11 @@ import HomePage from './pages/HomePage';
 import WarehousePage from './pages/WarehousePage';
 import ReceivingDeskPage from './pages/ReceivingDeskPage';
 import ShoppingCart from './pages/ShoppingCart';
+import InvoicePage from './pages/InvoicePage'
 /*
  *  App
  *  Sets up the router for front end routes
  */
-
 function App() {
   return (
     <div>
@@ -23,6 +23,7 @@ function App() {
               <Route exact path="/Warehouse" component={WarehousePage} />
               <Route exact path="/ReceivingDesk" component={ReceivingDeskPage} />
               <Route exact path="/ShoppingCart" component={ShoppingCart} />
+              <Route exact path="/InvoicePage/:id" component={InvoicePage}/>
             </Switch>
         </div>
       </Router>
