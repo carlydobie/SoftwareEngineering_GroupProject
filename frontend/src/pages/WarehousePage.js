@@ -2,6 +2,7 @@ import '../css/App.css';
 import Navbar from '../components/core/employeeNav.js';
 import WarehouseData from '../components/WarehouseData.js';
 import React, { useEffect, useState } from 'react';
+import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 
 function WarehousePage() {
@@ -46,8 +47,15 @@ function WarehousePage() {
 
   return (
     <div className="App">
-    <Navbar />
-      <WarehouseData data={entries} packingList={packingList}/>
+      <Navbar />
+      <div style={{ marginLeft: '2%'}}>
+        <h2>Warehouse</h2>
+      </div>
+      <Grid container justify="center">
+        <div style={{ width: '1200px' }}>
+          <WarehouseData data={entries} packingList={packingList}/>
+        </div>
+      </Grid>
     </div>
   );
 }

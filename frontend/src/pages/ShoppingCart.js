@@ -84,7 +84,7 @@ function ShoppingCart() {
     { title: 'Description', field: "description", editable: 'never' }, 
     { title: 'Unit Price', field: "price", editable: 'never'}, 
     { title: 'Unit Weight', field: "weight", editable: 'never'}, 
-    { title: 'Quantity', field: "qty", type: 'numeric', validate: rowData => (rowData.qty > 0 && checkInventory(rowData)) ? { isValid: true } : { isValid: false, helperText: 'not enough in inventory'}},
+    { title: 'Quantity', field: "qty", type: 'numeric', validate: rowData => (rowData.qty >= 0 && checkInventory(rowData)) ? { isValid: true } : { isValid: false, helperText: 'not enough in inventory'}},
     { title: 'Total Price', field: "total", editable: 'never', render: rowData => {return (rowData.price * rowData.qty).toFixed(2)} }
   ] 
   
@@ -92,7 +92,7 @@ function ShoppingCart() {
   //display, otherwise an empty cart message
   const displayCart = () => {
       //cart is empty
-      if(cart.length == 0){
+      if(cart.length === 0){
           return (
               <Typography>
                   Nothing in Your Cart Yet!

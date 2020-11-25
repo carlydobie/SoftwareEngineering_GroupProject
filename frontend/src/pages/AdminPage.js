@@ -1,15 +1,224 @@
 import '../css/App.css';
 import Navbar from '../components/core/employeeNav.js';
 import ShippingForm from '../components/shippingBracketModal';
+import OrderTable from '../components/OrderTable'
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { useState, useEffect } from 'react';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+
+const useStyles = makeStyles((theme) => ({
+  root : {
+    flexGrow: 1,
+    margin: 'auto',
+  },
+  box : {
+    // padding: '5vh',
+    paddingLeft: '5vw',
+    paddingBottom: '2vh'
+  }
+}))
 
 function AdminPage() {
-  return (
-    <div className="App">
-    <Navbar />
-      Hello AdminPage!
-      <ShippingForm />
-    </div>
+  const classes = useStyles();
+
+//state to hold axios responses
+const [entries, setEntries] = useState([]);
+const [packingList, setPackingList] = useState([]);
+
+//get today's date to use in "to" for date range default
+let now = new Date(Date.now());
+let today = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+//create date one month ago for default 
+let monthAgo = new Date(Date.now());
+monthAgo.setMonth(now.getMonth() - 1)
+
+//default date range will be for orders from beginning of year til now
+const [dates, setDates] = useState({
+  from: monthAgo,
+  to: today
+});
+
+//default price range will be for orders between 0 and million dollars
+const [prices, setPrices] = useState({
+  min: 0,
+  max: 1000000
+})
+
+//get data from backend
+const getData = async () => {
+  //get orders for main table
+  await axios.post('http://localhost:8080/orders/GetCustomerOrdersPrice', {
+    fromDate: dates.from,
+    toDate: dates.to,
+    minPrice: prices.min,
+    maxPrice: prices.max
+  })
+    .then(function (response) {
+      // handle success
+      setEntries(response.data)
+      //get products ordered for each order number
+      response.data.forEach(order => {
+        axios.get('http://localhost:8080/orders/PartsInOrder/' + order.order_number)
+        .then(function (orderResponse) {
+          //append the result to the packing list array
+            orderResponse.data.forEach(part => {
+              axios.get('http://localhost:8080/legacy/' + part.part_number)
+                .then(function (partResponse){ 
+                  //add the price to the order object
+                  part.price = partResponse.data[0].price
+                  //add the total weight to the order object
+                  part.weight = partResponse.data[0].weight
+                  setPackingList(packingList => [...packingList, part])
+                })
+                .catch(function (error) {
+                  console.log(error)
+                })
+                //console.log(orderResponse.data)
+              })
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+      })
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+}
+
+useEffect(() => {
+  getData()
+}, [dates, prices]);
+
+//handle change in date range
+const handleDateChange = (e, end) => {
+  if(e != null){
+    let newDate = e.getFullYear() + "-" + (e.getMonth() + 1) + "-" + e.getDate();
+    setDates(dates => ({...dates, [end]: newDate}))
+  }
+}
+
+//handle change in price range
+const handlePriceChange = (e, end) => {
+  let newPrice = e.target.value
+  if(newPrice) {
+    setPrices(prices => ({...prices, [end]: newPrice}))
+  }
+}
+
+//admin page component, with picker for price and date range,
+//button to adjust shipping charges, and table of orders
+return (
+    <div className={classes.root}>
+      <Navbar />
+      <Grid container justify='center' spacing={4}>
+        <Grid item lg={12} xs={12}>
+            <h2 style={{ marginLeft: '2%'}}>Hello Admin!</h2>
+        </Grid>
+        <Grid item lg={3} xs={6}>
+          <Grid container justify='center' spacing={3}>
+            <Grid item lg={6} xs={6} style={{paddingTop: '5vh'}}>
+              {/**Date Range Picker: From Date */}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  margin="dense"
+                  id="from-date"
+                  label="From:"
+                  format="MM/dd/yyyy"
+                  value={dates.from}
+                  name="from"
+                  onChange={(e) => {handleDateChange(e, "from")}}
+                />
+                </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item lg={6} xs={6} style={{paddingTop: '5vh'}}>
+              {/**Date Range Picker: To Date */}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  margin="dense"
+                  id="to-date"
+                  label="To:"
+                  format="MM/dd/yyyy"
+                  value={dates.to}
+                  name="to"
+                  onChange={(e) => {handleDateChange(e, "to")}}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item lg={6} xs={6}>
+              {/**Price Range Picker: Min Price */}
+              <TextField
+                type="number"
+                margin="dense"
+                id="min"
+                name="min"
+                label="Min Price"
+                value={prices.min}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      $
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {handlePriceChange(e, "min")}}
+                error={(prices.min > prices.max) || (prices.min < 0)}
+                helperText={(prices.min > prices.max) || (prices.min < 0) ? "Invalid Range" : null}
+              />
+            </Grid>
+            <Grid item lg={6} xs={6}>
+              {/**Price Range Picker: Max Price */}
+              <TextField
+                type="number"
+                margin="dense"
+                id="max"
+                name="max"
+                label="Max Price"
+                value={prices.max}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      $
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {handlePriceChange(e, "max")}}
+                error={(prices.min > prices.max)}
+                helperText={(prices.min > prices.max) ? "Invalid Range" : null}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item lg={6} xs={3}>
+          <Grid containter justify='center'>
+            <Grid item lg={12} xs={12}>
+              <Box className={classes.box}>
+                {/**Update Shipping Charge Modal Button */}
+                <ShippingForm/>
+              </Box>  
+            </Grid>
+          </Grid>
+        </Grid>
+        </Grid>
+        {/**Table of Orders */}
+        <Grid item lg={12} xs={12} style={{paddingBottom: '10vh'}}>
+          <Grid container justify="center">
+            <Grid item xs={10}>
+              <OrderTable data={entries} packingList={packingList}/>
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
   );
 }
 
 export default AdminPage;
+

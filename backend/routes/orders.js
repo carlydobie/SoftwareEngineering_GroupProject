@@ -30,6 +30,17 @@ router.get('/PartsInOrder/:orderNumber', function (req, res) {
   + 'WHERE o.order_number = po.order_number AND i.part_number = po.part_number AND o.order_number = ?'
   
   connection.query(stmt, req.params.orderNumber, function(err, result) {
+        if (err) throw err;
+        res.json(result);
+  })
+})
+
+//Join between custuomer table and order table. Same as above but has total price
+//and gets orders between date and price ranges
+router.post('/GetCustomerOrdersPrice', function (req, res) {
+  let columns = 'o.order_number, o.status, o.ord_date, o.total, c.name, c.address, c.email ';
+  let stmt = 'SELECT ' + columns + ' FROM orders o, customer c WHERE c.customer_number = o.customer_number AND o.ord_date BETWEEN ? AND ? AND o.total BETWEEN ? AND ?';
+  connection.query(stmt, [req.body.fromDate, req.body.toDate, req.body.minPrice, req.body.maxPrice], function (err, result) {
     if (err) throw err;
     res.json(result);
   })

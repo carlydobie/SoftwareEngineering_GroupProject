@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import Input from '@material-ui/core/Input'
 import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import { blue, grey } from '@material-ui/core/colors';
@@ -13,8 +17,10 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { useDispatch } from 'react-redux';
 import { setBracketCharges } from '../redux/actions/shipping';
 import { InputLabel } from '@material-ui/core';
+import Boxes from '../graphics/cardboard-box.png' 
+
 /*
- *  Update Shipping Brachet Charge Form Modal
+ *  Update Shipping Bracket Charge Form Modal
  * 
  *  Allows admin users to set the bracket weights and charges
  *  for shipping costs
@@ -44,7 +50,7 @@ function getModalStyle() {
   };
 }
 
-//modal style
+//style for modal and button
 const useStyles = makeStyles(() => ({
   paper: {
     position: 'absolute',
@@ -55,6 +61,24 @@ const useStyles = makeStyles(() => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     outline: 0
+  },
+  updateShippingButton: {
+    backgroundImage: `url(${Boxes})`,
+    backgroundSize: '10vw', //set size otherwise way too big
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat', //only one image of boxes
+    width: '15vw',
+    height: '10vh',
+    paddingTop: '15vh', //moves text down to second box
+  },
+  buttonTextBackground: {
+    width: 'auto', //in order for it to center
+    marginLeft: '60px',
+    marginRight: '60px',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)', //transparent white
+  },
+  buttonText: {
+    ...theme.typography.button, //text look like button text
   }
 }));
 
@@ -258,14 +282,23 @@ export default function ShippingForm () {
      //modal button and component
      return (
         <div>
-          <Button onClick={handleOpen}>
-            Update Shipping
-          </Button>
+        <Tooltip title="Update Shipping" arrow placement="top-start">
+          <ButtonBase onClick={handleOpen}>
+            <Box className={classes.updateShippingButton}>
+            <Paper elevation={0} className={classes.buttonTextBackground}>
+              <Typography className={classes.buttonText}>
+                Update shipping 
+              </Typography>
+              </Paper>
+            </Box>
+          </ButtonBase>
+          </Tooltip>
+
           <Modal
             open={open}
             onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
+            aria-labelledby="shipping-data"
+            aria-describedby="update-shipping-cost"
           >
             {body()}
           </Modal>
