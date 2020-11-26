@@ -1,7 +1,19 @@
 import { useEffect, useState } from "react"
-import { DataGrid } from '@material-ui/data-grid';
 import '../css/Invoice.css';
 
+/*
+ * Component which displays all of the data regarding a customer's
+ * order, including shipping info, price summary, date, order-number,
+ * and part manifest.
+ * 
+ * This page is built to be compatible with printing on most web
+ * browsers. For example, on Google Chrome, you can hit Ctrl+P once
+ * it finishes loading in order to print the invoice.
+ * 
+ * This component needs to be passed the following props:
+ *  - data:         An order from the orders database
+ *  - packingList:  A list of parts associated to the order above
+ */
 export default function InvoiceContent(props) {
     const [orders, setOrders] = useState(props.data)
     const [packingList, setPackingList] = useState(props.packingList);
@@ -11,6 +23,12 @@ export default function InvoiceContent(props) {
         setPackingList(props.packingList)
     }, [props])
 
+    /*
+     * Returns a string of formatted HTML, which contains table row tags
+     * with table data tags in order to properly format the rows of data
+     * from the packinglists into a table. This should be inserted just
+     * after the table headers are declared.
+     */
     function GetDataRows() {
         let rows = "";
         packingList.forEach(row => {
@@ -26,6 +44,10 @@ export default function InvoiceContent(props) {
         return rows;
     }
 
+    /*
+     * Returns the subtotal of an order by adding up the price*quantity
+     * of every item in the packingList and returning it.
+     */
     function GetSubtotal() {
         if (packingList != null) {
             let subtotal = 0;
@@ -39,6 +61,10 @@ export default function InvoiceContent(props) {
         }
     }
 
+    /*
+     * This function sets inner HTML into the page that displays the table
+     * of all parts in this order.
+     */
     function RenderTableAndSummary() {
         if (packingList != null) {
             let subtotal = GetSubtotal();
@@ -62,6 +88,7 @@ export default function InvoiceContent(props) {
         }
     }
 
+    // Render the component
     return (
         <div className='invoice'>
             <div>
