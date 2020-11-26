@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom'
 var hornsound = new Howl({
   src: [horn],
   volume: 0.25,
+  buffer: true,
+  preload: true,
 })
 
 export default function HomePage() {
