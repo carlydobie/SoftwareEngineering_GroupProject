@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import ButtonBase from '@material-ui/core/ButtonBase'
-import useSound from 'use-sound';
+import {Howl, Howler} from 'howler';
 import horn from '../sounds/horn.wav';
 import { Link } from 'react-router-dom'
 
@@ -15,13 +15,18 @@ import { Link } from 'react-router-dom'
  *
  */
 
+var hornsound = new Howl({
+  src: [horn],
+  volume: 0.25,
+})
+
 export default function HomePage() {
   
   //hook for sound effect
-  const [playHorn, {stop}] = useSound(
-    horn,
-    {volume: 0.25}
-  );
+  // const [playHorn, {stop}] = useSound(
+  //   horn,
+  //   {volume: 0.25} // full volume is TOO LOUD
+  // );
 
   //render the title and buttons to navigate to the
   //customer and employee sides of the app
@@ -34,14 +39,14 @@ export default function HomePage() {
               <h2 style={{fontFamily: "Impact", fontSize: "50px"}}>Amazing Auto Parts Galore</h2>
             </Paper>
           </Grid>
-          <Grid item xs={6} lg={6} onMouseEnter={playHorn} onMouseLeave={() => {stop()}}>
+          <Grid item xs={6} lg={6} onMouseEnter={() => hornsound.play()} onMouseLeave={() => hornsound.stop()}>
             <ButtonBase to="/Customer" component={Link} style={{display: 'block'}}>
               <Paper className="home-grid-item">
                 SHOP
               </Paper>
             </ButtonBase>
           </Grid>
-          <Grid item xs={6} lg={6} onMouseEnter={playHorn} onMouseLeave={() => {stop()}}>
+          <Grid item xs={6} lg={6} onMouseEnter={() => hornsound.play()} onMouseLeave={() => hornsound.stop()}>
             <ButtonBase to="/Warehouse" component={Link} style={{display: 'block'}}>
               <Paper className="home-grid-item">
                 EMPLOYEE
