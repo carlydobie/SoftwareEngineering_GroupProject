@@ -4,7 +4,6 @@ import ProductGrid from '../components/customer/productGrid';
 import Navbar from '../components/core/customerNav.js';
 import Box from '@material-ui/core/Box';
 import axios from 'axios';
-import '../css/customerpage.css';
 /*
  *  Customer Page Component
  *  Shopping page for customer to view all products and select parts to 

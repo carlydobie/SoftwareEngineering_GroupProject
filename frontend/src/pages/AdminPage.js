@@ -1,16 +1,13 @@
-import '../css/App.css';
 import Navbar from '../components/core/employeeNav.js';
 import ShippingForm from '../components/shippingBracketModal';
 import OrderTable from '../components/OrderTable'
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { Grid, Box, TextField, InputAdornment } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+
 /*
  *  Admin Page Component
  *  Gets the Order Data and Order Details from the backend

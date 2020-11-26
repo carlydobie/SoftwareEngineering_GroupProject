@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Modal, Button, Grid, TextField, Typography } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
 import { blue, grey } from '@material-ui/core/colors';
-import Typography from '@material-ui/core/Typography';
 import { useForm, Controller } from 'react-hook-form';
 import emailjs from 'emailjs-com';
 import { useDispatch } from 'react-redux';

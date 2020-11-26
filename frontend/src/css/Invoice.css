@@ -1,7 +1,6 @@
 .invoice {
     width: 90%;
     table-layout: auto;
-
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
@@ -32,6 +31,5 @@
     width: 10%;
     table-layout: auto;
     margin-left: 0px;
-
     font-size: 14px;
 }

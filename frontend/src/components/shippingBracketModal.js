@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Input from '@material-ui/core/Input'
-import Slider from '@material-ui/core/Slider';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Modal, ButtonBase, Button, Grid, Paper, Box, Input, Slider, 
+        Tooltip, Typography, InputAdornment, InputLabel } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import { blue, grey } from '@material-ui/core/colors';
-import Typography from '@material-ui/core/Typography';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { useDispatch } from 'react-redux';
 import { setBracketCharges } from '../redux/actions/shipping';
-import { InputLabel } from '@material-ui/core';
 import Boxes from '../graphics/cardboard-box.png' 
 
 /*
@@ -81,7 +71,6 @@ const useStyles = makeStyles(() => ({
     ...theme.typography.button, //text look like button text
   }
 }));
-
 
 //Update Shipping Modal Component
 export default function ShippingForm () {
@@ -167,7 +156,6 @@ export default function ShippingForm () {
         }
     }
 
-        
     //body of the modal, contains bracket weight and charge inputs
     const body = () => {
         return (

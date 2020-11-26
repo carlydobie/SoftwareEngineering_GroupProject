@@ -1,4 +1,3 @@
-import '../css/App.css';
 import Navbar from '../components/core/employeeNav.js';
 import InventoryTable from '../components/InventoryTable';
 import Grid from '@material-ui/core/Grid';

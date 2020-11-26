@@ -1,11 +1,8 @@
-import '../css/homepage.css'
-import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
-import Paper from '@material-ui/core/Paper'
-import ButtonBase from '@material-ui/core/ButtonBase'
-import {Howl, Howler} from 'howler';
+import '../css/homepage.css';
+import { Box, Paper, ButtonBase, Grid } from '@material-ui/core'
+import { Link } from 'react-router-dom';
+import { Howl } from 'howler';
 import horn from '../sounds/horn.wav';
-import { Link } from 'react-router-dom'
 
 /*
  *  Home Page Component
@@ -15,6 +12,7 @@ import { Link } from 'react-router-dom'
  *
  */
 
+//hook for sound effect
 var hornsound = new Howl({
   src: [horn],
   volume: 0.25,
@@ -23,12 +21,6 @@ var hornsound = new Howl({
 })
 
 export default function HomePage() {
-  
-  //hook for sound effect
-  // const [playHorn, {stop}] = useSound(
-  //   horn,
-  //   {volume: 0.25} // full volume is TOO LOUD
-  // );
 
   //render the title and buttons to navigate to the
   //customer and employee sides of the app

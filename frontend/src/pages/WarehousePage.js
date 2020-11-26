@@ -1,4 +1,3 @@
-import '../css/App.css';
 import Navbar from '../components/core/employeeNav.js';
 import WarehouseData from '../components/WarehouseData.js';
 import React, { useEffect, useState } from 'react';

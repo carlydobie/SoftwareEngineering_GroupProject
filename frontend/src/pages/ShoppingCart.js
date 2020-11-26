@@ -1,4 +1,3 @@
-import '../css/App.css'
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/core/customerNav.js';
 import { useSelector, useDispatch } from 'react-redux';
