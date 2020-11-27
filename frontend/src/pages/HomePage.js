@@ -3,6 +3,7 @@ import { Box, Paper, ButtonBase, Grid } from '@material-ui/core'
 import { Link } from 'react-router-dom';
 import { Howl } from 'howler';
 import horn from '../sounds/horn.wav';
+import LoginForm from '../components/employeeLogin';
 
 /*
  *  Home Page Component
@@ -41,11 +42,9 @@ export default function HomePage() {
             </ButtonBase>
           </Grid>
           <Grid item xs={6} lg={6} onMouseEnter={() => hornsound.play()} onMouseLeave={() => hornsound.stop()}>
-            <ButtonBase to="/Warehouse" component={Link} style={{display: 'block'}}>
-              <Paper className="home-grid-item">
-                EMPLOYEE
-              </Paper>
-            </ButtonBase>
+            <Paper className="home-grid-item">
+              <LoginForm />
+            </Paper>
           </Grid>
         </Grid>
       </Box>

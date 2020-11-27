@@ -72,7 +72,7 @@ export default function OrderForm (props) {
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.cart);
     const cartTotal = useSelector(state => state.cart.total); 
-  
+
     //open modal
     const handleOpen = () => {
       setOpen(true);
@@ -137,7 +137,6 @@ export default function OrderForm (props) {
       lastname = lastname.charAt(0).toUpperCase() + lastname.slice(1);
       
       let name = firstname + " " + lastname;
-      console.log(name)
       
       //see if customer is in db, if not add them, returns customer num as response.data
       await Axios.post('http://localhost:8080/customer/get', {
@@ -200,8 +199,6 @@ export default function OrderForm (props) {
       alert("Your Order Has Been Received! You will get an email confimation shortly. Thank you for shopping with us!")
       //clear cart
       dispatch(clearCart());
-      //close modal
-      handleClose();
     }
 
   
@@ -525,7 +522,6 @@ export default function OrderForm (props) {
                           fullWidth
                           variant="contained"
                           color="primary"
-                          onClick={handleSubmit}
                         >
                           Submit
                         </Button>
