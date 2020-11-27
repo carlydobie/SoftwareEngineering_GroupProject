@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, ButtonBase, Button, Grid, Paper, Box, Input, Slider, 
         Tooltip, Typography, InputAdornment, InputLabel } from '@material-ui/core';
@@ -8,6 +8,7 @@ import { blue, grey } from '@material-ui/core/colors';
 import { useDispatch } from 'react-redux';
 import { setBracketCharges } from '../redux/actions/shipping';
 import Boxes from '../graphics/cardboard-box.png' 
+import CustomizedSnackbars from './core/alert';
 
 /*
  *  Update Shipping Bracket Charge Form Modal
@@ -79,10 +80,12 @@ export default function ShippingForm () {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
+    const [success, setSuccess] = React.useState(false)
 
     //pull in redux state
     const brackets = useSelector(state => state.shipping.brackets);
     const dispatch = useDispatch();
+
 
     //local state
     //for slider values
@@ -100,6 +103,7 @@ export default function ShippingForm () {
 
     //open modal
     const handleOpen = () => {
+        setSuccess(false)
         setOpen(true);
     };
     
@@ -121,6 +125,7 @@ export default function ShippingForm () {
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(setBracketCharges(sliderVals, charges))
+        setSuccess(true)
         handleClose()
     }
 
@@ -290,6 +295,7 @@ export default function ShippingForm () {
           >
             {body()}
           </Modal>
+          {success ? <CustomizedSnackbars message="brackets" /> : null }
         </div>
       );
 }

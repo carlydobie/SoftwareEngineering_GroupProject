@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core/';
+import { AppBar, Toolbar, Typography, Button, IconButton, createMuiTheme, ThemeProvider } from '@material-ui/core/';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import Cardboard from '../../graphics/cardboard-texture.jpg';
@@ -28,12 +28,21 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#FFF',
+      }
+    }
+  })
+
   export default function ButtonAppBar() {
     const classes = useStyles();
   
     return (
       <div className={classes.root}>
-        <AppBar color='#000000' position="static" className={classes.barBackgroundEmp}>
+        <ThemeProvider theme={theme}>
+        <AppBar color="primary" position="static" className={classes.barBackgroundEmp}>
           <Toolbar>
             <IconButton edge="start" className={classes.menuButton} aria-label="menu">
               <MenuIcon />
@@ -60,15 +69,9 @@ const useStyles = makeStyles((theme) => ({
               </Typography>
             </Button>
             </div>
-            <div >
-            <Button className={classes.button}>
-              <Typography>
-                Login
-              </Typography>
-            </Button>
-            </div>
           </Toolbar>
         </AppBar>
+        </ThemeProvider>
       </div>
     );
   }
