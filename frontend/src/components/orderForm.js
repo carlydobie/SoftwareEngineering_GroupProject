@@ -6,8 +6,7 @@ import Axios from 'axios';
 import { blue, grey } from '@material-ui/core/colors';
 import { useForm, Controller } from 'react-hook-form';
 import emailjs from 'emailjs-com';
-import { useDispatch } from 'react-redux';
-import { clearCart } from '../redux/actions/cart';
+import CustomizedSnackbars from '../components/core/alert'
 /*
  *  Order Form Modal
  * 
@@ -67,14 +66,16 @@ export default function OrderForm (props) {
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     const [open, setOpen] = useState(false);
+    const [success, setSuccess] = useState(false)
   
     //pull in state from redux
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.cart);
     const cartTotal = useSelector(state => state.cart.total); 
 
     //open modal
     const handleOpen = () => {
+      setSuccess(false)
       setOpen(true);
     };
   
@@ -93,33 +94,30 @@ export default function OrderForm (props) {
       let vendorID = 'VE123-99'
 
       //submit cc auth
-      //seems like we can't use fake cc nums aside from the example
-      //i have hard coded the example cc into the request body
-      //but we can replace this with data.cc and data.exp in the future
-      // await Axios.post('http://blitz.cs.niu.edu/CreditCard/', {
-      //   vendor: vendorID,             
-      //   trans: transactionNum,
-      //   cc: '6011 1234 4321 1234',
-      //   name: (data.fName + " " + data.lName), 
-      //   exp: '12/2020', 
-      //   amount: props.total
-      // })
-      // .then(function(response) {
-      //     console.log(response)
-      //     //as long as we get an auth number back, continue to processing order
-      //     if(response.data.authorization){
-      //         console.log("your auth num: " + response.data.authorization)
-      //         setOrderDate(response.data.timeStamp)
-      //         processOrder(data, response.data.timeStamp);
-      //     }else{
-      //         alert(response.data.errors[0]);
-      //     }
-      // })
-      // .catch(function (error) {
-      //     console.log(error)
-      //     alert("There was an error processing your request.")
-      // })
-      processOrder(data, Date.now())
+      //makes request to authorization service and if an auth number is returned, the order is processed
+      await Axios.post('http://blitz.cs.niu.edu/CreditCard/', {
+        vendor: vendorID,             
+        trans: transactionNum,
+        cc: data.cc,
+        name: (data.fName + " " + data.lName), 
+        exp: data.exp, 
+        amount: props.total
+      })
+      .then(function(response) {
+          console.log(response)
+          //as long as we get an auth number back, continue to processing order
+          if(response.data.authorization){
+              processOrder(data, response.data.timeStamp);
+              setSuccess(true)
+          }else{
+              alert(response.data.errors[0]);
+          }
+      })
+      .catch(function (error) {
+          console.log(error)
+          alert("There was an error processing your request.")
+      })
+      handleClose()
     }
 
 
@@ -147,7 +145,7 @@ export default function OrderForm (props) {
       .then(function(response) {
           //get date from timestamp to YYYY-MM-DD for db
           let date = new Date(authDate);
-          let formattedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+          let formattedDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 
           // post new order to order table, returns order number as orderResponse.data
           Axios.post('http://localhost:8080/orders/add', {
@@ -185,36 +183,31 @@ export default function OrderForm (props) {
                   console.log(error)
                 })
               })
+              //send email
+              sendEmail(name, formData.email, orderResponse.data);
           })
           .catch(function (error) {
               console.log(error)
           })
-
       })
       .catch(function (error) {
           console.log(error)
       })
-      //send email
-      sendEmail(name, formData.email);
-      alert("Your Order Has Been Received! You will get an email confimation shortly. Thank you for shopping with us!")
-      //clear cart
-      dispatch(clearCart());
     }
 
   
     //send an order confirmation email
-    function sendEmail(name, email){
-      console.log("email here " + name + ' ' + email)
-      // emailjs.send("gmail","template_r3mb65m", {
-      //   orderNum: orderNum,
-      //   to_name: name,
-      //   to_email: email
-      // }, "user_g1HvKmngxkCglwn9LDMBB")
-      // .then((result) => {
-      //   console.log(result.text);
-      // }, (error) => {
-      //   console.log(error.text);
-      // });
+    function sendEmail(name, email, orderNum){
+      emailjs.send("gmail","template_r3mb65m", {
+        orderNum: orderNum,
+        to_name: name,
+        to_email: email
+      }, "user_g1HvKmngxkCglwn9LDMBB")
+      .then((result) => {
+        console.log(result.text);
+      }, (error) => {
+        console.log(error.text);
+      });
     }
 
     //body of the modal, contains the order form for customer input
@@ -548,7 +541,7 @@ export default function OrderForm (props) {
     return (
       <div>
         <ThemeProvider theme={theme}>
-          <Button onClick={handleOpen} color='primary' variant='contained' >
+          <Button onClick={handleOpen} color='primary' variant='contained' disabled={success}>
             Submit Order
           </Button>
         </ThemeProvider>
@@ -560,6 +553,7 @@ export default function OrderForm (props) {
         >
           {body()}
         </Modal>
+        {success ? <CustomizedSnackbars message="order" /> : null }
       </div>
     );
 }

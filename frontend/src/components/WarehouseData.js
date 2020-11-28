@@ -42,9 +42,7 @@ export default function WarehouseData(props) {
   ]
 
   //make an axios call here to update shipping status
-  const updateStatus = async(orderNum, cust_name, cust_email) => {
-    console.log(orderNum)
-    
+  const updateStatus = async(orderNum, cust_name, cust_email) => { 
     //update local state
     let newOrders = [...orders]
     let index = orders.findIndex(order => order.order_number === orderNum)
@@ -58,7 +56,7 @@ export default function WarehouseData(props) {
       })
     
     //i think send email will go here too, let cust know order has shipped
-    /*emailjs.send("gmail", "template_uzx5x6j", {
+    emailjs.send("gmail", "template_uzx5x6j", {
       orderNum: orderNum,
       to_name: cust_name,
       to_email: cust_email,
@@ -67,7 +65,7 @@ export default function WarehouseData(props) {
       console.log(result.text);
     }, (error) => {
       console.log(error.text);
-    });*/
+    });
 
      setLoading(false)
      setAllSelected(false)

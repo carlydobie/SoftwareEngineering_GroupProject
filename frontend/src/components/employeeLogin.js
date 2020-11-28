@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, ButtonBase, Button, Grid, Typography, TextField } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import { blue, grey } from '@material-ui/core/colors';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 
 /*

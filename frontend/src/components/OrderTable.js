@@ -49,7 +49,7 @@ export default function OrderTable(props) {
           //find the object in the array of orders in packingLists where the order numnber matches
           let orderData = packingLists.filter(order => order.order_number === rowData.order_number)
           return (
-            <div style={{'width': '60%', 'marginLeft': '20%'}}>
+            <div style={{'width': '80%', 'marginLeft': '10%'}}>
               <MaterialTable
                 title={"Order Details"}
                 columns={packingColumns}
