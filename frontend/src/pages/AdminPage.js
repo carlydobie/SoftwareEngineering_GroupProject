@@ -74,6 +74,7 @@ function AdminPage() {
         response.data.forEach(order => {
           axios.get('http://localhost:8080/orders/PartsInOrder/' + order.order_number)
           .then(function (orderResponse) {
+              let orderData = []
               //get the part details for each part in the order
               orderResponse.data.forEach(part => {
                 axios.get('http://localhost:8080/legacy/' + part.part_number)
@@ -82,12 +83,13 @@ function AdminPage() {
                     part.price = partResponse.data[0].price
                     //add the total weight to the part object
                     part.weight = partResponse.data[0].weight
-                    setPackingList(packingList => [...packingList, part])
+                    orderData.push(part)
                   })
                   .catch(function (error) {
                     console.log(error)
                   })
-                })
+              })
+              setPackingList(packingList => [...packingList, orderData])
           })
           .catch(function (error) {
             // handle error
@@ -103,6 +105,7 @@ function AdminPage() {
 
   //get the order data when the page loads
   useEffect(() => {
+      setPackingList([])
       getData()
   }, [dates, prices]);
 

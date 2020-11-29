@@ -42,18 +42,19 @@ export default function OrderTable(props) {
         title={"Orders"}
         data={orders}
         columns={column}
+        isLoading={orders.length === 0}
         options={{
             filtering: true
           }}
         detailPanel={rowData => {
           //find the object in the array of orders in packingLists where the order numnber matches
-          let orderData = packingLists.filter(order => order.order_number === rowData.order_number)
+          let orderData = packingLists.filter(order => order[0].order_number === rowData.order_number)
           return (
             <div style={{'width': '80%', 'marginLeft': '10%'}}>
               <MaterialTable
                 title={"Order Details"}
                 columns={packingColumns}
-                data={orderData}
+                data={orderData[0]}
               />  
             </div>
           )
