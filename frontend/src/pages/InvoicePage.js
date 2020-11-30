@@ -1,4 +1,4 @@
-import InvoiceContent from '../components/InvoiceContent.js';
+import InvoiceContent from '../components/warehouse/InvoiceContent.js';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from 'react';

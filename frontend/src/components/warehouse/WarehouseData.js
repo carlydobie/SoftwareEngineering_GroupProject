@@ -6,7 +6,18 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import { useHistory } from 'react-router-dom'
 import emailjs from 'emailjs-com'
 import axios from 'axios';
-
+/*
+ *  Warehouse Data Component
+ *  Displays a table of all orders with a drop down detail panel
+ *  of the parts in the order. When the warehouse worker has picked
+ *  and checked off all parts in the order, they can click the "ship now"
+ *  icon to update the order status and alert the customer. A view invoice
+ *  icon generates a printable invoice.
+ * 
+ *  Takes the following props:
+ *  props.data - an array of all the orders
+ *  props.packingList - a 2D array of the parts in each order
+ */
 export default function WarehouseData(props) {
 
   //local state
@@ -22,7 +33,6 @@ export default function WarehouseData(props) {
     setOrders(props.data)
     setPackingLists(props.packingList)
   }, [props])
-
 
   //col definitions
   const column = [
@@ -51,11 +61,11 @@ export default function WarehouseData(props) {
 
     //do your axios thing here to update db
     axios.post('http://localhost:8080/orders/UpdateOrderStatus/' + orderNum)
-      .catch(function (error) {
-        console.log(error);
-      })
+    .catch(function (error) {
+      console.log(error);
+    })
     
-    //i think send email will go here too, let cust know order has shipped
+    //send email to let cust know order has shipped
     emailjs.send("gmail", "template_uzx5x6j", {
       orderNum: orderNum,
       to_name: cust_name,
@@ -69,7 +79,7 @@ export default function WarehouseData(props) {
 
      setLoading(false)
      setAllSelected(false)
-   }
+  }
 
   //display shipping icon if all parts in an order have been checked
   const handleSelectRow = (rowLength, order) => {
@@ -111,6 +121,7 @@ export default function WarehouseData(props) {
                 })
               },
             }},
+            //view invoice icon takes user to printable invoice page
             rowData => ({
               icon: AssignmentIcon,
               tooltip: 'View Invoice',

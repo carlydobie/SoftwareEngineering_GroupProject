@@ -6,15 +6,18 @@ import Axios from 'axios';
 import { blue, grey } from '@material-ui/core/colors';
 import { useForm, Controller } from 'react-hook-form';
 import emailjs from 'emailjs-com';
-import CustomizedSnackbars from '../components/core/alert'
+import CustomizedSnackbars from '../core/alert'
 /*
  *  Order Form Modal
  * 
- *  Takes the calculated shipping charges and order grand total as props.
  *  Customer reviews their order and inputs their billing and shipping info
  *  User input is validated by the form before being submitted. 
  *  Submit order function processes the payment and then calls process order
  *  Process order updates that database, sends the confirmation email and then clears the cart
+ * 
+ *  Takes the following props:
+ *  props.shipping - the shipping charge calculated based on the weight of the cart
+ *  props.total - the grand total of the order calculated as cart total plus shipping
  *  
  */
 
@@ -69,7 +72,6 @@ export default function OrderForm (props) {
     const [success, setSuccess] = useState(false)
   
     //pull in state from redux
-    //const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.cart);
     const cartTotal = useSelector(state => state.cart.total); 
 
@@ -130,10 +132,8 @@ export default function OrderForm (props) {
       //clean up name form data
       let firstname = formData.fName.toLowerCase();
       firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
-
       let lastname = formData.lName.toLowerCase();
       lastname = lastname.charAt(0).toUpperCase() + lastname.slice(1);
-      
       let name = firstname + " " + lastname;
       
       //see if customer is in db, if not add them, returns customer num as response.data
@@ -197,6 +197,8 @@ export default function OrderForm (props) {
 
   
     //send an order confirmation email
+    //takes the customer name, email and the order number
+    //as props to fill the email template
     function sendEmail(name, email, orderNum){
       emailjs.send("gmail","template_r3mb65m", {
         orderNum: orderNum,
@@ -538,6 +540,8 @@ export default function OrderForm (props) {
     }
     
     //modal button and component
+    //on successful submission of order, a snackbar success message is shown
+    //and the submit order button becomes disabled until the cart is cleared
     return (
       <div>
         <ThemeProvider theme={theme}>

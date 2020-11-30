@@ -2,6 +2,12 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table'
+/*
+ *  Inventory Table Component
+ *  Displays the parts, their number description, and on hand quantity
+ *  in a sortable, searchable, material-table. The Receiving Desk clerk
+ *  can update the inventory quantities from within the table
+ */
 
 // MaterialTable cols
   const column = [
@@ -10,7 +16,8 @@ import MaterialTable from 'material-table'
     { title: 'Quantity', field: 'qty', type: 'numeric', validate: rowData => (rowData.qty >= 0) ? { isValid: true } : { isValid: false, helperText: 'invalid quantity'}}
   ];
 
-export default function ProductTable(props) {
+// Product Table Component
+export default function ProductTable() {
   //State to hold axios responses
   const [entries, setEntries] = useState([]);
   
@@ -28,15 +35,16 @@ export default function ProductTable(props) {
     });
   }
 
+  //get the data when the table loads
   useEffect(() => {
       getData()
   }, [])
 
   //Updates the row in the inventory database
-  const setData = async (data) => {
-    const id = data.part_number //The parts part number to edit
-    const qty = data.qty        //Updated quantity
-    if(data.qty >= 0 ){
+  const setData = async (rowData) => {
+    const id = rowData.part_number //The parts part number to edit
+    const qty = rowData.qty        //Updated quantity
+    if(rowData.qty >= 0 ){
       await axios.put('http://localhost:8080/inventory/update/' +id, {qty: qty})
       .then(function (response) {
         // handle success

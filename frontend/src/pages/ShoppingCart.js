@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/core/customerNav.js';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import OrderForm from '../components/orderForm';
+import OrderForm from '../components/customer/orderForm';
 import MaterialTable from 'material-table'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'

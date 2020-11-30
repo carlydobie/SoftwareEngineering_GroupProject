@@ -3,7 +3,7 @@ import { Box, Paper, ButtonBase, Grid } from '@material-ui/core'
 import { Link } from 'react-router-dom';
 import { Howl } from 'howler';
 import horn from '../sounds/horn.wav';
-import LoginForm from '../components/employeeLogin';
+import LoginForm from '../components/core/employeeLogin';
 
 /*
  *  Home Page Component
@@ -21,6 +21,7 @@ var hornsound = new Howl({
   preload: true,
 })
 
+// Home Page Componenet
 export default function HomePage() {
 
   //render the title and buttons to navigate to the

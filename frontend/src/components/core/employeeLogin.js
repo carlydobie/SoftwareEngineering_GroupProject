@@ -9,7 +9,9 @@ import { useHistory } from 'react-router-dom'
  *  Employee Login Form Modal
  * 
  *  Allows employees to login to access employee tools
- *  
+ * 
+ *  ***This feature is still in development, a placeholder admin
+ *     password has been hardcoded for demonstration purposes
  */
 
 //color theme

@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
-
+/*
+ *  Order Table Component
+ *  Displays the Admin View of all orders in a searchable, sortable
+ *  material-table with a drop down detail panel to view the parts 
+ *  in that order
+ * 
+ *  Takes the following props:
+ *  props.data - an array of all the orders
+ *  props.packingLists - a 2D array of the parts in each order
+ */
 export default function OrderTable(props) {
   //local state
   const [orders, setOrders] = useState(props.data)

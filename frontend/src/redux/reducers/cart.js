@@ -60,6 +60,7 @@ const cartReducer = ( state = { total: initialTotal, weight: initialWeight, cart
                 weight: getWeight(removedCart)
             }
         case 'CLEAR_CART':
+            //reset cart to default values
             return {
                 ...state,
                 cart: [],

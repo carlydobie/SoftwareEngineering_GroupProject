@@ -6,9 +6,9 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import { blue, grey } from '@material-ui/core/colors';
 import { useDispatch } from 'react-redux';
-import { setBracketCharges } from '../redux/actions/shipping';
-import Boxes from '../graphics/cardboard-box.png' 
-import CustomizedSnackbars from './core/alert';
+import { setBracketCharges } from '../../redux/actions/shipping';
+import Boxes from '../../graphics/cardboard-box.png' 
+import CustomizedSnackbars from '../core/alert';
 
 /*
  *  Update Shipping Bracket Charge Form Modal
@@ -74,7 +74,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 //Update Shipping Modal Component
-export default function ShippingForm () {
+export default function ShippingForm() {
 
     //hooks for modal
     const classes = useStyles();

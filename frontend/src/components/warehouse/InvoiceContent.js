@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import '../css/Invoice.css';
+import '../../css/Invoice.css';
 
 /*
  * Component which displays all of the data regarding a customer's

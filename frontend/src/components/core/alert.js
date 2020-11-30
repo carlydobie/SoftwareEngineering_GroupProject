@@ -30,7 +30,7 @@ export default function CustomizedSnackbars(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   
-  //hooks
+  //hooks for local state
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState("")
 
@@ -57,7 +57,7 @@ export default function CustomizedSnackbars(props) {
     setOpen(false);
   };
 
-  //render green bar alert
+  //render green bar alert with the success message
   return (
     <div className={classes.root}>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

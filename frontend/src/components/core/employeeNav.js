@@ -4,7 +4,13 @@ import { AppBar, Toolbar, Typography, Button, IconButton, createMuiTheme, ThemeP
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import Cardboard from '../../graphics/cardboard-texture.jpg';
+/*
+ *  Employee Nav Bar
+ *  Navigation bar for employees to get to the appropriate
+ *  workstation for the receiving, warehouse, and admin
+ */
 
+//nav bar styles
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -28,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+  //colors for theme
   const theme = createMuiTheme({
     palette: {
       primary: {
@@ -36,9 +43,11 @@ const useStyles = makeStyles((theme) => ({
     }
   })
 
+  //Nav Bar Component
   export default function ButtonAppBar() {
     const classes = useStyles();
   
+    //render nav bar with links to employee pages
     return (
       <div className={classes.root}>
         <ThemeProvider theme={theme}>

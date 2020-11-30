@@ -6,9 +6,10 @@ import Box from '@material-ui/core/Box';
 import axios from 'axios';
 /*
  *  Customer Page Component
- *  Shopping page for customer to view all products and select parts to 
- *  purchase. Customers can add parts to the shopping cart
- *  and view the cart before submitting their order
+ *  Shopping page for customer to view all products, search for
+ *  products and select parts to purchase. Customers can add 
+ *  parts to the shopping cart and view the cart before 
+ *  submitting their order
  * 
  */
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-// page component
+// Customer Page component
 export default function CustomerPage() {
   const classes = useStyles();
 

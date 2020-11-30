@@ -6,7 +6,13 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom';
 import SearchBar from './searchbar.js';
 import { useSelector } from 'react-redux'
+/*
+ *  Customer Nav Bar
+ *  Navigation bar for shopping page that allows user to 
+ *  shop, view cart, and search for products
+ */
 
+//nav bar styles
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -29,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
   }));
 
+  //Nav Bar Component
   export default function ButtonAppBar() {
     const classes = useStyles();
 
@@ -47,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
       setTotalItems(countItems)
     }, [cart])
   
+    //render nav bar
     return (
       <div className={classes.root}>
         <AppBar position="static" className={classes.barBackground}>
@@ -66,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
             </Button>
             <SearchBar />
             <IconButton to="/ShoppingCart" component={Link} className={classes.shoppingCart}>
+              {/**Badge displayed on cart icon shows number of items in cart */}
               <Badge badgeContent={totalItems} color='secondary'>
                 <ShoppingCartIcon />
               </Badge>

@@ -32,11 +32,3 @@ export const removeItem = (item) => {
         item: item
     }
 }
-
-//see if an item is in the cart
-export const getItem = (itemNum) => {
-    return {
-        type: 'GET_ITEM',
-        itemNum: itemNum
-    }
-}

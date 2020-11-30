@@ -1,6 +1,6 @@
 import Navbar from '../components/core/employeeNav.js';
-import ShippingForm from '../components/shippingBracketModal';
-import OrderTable from '../components/OrderTable'
+import ShippingForm from '../components/admin/shippingBracketModal';
+import OrderTable from '../components/admin/OrderTable'
 import { Grid, Box, TextField, InputAdornment } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
@@ -46,7 +46,7 @@ function AdminPage() {
   let monthAgo = new Date(Date.now());
   monthAgo.setMonth(now.getMonth() - 1)
 
-  //default date range will be for orders from beginning of year til now
+  //default date range will be for orders from one month ago til now
   const [dates, setDates] = useState({
     from: monthAgo,
     to: today
@@ -133,7 +133,8 @@ function AdminPage() {
       <h2 style={{ marginLeft: '2%'}}>Hello Admin!</h2>
       <Grid container justify='center' spacing={4} style={{ paddingLeft: '5vh', paddingRight: '5vh'}}>
         <Grid item xs={9}>
-            <OrderTable data={entries} packingList={packingList}/>
+          {/**Main Order Table */}
+          <OrderTable data={entries} packingList={packingList}/>
         </Grid>
         <Grid item xs={3}>
           <Grid container spacing={3}>
@@ -149,7 +150,7 @@ function AdminPage() {
                   name="from"
                   onChange={(e) => {handleDateChange(e, "from")}}
                 />
-                </MuiPickersUtilsProvider>
+              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item lg={6} xs={6}>
               {/**Date Range Picker: To Date */}
