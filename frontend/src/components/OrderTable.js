@@ -55,6 +55,7 @@ export default function OrderTable(props) {
                 title={"Order Details"}
                 columns={packingColumns}
                 data={orderData[0]}
+                options={{ paging: false }}
               />  
             </div>
           )
