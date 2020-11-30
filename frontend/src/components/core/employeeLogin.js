@@ -120,6 +120,7 @@ export default function LoginForm () {
                                         margin="dense"
                                         onChange={handleChange}  
                                         value={emp.id}  
+                                        autoFocus
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={12}>

@@ -43,8 +43,9 @@ function AdminPage() {
   let now = new Date(Date.now());
   let today = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
   //create date one month ago for default 
-  let monthAgo = new Date(Date.now());
-  monthAgo.setMonth(now.getMonth() - 1)
+  let fromDate = new Date(Date.now());
+  fromDate.setMonth(now.getMonth() - 1)
+  let monthAgo = fromDate.getFullYear() + "-" + (fromDate.getMonth() +1) + "-" + fromDate.getDate();
 
   //default date range will be for orders from one month ago til now
   const [dates, setDates] = useState({

@@ -51,7 +51,6 @@ export default function OrderTable(props) {
         title={"Orders"}
         data={orders}
         columns={column}
-        isLoading={orders.length === 0}
         options={{
             filtering: true
           }}
