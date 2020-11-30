@@ -3,7 +3,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { setSearchTerm } from '../../redux/actions/search';
+/*
+ *  Search Bar
+ *  Used in Customer Nav Bar to allow users to search for products
+ */
 
+//search bar styles
 const useStyles = makeStyles((theme => ({
     search: {
         flexGrow: 1,
@@ -45,14 +50,18 @@ const useStyles = makeStyles((theme => ({
       },
 })))
 
+//Search Bar Component
 export default function SearchBar() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    //handle change in search bar input
     const search = (e) => {
+      //send the new search term value to redux
       dispatch(setSearchTerm(e.target.value))
     }
 
+    //render search bar
     return(
         <div className={classes.search}>
         <div className={classes.searchIcon}>

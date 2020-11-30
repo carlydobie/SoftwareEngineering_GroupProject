@@ -1,6 +1,11 @@
 import Navbar from '../components/core/employeeNav.js';
-import InventoryTable from '../components/InventoryTable';
+import InventoryTable from '../components/inventory/InventoryTable';
 import Grid from '@material-ui/core/Grid';
+/*
+ *  Receiving Desk Page
+ *  Renders the Inventory Table where the Receiving Desk Clerk
+ *  can view and update product inventory quantities
+ */
 
 function ReceivingDeskPage() {
   return (
@@ -11,6 +16,7 @@ function ReceivingDeskPage() {
     </div>
       <Grid container justify="center">
         <div style={{ width: '1200px' }}>
+          {/**Inventory Update Table */}
           <InventoryTable/>
         </div>
       </Grid>

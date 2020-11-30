@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, ButtonBase, Button, Grid, Paper, Box, Input, Slider, 
         Tooltip, Typography, InputAdornment, InputLabel } from '@material-ui/core';
@@ -6,9 +6,9 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import { blue, grey } from '@material-ui/core/colors';
 import { useDispatch } from 'react-redux';
-import { setBracketCharges } from '../redux/actions/shipping';
-import Boxes from '../graphics/cardboard-box.png' 
-import CustomizedSnackbars from './core/alert';
+import { setBracketCharges } from '../../redux/actions/shipping';
+import Boxes from '../../graphics/cardboard-box.png' 
+import CustomizedSnackbars from '../core/alert';
 
 /*
  *  Update Shipping Bracket Charge Form Modal
@@ -45,7 +45,7 @@ function getModalStyle() {
 const useStyles = makeStyles(() => ({
   paper: {
     position: 'absolute',
-    width: '30%',
+    width: '40%',
     backgroundColor: theme.palette.background.paper,
     border: '1px solid black',
     borderRadius: '5px',
@@ -74,7 +74,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 //Update Shipping Modal Component
-export default function ShippingForm () {
+export default function ShippingForm() {
 
     //hooks for modal
     const classes = useStyles();
@@ -133,12 +133,12 @@ export default function ShippingForm () {
     //set the new slider value, adjust slider two accordingly 
     //and make sure that the new value is not greater than the largest slider two value
     const handleSliderOne = (e, newVal) => {
-        setSliderVals(state => ({...state, sliderOne: newVal}))
-        setSliderVals(state => ({...state, sliderTwo: [newVal, sliderVals.sliderTwo[1]]}))
-        if(newVal > sliderVals.sliderTwo[1]){
-            setSliderVals(state => ({...state, sliderThree: [newVal, sliderVals.sliderThree[1]]}))
-            setSliderVals(state => ({...state, sliderTwo: [newVal, newVal]}))
-        }
+      setSliderVals(state => ({...state, sliderOne: newVal}))
+      setSliderVals(state => ({...state, sliderTwo: [newVal, sliderVals.sliderTwo[1]]}))
+      if(newVal > sliderVals.sliderTwo[1]){
+          setSliderVals(state => ({...state, sliderThree: [newVal, sliderVals.sliderThree[1]]}))
+          setSliderVals(state => ({...state, sliderTwo: [newVal, newVal]}))
+      }
     }
 
     //handle change in slider two
@@ -170,16 +170,16 @@ export default function ShippingForm () {
                     <br></br><br></br>
                     <ThemeProvider theme={theme}>
                         <form noValidate>
-                            <Grid container spacing={8}>
+                            <Grid container spacing={6}>
                                 <Grid item xs={12} sm={6}> 
                                     {/**Bracket One */}
                                     <Slider
-                                      label="Bracket 1 Weight"
                                       value={sliderVals.sliderOne}
                                       name="sliderOne"
                                       onChange={handleSliderOne}
                                       valueLabelDisplay="on"
-                                      max={1000}
+                                      max={200}
+                                      step={1}
                                     />
                                     <InputLabel>Bracket One Weight (lbs)</InputLabel>
                                 </Grid>
@@ -188,7 +188,7 @@ export default function ShippingForm () {
                                         margin="dense"
                                         onChange={handleCharge}
                                         type="number"
-                                        inputprops={{ inputProps: { min: 1, step: .01 } }}
+                                        inputProps={{ min: 1, step: .01 }}
                                         name="bracketOne"
                                         value={charges.bracketOne}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -198,12 +198,11 @@ export default function ShippingForm () {
                                 <Grid item xs={12} sm={6}> 
                                     {/**Bracket Two */}
                                     <Slider
-                                      label="Bracket 1 Weight"
                                       value={sliderVals.sliderTwo}
                                       name="sliderOne"
                                       onChange={handleSliderTwo}
                                       valueLabelDisplay="on"
-                                      max={1000}
+                                      max={200}
                                     />
                                     <InputLabel>Bracket Two Weight (lbs)</InputLabel>
                                 </Grid>
@@ -212,7 +211,7 @@ export default function ShippingForm () {
                                         margin="dense"
                                         onChange={handleCharge}
                                         type="number"
-                                        inputprops={{ inputProps: { min: 1, step: .01 } }}
+                                        inputProps={{  min: 1, step: .01 }}
                                         name="bracketTwo"
                                         value={charges.bracketTwo}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -222,12 +221,11 @@ export default function ShippingForm () {
                                 {/**Bracket Three */}
                                 <Grid item xs={12} sm={6}> 
                                     <Slider
-                                      label="Bracket 1 Weight"
                                       value={sliderVals.sliderThree}
                                       name="sliderOne"
                                       onChange={handleSliderThree}
                                       valueLabelDisplay="on"
-                                      max={1000}
+                                      max={200}
                                     />
                                     <InputLabel>Bracket Three Weight (lbs)</InputLabel>
                                 </Grid>
@@ -236,7 +234,7 @@ export default function ShippingForm () {
                                         margin="dense"
                                         onChange={handleCharge}
                                         type="number"
-                                        inputprops={{ inputProps: { min: 1, step: .01 } }}
+                                        inputprops={{ min: 1, step: .01 }}
                                         name="bracketThree"
                                         value={charges.bracketThree}
                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}

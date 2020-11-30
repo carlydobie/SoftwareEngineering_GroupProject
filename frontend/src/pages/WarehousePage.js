@@ -1,9 +1,14 @@
 import Navbar from '../components/core/employeeNav.js';
-import WarehouseData from '../components/WarehouseData.js';
+import WarehouseData from '../components/warehouse/WarehouseData.js';
 import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-
+/*
+ *  Warehouse Page
+ *  Gets all the orders and the products in each order then
+ *  passes the data to the warehouse table where warehouse workers
+ *  can view orders and packing lists and generate invoices
+ */ 
 function WarehousePage() {
 
   //state to hold axios responses
@@ -39,11 +44,13 @@ function WarehousePage() {
       });
   }
 
+  //get warehouse data when page loads
   useEffect(() => {
     getData()
   },[])
 
 
+  //render the data in a table
   return (
     <div className="App">
       <Navbar />

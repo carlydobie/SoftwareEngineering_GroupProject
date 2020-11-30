@@ -7,6 +7,9 @@ import { useSelector } from 'react-redux'
  *  displaying all the product items. Implements search
  *  function that is connected to search bar through redux
  * 
+ *  Takes the following props:
+ *  props.data - an array of part objects containing the part details
+ * 
  */
 export default function ProductGrid(props) {
     //pull in state from redux to access the search bar term

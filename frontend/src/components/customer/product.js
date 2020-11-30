@@ -7,6 +7,14 @@ import { addToCart } from '../../redux/actions/cart'
  *  Product Grid Item Component that renders an individual 
  *  part with it's item details, current quantity and an
  *  add to cart button
+ * 
+ *  Takes the following props:
+ *  props.number - part number
+ *  props.pictureURL - photo of item
+ *  props.description - item description
+ *  props.weight - item unit weight
+ *  props.price - item unit price
+ *  props.qty - on hand inventory qty of item
  */
 
 //styles

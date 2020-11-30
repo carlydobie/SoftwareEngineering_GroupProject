@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, ButtonBase, Button, Grid, Typography, TextField } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import { blue, grey } from '@material-ui/core/colors';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 
 /*
  *  Employee Login Form Modal
  * 
  *  Allows employees to login to access employee tools
- *  
+ * 
+ *  ***This feature is still in development, a placeholder admin
+ *     password has been hardcoded for demonstration purposes
  */
 
 //color theme
@@ -120,6 +120,7 @@ export default function LoginForm () {
                                         margin="dense"
                                         onChange={handleChange}  
                                         value={emp.id}  
+                                        autoFocus
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={12}>

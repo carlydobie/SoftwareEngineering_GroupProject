@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
-
+/*
+ *  Order Table Component
+ *  Displays the Admin View of all orders in a searchable, sortable
+ *  material-table with a drop down detail panel to view the parts 
+ *  in that order
+ * 
+ *  Takes the following props:
+ *  props.data - an array of all the orders
+ *  props.packingLists - a 2D array of the parts in each order
+ */
 export default function OrderTable(props) {
   //local state
   const [orders, setOrders] = useState(props.data)
@@ -47,13 +56,14 @@ export default function OrderTable(props) {
           }}
         detailPanel={rowData => {
           //find the object in the array of orders in packingLists where the order numnber matches
-          let orderData = packingLists.filter(order => order.order_number === rowData.order_number)
+          let orderData = packingLists.filter(order => order[0].order_number === rowData.order_number)
           return (
-            <div style={{'width': '60%', 'marginLeft': '20%'}}>
+            <div style={{'width': '80%', 'marginLeft': '10%'}}>
               <MaterialTable
-                title={"Order Details"}
+                title={"Order " + rowData.order_number + " Details"}
                 columns={packingColumns}
-                data={orderData}
+                data={orderData[0]}
+                options={{ paging: false }}
               />  
             </div>
           )
