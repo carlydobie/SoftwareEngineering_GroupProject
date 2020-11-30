@@ -60,7 +60,7 @@ export default function OrderTable(props) {
           return (
             <div style={{'width': '80%', 'marginLeft': '10%'}}>
               <MaterialTable
-                title={"Order Details"}
+                title={"Order " + rowData.order_number + " Details"}
                 columns={packingColumns}
                 data={orderData[0]}
                 options={{ paging: false }}

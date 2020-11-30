@@ -126,7 +126,9 @@ export default function WarehouseData(props) {
               icon: AssignmentIcon,
               tooltip: 'View Invoice',
               onClick: (event, rowData) => {
-                history.push('/InvoicePage/' + rowData.order_number)
+                const win = window.open('InvoicePage/' + rowData.order_number)
+                win.focus()
+                // history.push('/InvoicePage/' + rowData.order_number)
               }
             })
         ]}
@@ -136,7 +138,7 @@ export default function WarehouseData(props) {
           return (
             <div style={{'width': '60%', 'marginLeft': '20%'}}>
               <MaterialTable
-                title={"Packing List"}
+                title={"Order " + rowData.order_number + " Packing List"}
                 columns={packingColumns}
                 data={orderData[0]}
                 options={{
