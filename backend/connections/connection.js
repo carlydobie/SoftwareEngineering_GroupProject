@@ -1,8 +1,7 @@
 var express = require("express");
 var mysql = require("mysql");
 
-//connection to new local db, will have to
-//set up your XAMPP to run mysql on port 3308
+//connection object for local database
 var connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
@@ -11,6 +10,7 @@ var connection = mysql.createConnection({
     database: 'test'
   });
 
+  //connect to the local bd
   connection.connect(function (err) {
     if(err){
       console.log('Error connecting: ', err);

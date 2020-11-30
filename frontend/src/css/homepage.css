@@ -1,0 +1,35 @@
+  /* Area that contains the grid */
+  .home-menu-box {
+    padding-top: 30vh;
+    margin-right: 30vw;
+    margin-left: 30vw;
+  }
+
+  .home-grid-item-title {
+    padding: 2vh;
+    text-align: center;
+    background: url("../graphics/metal-texture-69.jpg") no-repeat center center fixed;
+  }
+
+  /* Each item in the grid */
+  .home-grid-item {
+    padding: 2vh;
+    font-size: 2vw;
+    font-weight: 700;
+    text-align: center;
+    background: url("../graphics/metal-texture-69.jpg") no-repeat center center fixed;
+  }
+
+  .home-grid-item:hover {
+    padding: 2vh;
+    font-size: 2vw;
+    font-weight: 800;
+  }
+  
+  /* Background of page */
+  .home-bg {
+    background: url(../graphics/AProj-BG.png) no-repeat center center fixed;
+    height: 100vh;
+    align-items: center;
+    align-content: center;
+  }
